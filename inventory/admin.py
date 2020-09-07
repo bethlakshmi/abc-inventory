@@ -35,8 +35,7 @@ class ItemAdmin(ImportExportActionModelAdmin):
                     'subject',
                     'date_acquired',
                     'price',
-                    'note',
-                    'display_note')
+                    'note')
     list_filter = ['category', 'disposition', 'subject']
     search_fields = ['title',
                      'category__name',
@@ -46,7 +45,6 @@ class ItemAdmin(ImportExportActionModelAdmin):
                      'date_acquired',
                      'price',
                      'note',
-                     'display_note',
                      'price']
 
     inlines = [
@@ -76,8 +74,39 @@ class ItemImageAdmin(admin.ModelAdmin):
 class ItemTextAdmin(admin.ModelAdmin):
     list_display = ('id', 'item', 'text')
 
+class SubItemAdmin(ImportExportActionModelAdmin):
+    list_display = ('id',
+                    'subitem_number',
+                    'title',
+                    'item',
+                    'dimensions')
+    list_filter = ['item__category__name',
+                   'item__disposition__state',
+                   'item__subject']
+    search_fields = ['title',
+                     'subitem_number',
+                     'description',
+                     'item__title',
+                     'item__year',
+                     'item__subject',
+                     'item__description',
+                     'item__note',
+                     ]
+
+    def dimensions(self, obj):
+        dimensions = "0w"
+        if obj.width:
+            dimensions = "%dw" % obj.width
+        if obj.height:
+            dimensions += " x %dh" % obj.height
+        if obj.depth:
+            dimensions += " x %dd" % obj.depth
+        return str(dimensions)
+
+
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Disposition, DispositionAdmin)
 admin.site.register(Item, ItemAdmin)
+admin.site.register(Subitem, SubItemAdmin)
 admin.site.register(ItemText, ItemTextAdmin)
 admin.site.register(ItemImage, ItemImageAdmin)
