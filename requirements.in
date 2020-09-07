@@ -14,3 +14,5 @@ https://control.divio.com/api/v1/apps/serve/djangocms-text-ckeditor/3.9.0/b69a0a
 https://control.divio.com/api/v1/apps/serve/djangocms-video/3.0.0/a36bdd84-5189-4d20-9ad9-eab9e64d9e25/djangocms-video-3.0.0.tar.gz#egg=djangocms-video==3.0.0
 https://control.divio.com/api/v1/apps/serve/django-filer/2.0.0/afe0eaf3-e139-4524-8130-ddec083423d4/django-filer-2.0.0.tar.gz#egg=django-filer==2.0.0
 # </INSTALLED_ADDONS>
+django-import-export
+pep8
