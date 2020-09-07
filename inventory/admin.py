@@ -23,7 +23,6 @@ class ItemTextInline(admin.TabularInline):
 class ItemImageInline(admin.TabularInline):
     model = ItemImage
 
-
 class ItemAdmin(ImportExportActionModelAdmin):
     list_display = ('id',
                     'title',
