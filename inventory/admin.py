@@ -10,6 +10,15 @@ class CategoryAdmin(admin.ModelAdmin):
     list_editable = ('name', 'help_text')
 
 
+class TagAdmin(admin.ModelAdmin):
+    list_display = ('id',
+                    'name',
+                    'help_text',
+                    'items',
+                    'subitems')
+    list_editable = ('name', 'help_text')
+
+
 class DispositionAdmin(admin.ModelAdmin):
     list_display = ('id',
     	            'state',
@@ -51,6 +60,8 @@ class ItemAdmin(ImportExportActionModelAdmin):
         ItemTextInline,
         ItemImageInline,
     ]
+
+    filter_horizontal = ("connections", "tags")
 
     def dimensions(self, obj):
         dimensions = "0w"
@@ -110,3 +121,4 @@ admin.site.register(Item, ItemAdmin)
 admin.site.register(Subitem, SubItemAdmin)
 admin.site.register(ItemText, ItemTextAdmin)
 admin.site.register(ItemImage, ItemImageAdmin)
+admin.site.register(Tag, TagAdmin)

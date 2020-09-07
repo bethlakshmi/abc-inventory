@@ -27,3 +27,5 @@ local.sqlite
 
 .aldryn
 .divio
+data/media/*
+data.tar.gz

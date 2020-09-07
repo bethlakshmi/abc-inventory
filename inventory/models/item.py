@@ -58,7 +58,7 @@ class Item(Model):
     created_at = DateTimeField(auto_now_add=True)
     updated_at = DateTimeField(auto_now=True)
     tags = ManyToManyField(Tag, related_name="items", blank=True)
-    connections = ManyToManyField("self")
+    connections = ManyToManyField("self", blank=True)
 
     def __str__(self):
         return self.title
