@@ -13,9 +13,7 @@ class CategoryAdmin(admin.ModelAdmin):
 class TagAdmin(admin.ModelAdmin):
     list_display = ('id',
                     'name',
-                    'help_text',
-                    'items',
-                    'subitems')
+                    'help_text')
     list_editable = ('name', 'help_text')
 
 
@@ -45,7 +43,7 @@ class ItemAdmin(ImportExportActionModelAdmin):
                     'date_acquired',
                     'price',
                     'note')
-    list_filter = ['category', 'disposition', 'subject']
+    list_filter = ['category', 'disposition', 'tags', 'subject']
     search_fields = ['title',
                      'category__name',
                      'disposition__state',
@@ -72,12 +70,6 @@ class ItemAdmin(ImportExportActionModelAdmin):
         if obj.depth:
             dimensions += " x %dd" % obj.depth
         return str(dimensions)
-
-    def has_label(self, obj):
-        return (obj.labels.count() > 0)
-
-    def has_image(self, obj):
-        return (obj.images.count() > 0)
 
 class ItemImageAdmin(admin.ModelAdmin):
     list_display = ('id', 'item')

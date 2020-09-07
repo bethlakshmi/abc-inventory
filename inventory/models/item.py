@@ -63,6 +63,15 @@ class Item(Model):
     def __str__(self):
         return self.title
 
+    def has_label(self):
+        return (self.labels.count() > 0)
+
+    def has_image(self):
+        return (self.images.count() > 0)
+
+    has_label.boolean = True
+    has_image.boolean = True
+
     class Meta:
         app_label = "inventory"
         ordering = ['title', ]
