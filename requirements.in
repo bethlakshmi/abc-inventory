@@ -4,6 +4,7 @@ https://control.divio.com/api/v1/apps/serve/aldryn-sso/2.0.0/e6eccefa-e8f5-492d-
 https://control.divio.com/api/v1/apps/serve/djangocms-file/3.0.0/3d2621db-220e-4e62-a731-f651d6c81fc6/djangocms-file-3.0.0.tar.gz#egg=djangocms-file==3.0.0
 https://control.divio.com/api/v1/apps/serve/djangocms-googlemap/2.0.0/2d0f6ff3-5f0b-48d0-8ee1-317c1d3e5baa/djangocms-googlemap-2.0.0.tar.gz#egg=djangocms-googlemap==2.0.0
 https://control.divio.com/api/v1/apps/serve/djangocms-link/3.0.0/a2097f39-77cf-45f1-97db-fab6b50d0f68/djangocms-link-3.0.0.tar.gz#egg=djangocms-link==3.0.0
+https://control.divio.com/api/v1/apps/serve/djangocms-picture/3.0.0/a3be9a52-45ab-42f5-9de5-3a33934ed666/djangocms-picture-3.0.0.tar.gz#egg=djangocms-picture==3.0.0
 https://control.divio.com/api/v1/apps/serve/djangocms-snippet/3.0.0/436700f0-3a6e-4787-a007-38eedaf66d07/djangocms-snippet-3.0.0.tar.gz#egg=djangocms-snippet==3.0.0
 https://control.divio.com/api/v1/apps/serve/djangocms-text-ckeditor/3.9.0/b69a0a27-5e76-4db2-86b6-c4931f16688f/djangocms-text-ckeditor-3.9.0.tar.gz#egg=djangocms-text-ckeditor==3.9.0
 https://control.divio.com/api/v1/apps/serve/django-filer/2.0.0/afe0eaf3-e139-4524-8130-ddec083423d4/django-filer-2.0.0.tar.gz#egg=django-filer==2.0.0
