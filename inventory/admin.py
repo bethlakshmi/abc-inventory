@@ -26,9 +26,16 @@ class DispositionAdmin(admin.ModelAdmin):
 
 class ItemTextInline(admin.TabularInline):
     model = ItemText
+    extra = 1
+    verbose_name_plural = "wall text"
 
 class ItemImageInline(admin.TabularInline):
     model = ItemImage
+    extra = 1
+
+class SubitemInline(admin.TabularInline):
+    model = Subitem
+    extra = 1
 
 class ItemAdmin(ImportExportActionModelAdmin):
     list_display = ('id',
@@ -55,6 +62,7 @@ class ItemAdmin(ImportExportActionModelAdmin):
                      'price']
 
     inlines = [
+        SubitemInline,
         ItemTextInline,
         ItemImageInline,
     ]

@@ -18,6 +18,7 @@ from inventory.models import (
 
 
 class Subitem(Model):
+    subitem_number = PositiveIntegerField()
     title = CharField(max_length=128)
     description = TextField(blank=True)
     width = DecimalField(blank=True,
@@ -39,7 +40,6 @@ class Subitem(Model):
     updated_at = DateTimeField(auto_now=True)
     tags = ManyToManyField(Tag, related_name="subitems", blank=True)
     item = ForeignKey(Item, on_delete=CASCADE)
-    subitem_number = PositiveIntegerField()
 
     def __str__(self):
         return self.title
