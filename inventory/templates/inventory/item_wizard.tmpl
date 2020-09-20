@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}
+   {{page_title}}
+{% endblock %}
+{% block head %}
+    <script type="text/javascript" src="/static/tinymce/tinymce.min.js"></script>
+    <script>{% include "tiny-mce-user-settings.tmpl" %}</script>
+{% endblock %}
+{% block content %}
+<h2 class="subtitle">{{title}}</h2>
+<p>{{view_header_text | safe}}
+
+  {% if errors %}
+    {% for error in errors %}
+    <p style= "color:red">{{error}}</p>
+    {% endfor %}
+  {% endif %}
+
+   {% if popup_text %}
+   <div class="alert alert-info">{{popup_text |safe }}</div>
+   {% endif %}
+   <form action="" method="post" enctype="multipart/form-data">
+
+   {% include "form_table_wrapper.tmpl" %}
+
+    <input type="submit" name="submit" value="{% if step < max %}Next >{% else %}Finish{% endif %}">
+   </form>
+{% endblock %}
