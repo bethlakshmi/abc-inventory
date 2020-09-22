@@ -4,6 +4,7 @@ from django.forms import (
     HiddenInput,
     ModelForm,
     Textarea,
+    TextInput,
 )
 from inventory.models import Item
 
@@ -12,6 +13,9 @@ class BasicItemForm(ModelForm):
     required_css_class = 'required'
     error_css_class = 'error'
 
+    description = CharField(
+        required=False,
+        widget=Textarea(attrs={'id': 'user-tiny-mce'}))
 
     class Meta:
         model = Item
@@ -20,3 +24,4 @@ class BasicItemForm(ModelForm):
             'description',
             'category',
             'subject']
+        widgets = {'title': TextInput(attrs={'size': '87'})}

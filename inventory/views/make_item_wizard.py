@@ -5,7 +5,10 @@ from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from django.shortcuts import render
+from django.shortcuts import (
+    get_object_or_404,
+    render,
+)
 from inventory.models import (
     Item,
 )
@@ -23,6 +26,13 @@ class MakeItemWizard(View):
     step = 0
     max = 3
     item = None
+
+    def groundwork(self, request, args, kwargs):
+        self.item = None
+        if "item_id" in kwargs:
+            self.page_title = 'Edit Item'
+            item_id = kwargs.get("item_id")
+            self.item = get_object_or_404(Item, pk=item_id)
 
     def make_post_forms(self, request, the_form):
         if self.item:
@@ -49,13 +59,22 @@ class MakeItemWizard(View):
 
     @never_cache
     def get(self, request, *args, **kwargs):
-        self.form = BasicItemForm()
+        redirect = self.groundwork(request, args, kwargs)
+        if redirect:
+            return HttpResponseRedirect(redirect)
+        if self.item:
+            self.form = BasicItemForm(instance=self.item)
+        else:
+            self.form = BasicItemForm()
         return render(request, self.template, self.make_context(request))
 
     @never_cache
     @method_decorator(login_required)
     def post(self, request, *args, **kwargs):
-        # check bid validity
+        redirect = self.groundwork(request, args, kwargs)
+        if redirect:
+            return HttpResponseRedirect(redirect)
+
         self.make_post_forms(request, BasicItemForm)
 
         if not self.form.is_valid():

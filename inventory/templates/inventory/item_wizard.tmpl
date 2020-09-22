@@ -22,8 +22,8 @@
   </div></div>
 <div class="row">
   <div class="col-12 text-right">
-    {% if step > 0 %}<input type="submit" name="submit" value="< Back">{% endif %}
-    <input type="submit" name="submit" value="{% if step < max %}Next >{% else %}Finish{% endif %}">
+    {% if step > 0 %}<input type="submit" name="submit" value="< Back" class="btn btn-primary" >{% endif %}
+    <input type="submit" name="submit" value="{% if step < max %}Next >{% else %}Finish{% endif %}" class="btn btn-primary" >
   </div>
 </div>
 </form>
