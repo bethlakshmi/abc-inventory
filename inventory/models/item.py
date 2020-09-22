@@ -50,6 +50,7 @@ class Item(Model):
     subject = TextField(blank=True, null=True)
     note = TextField(blank=True, null=True)
     date_acquired = DateField(blank=True, null=True)
+    date_deaccession = DateField(blank=True, null=True)
     price = DecimalField(blank=True,
                          null=True,
                          decimal_places=2,

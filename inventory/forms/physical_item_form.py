@@ -20,4 +20,5 @@ class PhysicalItemForm(ModelForm):
             'disposition',
             'year',
             'date_acquired',
+            'date_deaccession',
             'price']
