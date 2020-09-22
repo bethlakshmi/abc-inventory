@@ -15,6 +15,7 @@ class ItemsListView(View):
     template = 'inventory/item_list.tmpl'
     bid_order_fields = ('disposition', 'category')
     header = ("title", "description", "category", "disposition")
+    title = "List of Items"
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -22,6 +23,8 @@ class ItemsListView(View):
 
     def get_context_dict(self):
         return {'header': self.header,
+                'title': self.title,
+                'page_title': self.title,
                 'items': self.get_list(),
                 'changed_id': self.changed_id}
 
