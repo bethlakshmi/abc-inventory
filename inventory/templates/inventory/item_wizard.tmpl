@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}
    {{page_title}}
 {% endblock %}
@@ -18,7 +19,46 @@
 <form action="" method="post" enctype="multipart/form-data">
 <div class="row">
   <div class="col-12">
-    {% include "form_table_wrapper.tmpl" %}
+    {% if step != 0 %}{% include "form_table_wrapper.tmpl" %}
+    {% else %}
+      {% csrf_token %}
+      {{ forms.0.step }}
+      {{ forms.0.item_id }}
+      <div class="form-group"><div class="container"><div class="row">
+        <div class="col-md-2">
+          <label for="{{field.name}}" class="control-label">        
+            {% if field.errors %}
+              <font color="red">!&nbsp;&nbsp;
+            {% endif %} 
+            Dimensions:
+            {% if field.errors %}</font>{% endif %} 
+            {% if field.help_text %}
+                <span class="dropt" title="Help">
+                <img src= "{% static "img/question.png" %}" alt="?"/>
+                  <span style="width:200px;float:right;text-align:left;">
+                  {{ field.help_text }}
+                  </span>
+                </span>
+            {% endif %}
+          </label></div>
+          <div class="col-md-10{% if field.field.choices|length > 7 %} long_choice{%endif%}">
+  {{ forms.0.width }} " w X {{ forms.0.height }} " h X {{ forms.0.depth }} " d
+          </div></div></div>
+
+      {% if field.errors %}
+      <div class="container"><div class="row">
+        <div class="col-md-2">&nbsp;</div>
+        <div class="col-md-4"><label for="field.name">        
+          <font color="red">{{ field.errors }}</font></label></div>
+      </div></div>
+      {% endif %}
+  </div><!-- end form group -->
+      {% include "form_field.tmpl" with field=forms.0.disposition %}
+      {% include "form_field.tmpl" with field=forms.0.year %}
+      {% include "form_field.tmpl" with field=forms.0.date_acquired %}
+      {% include "form_field.tmpl" with field=forms.0.date_deaccession %}
+      {% include "form_field.tmpl" with field=forms.0.price %}
+    {% endif %}
   </div></div>
 <div class="row">
   <div class="col-12 text-right">

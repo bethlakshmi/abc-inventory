@@ -2,6 +2,7 @@ from django.forms import (
     IntegerField,
     HiddenInput,
     ModelForm,
+    NumberInput,
 )
 from inventory.models import Item
 
@@ -14,11 +15,14 @@ class PhysicalItemForm(ModelForm):
     class Meta:
         model = Item
         fields = [
-            'height',
             'width',
+            'height',
             'depth',
             'disposition',
             'year',
             'date_acquired',
             'date_deaccession',
             'price']
+        widgets = {'width': NumberInput(attrs={'style': 'width: 75px'}),
+                   'height': NumberInput(attrs={'style': 'width: 75px'}),
+                   'depth': NumberInput(attrs={'style': 'width: 75px'})}

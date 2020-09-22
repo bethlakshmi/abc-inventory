@@ -31,7 +31,7 @@ class MakeItemWizard(View):
     first_title = 'The Basics'
     second_title = 'Physical Information'
     third_title = 'Further Details'
-    step = 0
+    step = -1
     max = 3
     item = None
 
@@ -47,15 +47,23 @@ class MakeItemWizard(View):
 
     def make_post_forms(self, request):
         self.next_form = None
-        step = request.POST.get("step", "0")
-        if step == "0":
+        self.step = int(request.POST.get("step", 0))
+        self.title = None
+        self.next_title = None
+        print(self.step)
+        if self.step == 0:
             the_form = BasicItemForm
             self.next_form = PhysicalItemForm
-        elif step == "1":
+            self.title = self.first_title
+            self.next_title = self.second_title
+        elif self.step == 1:
             the_form = PhysicalItemForm
             self.next_form = FurtherDetailForm
-        elif step == "2":
+            self.title = self.second_title
+            self.next_title = self.third_title
+        elif self.step == 2:
             the_form = FurtherDetailForm
+            self.title = self.third_title
 
         if self.item:
             self.form = the_form(
@@ -65,10 +73,10 @@ class MakeItemWizard(View):
             self.form = the_form(
                 request.POST)
 
-    def make_context(self, request):
+    def make_context(self, request, title):
         context = {
             'page_title': self.page_title,
-            'title': self.first_title,
+            'title': title,
             'forms': [self.form],
             'step': self.step,
             'max': self.max,
@@ -88,7 +96,9 @@ class MakeItemWizard(View):
             self.form = BasicItemForm(instance=self.item)
         else:
             self.form = BasicItemForm()
-        return render(request, self.template, self.make_context(request))
+        return render(request, self.template, self.make_context(
+            request,
+            self.first_title))
 
     @never_cache
     @method_decorator(login_required)
@@ -100,14 +110,18 @@ class MakeItemWizard(View):
         self.make_post_forms(request)
 
         if not self.form.is_valid():
-            return render(request, self.template, self.make_context(request))
+            return render(request, self.template, self.make_context(
+                request,
+                self.title))
 
         self.item = self.form.save()
         if self.next_form:
             self.form = self.next_form(instance=self.item)
             self.form.fields['item_id'] = IntegerField(widget=HiddenInput(),
                                                        initial=self.item.id)
-            return render(request, self.template, self.make_context(request))
+            return render(request, self.template, self.make_context(
+                request,
+                self.next_title))
 
         if self.page_title == 'Create New Item':
             messages.success(request, "Created new Item: %s" % self.item.title)
