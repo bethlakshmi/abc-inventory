@@ -16,5 +16,4 @@ urlpatterns = [
     url(r'^inventory/item/edit/(?P<item_id>\d+)/?',
     	MakeItemWizard.as_view(),
     	name='items_edit'),
-    url(r'^', ItemsListView.as_view(), name='home'),
 ]

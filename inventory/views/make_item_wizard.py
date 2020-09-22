@@ -12,8 +12,15 @@ from django.shortcuts import (
 from inventory.models import (
     Item,
 )
-from inventory.forms import BasicItemForm
+from inventory.forms import (
+    BasicItemForm,
+    PhysicalItemForm,
+)
 from django.contrib import messages
+from django.forms import (
+    IntegerField,
+    HiddenInput,
+)
 
 
 class MakeItemWizard(View):
@@ -32,9 +39,20 @@ class MakeItemWizard(View):
         if "item_id" in kwargs:
             self.page_title = 'Edit Item'
             item_id = kwargs.get("item_id")
-            self.item = get_object_or_404(Item, pk=item_id)
+            self.item = get_object_or_404(Item, id=item_id)
+        elif request.POST and request.POST.get("item_id", False):
+            self.item = get_object_or_404(Item, 
+                                          id=int(request.POST.get("item_id")))
 
-    def make_post_forms(self, request, the_form):
+    def make_post_forms(self, request):
+        self.next_form = None
+        step = request.POST.get("step", "0")
+        if step == "0":
+            the_form = BasicItemForm
+            self.next_form = PhysicalItemForm
+        if step == "1":
+            the_form = PhysicalItemForm
+
         if self.item:
             self.form = the_form(
                 request.POST,
@@ -75,15 +93,23 @@ class MakeItemWizard(View):
         if redirect:
             return HttpResponseRedirect(redirect)
 
-        self.make_post_forms(request, BasicItemForm)
+        self.make_post_forms(request)
 
         if not self.form.is_valid():
-            context = self.make_context(request)
-            return render(request, self.template, context)
-        # save bid
-        self.item = self.form.save()
+            return render(request, self.template, self.make_context(request))
 
-        messages.success(request, "Created new Item: %s" % self.item.title)
+        self.item = self.form.save()
+        if self.next_form:
+            self.form = self.next_form(instance=self.item)
+            self.form.fields['item_id'] = IntegerField(widget=HiddenInput(),
+                                                       initial=self.item.id)
+            return render(request, self.template, self.make_context(request))
+
+        if self.page_title == 'Create New Item':
+            messages.success(request, "Created new Item: %s" % self.item.title)
+        else:
+            messages.success(request, "Updated Item: %s" % self.item.title)
+
         return HttpResponseRedirect("%s?changed_id=%d" % (
             reverse('items_list', urlconf='inventory.urls'),
-            self.item.pk))
+            self.item.id))
