@@ -32,7 +32,7 @@ class MakeItemWizard(View):
     second_title = 'Physical Information'
     third_title = 'Further Details'
     step = -1
-    max = 3
+    max = 1
     item = None
 
     def groundwork(self, request, args, kwargs):
@@ -44,13 +44,12 @@ class MakeItemWizard(View):
         elif request.POST and request.POST.get("item_id", False):
             self.item = get_object_or_404(Item,
                                           id=int(request.POST.get("item_id")))
+        self.step = int(request.POST.get("step", -1))
 
     def make_post_forms(self, request):
         self.next_form = None
-        self.step = int(request.POST.get("step", 0))
         self.title = None
         self.next_title = None
-        print(self.step)
         if self.step == 0:
             the_form = BasicItemForm
             self.next_form = PhysicalItemForm
@@ -83,6 +82,18 @@ class MakeItemWizard(View):
         }
         return context
 
+    def make_back_forms(self, request):
+        self.next_form = None
+        self.title = None
+        self.next_title = None
+        if self.step == 1:
+            self.next_form = BasicItemForm
+            self.next_title = self.first_title
+        elif self.step == 2:
+            self.next_form = PhysicalItemForm
+            self.next_title = self.second_title
+        self.step = self.step - 2
+
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(MakeItemWizard, self).dispatch(*args, **kwargs)
@@ -106,15 +117,18 @@ class MakeItemWizard(View):
         redirect = self.groundwork(request, args, kwargs)
         if redirect:
             return HttpResponseRedirect(redirect)
+        if 'next' in list(request.POST.keys()):
+            self.make_post_forms(request)
+            if not self.form.is_valid():
+                return render(request, self.template, self.make_context(
+                    request,
+                    self.title))
+            self.item = self.form.save()
+        elif 'back' in list(request.POST.keys()):
+            self.make_back_forms(request)
+        else:
+            raise Exception("button click unclear")
 
-        self.make_post_forms(request)
-
-        if not self.form.is_valid():
-            return render(request, self.template, self.make_context(
-                request,
-                self.title))
-
-        self.item = self.form.save()
         if self.next_form:
             self.form = self.next_form(instance=self.item)
             self.form.fields['item_id'] = IntegerField(widget=HiddenInput(),
