@@ -1,10 +1,7 @@
 from django.forms import (
-    CharField,
     IntegerField,
     HiddenInput,
     ModelForm,
-    Textarea,
-    TextInput,
 )
 from inventory.models import Item
 

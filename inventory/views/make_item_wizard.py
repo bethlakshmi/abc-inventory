@@ -14,6 +14,7 @@ from inventory.models import (
 )
 from inventory.forms import (
     BasicItemForm,
+    FurtherDetailForm,
     PhysicalItemForm,
 )
 from django.contrib import messages
@@ -50,8 +51,11 @@ class MakeItemWizard(View):
         if step == "0":
             the_form = BasicItemForm
             self.next_form = PhysicalItemForm
-        if step == "1":
+        elif step == "1":
             the_form = PhysicalItemForm
+            self.next_form = FurtherDetailForm
+        elif step == "2":
+            the_form = FurtherDetailForm
 
         if self.item:
             self.form = the_form(
