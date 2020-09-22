@@ -42,7 +42,7 @@ class MakeItemWizard(View):
             item_id = kwargs.get("item_id")
             self.item = get_object_or_404(Item, id=item_id)
         elif request.POST and request.POST.get("item_id", False):
-            self.item = get_object_or_404(Item, 
+            self.item = get_object_or_404(Item,
                                           id=int(request.POST.get("item_id")))
 
     def make_post_forms(self, request):
