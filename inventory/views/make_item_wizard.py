@@ -94,6 +94,16 @@ class MakeItemWizard(View):
             self.next_title = self.second_title
         self.step = self.step - 2
 
+    def finish(self, request):
+        if self.page_title == 'Create New Item':
+            messages.success(request, "Created new Item: %s" % self.item.title)
+        else:
+            messages.success(request, "Updated Item: %s" % self.item.title)
+
+        return HttpResponseRedirect("%s?changed_id=%d" % (
+            reverse('items_list', urlconf='inventory.urls'),
+            self.item.id))
+
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(MakeItemWizard, self).dispatch(*args, **kwargs)
@@ -114,16 +124,23 @@ class MakeItemWizard(View):
     @never_cache
     @method_decorator(login_required)
     def post(self, request, *args, **kwargs):
+        if 'cancel' in list(request.POST.keys()):
+            messages.success(request, "The last update was canceled.")
+            return HttpResponseRedirect(reverse('items_list',
+                                                urlconf='inventory.urls'))
         redirect = self.groundwork(request, args, kwargs)
         if redirect:
             return HttpResponseRedirect(redirect)
-        if 'next' in list(request.POST.keys()):
+        if 'next' in list(request.POST.keys()) or (
+                'finish' in list(request.POST.keys())):
             self.make_post_forms(request)
             if not self.form.is_valid():
                 return render(request, self.template, self.make_context(
                     request,
                     self.title))
             self.item = self.form.save()
+            if 'finish' in list(request.POST.keys()):
+                return self.finish(request)
         elif 'back' in list(request.POST.keys()):
             self.make_back_forms(request)
         else:
@@ -137,11 +154,7 @@ class MakeItemWizard(View):
                 request,
                 self.next_title))
 
-        if self.page_title == 'Create New Item':
-            messages.success(request, "Created new Item: %s" % self.item.title)
-        else:
-            messages.success(request, "Updated Item: %s" % self.item.title)
+        messages.error(request, "Unexpected logic flow.  Call Betty")
 
         return HttpResponseRedirect("%s?changed_id=%d" % (
-            reverse('items_list', urlconf='inventory.urls'),
-            self.item.id))
+            reverse('items_list', urlconf='inventory.urls'), self.item.id))

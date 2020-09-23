@@ -62,8 +62,10 @@
   </div></div>
 <div class="row">
   <div class="col-12 text-right">
-    {% if step >= 0 %}<input type="submit" name="back" value="< Back" class="btn btn-primary" >{% endif %}
-    <input type="submit" name="next" value="{% if step < max %}Next >{% else %}Finish{% endif %}" class="btn btn-primary" >
+    {% if step >= 0 %}<input type="submit" name="back" value="<< Back" class="btn btn-primary" >{% endif %}
+    {% if step < max %}<input type="submit" name="next" value="Next >>" class="btn btn-primary" >{% endif %}
+    <input type="submit" name="finish" value="Finish" class="btn btn-primary" >
+    <input type="submit" name="cancel" value="Cancel" class="btn btn-light" >
   </div>
 </div>
 </form>
