@@ -34,6 +34,28 @@ class MakeItemWizard(View):
     step = -1
     max = 1
     item = None
+    form_sets = {
+        -1: {
+            'the_form':  None,
+            'next_form': BasicItemForm,
+            'title': None,
+            'next_title': first_title},
+        0: {
+            'the_form':  BasicItemForm,
+            'next_form': PhysicalItemForm,
+            'title': first_title,
+            'next_title': second_title},
+        1: {
+            'the_form':  PhysicalItemForm,
+            'next_form': FurtherDetailForm,
+            'title': second_title,
+            'next_title': third_title},
+        2: {
+            'the_form':  FurtherDetailForm,
+            'next_form': None,
+            'title': third_title,
+            'next_title': None},
+    }
 
     def groundwork(self, request, args, kwargs):
         self.item = None
@@ -45,37 +67,26 @@ class MakeItemWizard(View):
             self.item = get_object_or_404(Item,
                                           id=int(request.POST.get("item_id")))
         self.step = int(request.POST.get("step", -1))
+        print(self.item)
 
     def make_post_forms(self, request):
-        self.next_form = None
-        self.title = None
-        self.next_title = None
-        if self.step == 0:
-            the_form = BasicItemForm
-            self.next_form = PhysicalItemForm
-            self.title = self.first_title
-            self.next_title = self.second_title
-        elif self.step == 1:
-            the_form = PhysicalItemForm
-            self.next_form = FurtherDetailForm
-            self.title = self.second_title
-            self.next_title = self.third_title
-        elif self.step == 2:
-            the_form = FurtherDetailForm
-            self.title = self.third_title
-
+        self.current_form_set = self.form_sets[self.step]
         if self.item:
-            self.form = the_form(
+            self.form = self.current_form_set['the_form'](
                 request.POST,
                 instance=self.item)
         else:
-            self.form = the_form(
+            self.form = self.current_form_set['the_form'](
                 request.POST)
 
-    def make_context(self, request, title):
+    def make_context(self, request, subtitle):
+        title = "Creating New Item"
+        if self.item:
+            title = self.item.title
         context = {
             'page_title': self.page_title,
             'title': title,
+            'subtitle': subtitle,
             'forms': [self.form],
             'step': self.step,
             'max': self.max,
@@ -83,16 +94,8 @@ class MakeItemWizard(View):
         return context
 
     def make_back_forms(self, request):
-        self.next_form = None
-        self.title = None
-        self.next_title = None
-        if self.step == 1:
-            self.next_form = BasicItemForm
-            self.next_title = self.first_title
-        elif self.step == 2:
-            self.next_form = PhysicalItemForm
-            self.next_title = self.second_title
         self.step = self.step - 2
+        self.current_form_set = self.form_sets[self.step]
 
     def finish(self, request):
         if self.page_title == 'Create New Item':
@@ -137,7 +140,7 @@ class MakeItemWizard(View):
             if not self.form.is_valid():
                 return render(request, self.template, self.make_context(
                     request,
-                    self.title))
+                    self.current_form_set['title']))
             self.item = self.form.save()
             if 'finish' in list(request.POST.keys()):
                 return self.finish(request)
@@ -146,13 +149,13 @@ class MakeItemWizard(View):
         else:
             raise Exception("button click unclear")
 
-        if self.next_form:
-            self.form = self.next_form(instance=self.item)
+        if self.current_form_set['next_form'] is not None:
+            self.form = self.current_form_set['next_form'](instance=self.item)
             self.form.fields['item_id'] = IntegerField(widget=HiddenInput(),
                                                        initial=self.item.id)
             return render(request, self.template, self.make_context(
                 request,
-                self.next_title))
+                self.current_form_set['next_title']))
 
         messages.error(request, "Unexpected logic flow.  Call Betty")
 

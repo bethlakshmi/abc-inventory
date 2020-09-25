@@ -9,6 +9,7 @@
 {% endblock %}
 {% block content %}
 <h2 class="subtitle">{{title}}</h2>
+<h3 class="subtitle">{{subtitle}}</h3>
 <p>{{view_header_text | safe}}</p>
 
   {% if errors %}
@@ -41,7 +42,7 @@
                 </span>
             {% endif %}
           </label></div>
-          <div class="col-md-10{% if field.field.choices|length > 7 %} long_choice{%endif%}">
+        <div class="col-md-10{% if field.field.choices|length > 7 %} long_choice{%endif%}">
   {{ forms.0.width }} " w X {{ forms.0.height }} " h X {{ forms.0.depth }} " d
           </div></div></div>
 
@@ -61,9 +62,11 @@
     {% endif %}
   </div></div>
 <div class="row">
-  <div class="col-12 text-right">
+    <div class="col-sm-12 col-md-6 col-lg-8 text-right"><i>Cancel will only affect the current screen.</i></div>
+
+  <div class="col-sm-12 col-md-6 col-lg-4 text-right">
     {% if step >= 0 %}<input type="submit" name="back" value="<< Back" class="btn btn-primary" >{% endif %}
-    {% if step < max %}<input type="submit" name="next" value="Next >>" class="btn btn-primary" >{% endif %}
+    {% if step < max %}<input type="submit" name="next" value="Save & Continue >>" class="btn btn-primary" >{% endif %}
     <input type="submit" name="finish" value="Finish" class="btn btn-primary" >
     <input type="submit" name="cancel" value="Cancel" class="btn btn-light" >
   </div>
