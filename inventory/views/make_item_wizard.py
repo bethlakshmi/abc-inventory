@@ -67,7 +67,6 @@ class MakeItemWizard(View):
             self.item = get_object_or_404(Item,
                                           id=int(request.POST.get("item_id")))
         self.step = int(request.POST.get("step", -1))
-        print(self.item)
 
     def make_post_forms(self, request):
         self.current_form_set = self.form_sets[self.step]
@@ -88,8 +87,8 @@ class MakeItemWizard(View):
             'title': title,
             'subtitle': subtitle,
             'forms': [self.form],
-            'step': self.step,
-            'max': self.max,
+            'first': self.current_form_set['the_form'] is None,
+            'last': self.form_sets[self.step+1]['next_form'] is None,
         }
         return context
 
@@ -116,13 +115,14 @@ class MakeItemWizard(View):
         redirect = self.groundwork(request, args, kwargs)
         if redirect:
             return HttpResponseRedirect(redirect)
+        self.current_form_set = form_sets[-1]
         if self.item:
-            self.form = BasicItemForm(instance=self.item)
+            self.form =  self.current_form_set['next_form'](instance=self.item)
         else:
-            self.form = BasicItemForm()
+            self.form = self.current_form_set['next_form']()
         return render(request, self.template, self.make_context(
             request,
-            self.first_title))
+            self.current_form_set['next_title']))
 
     @never_cache
     @method_decorator(login_required)

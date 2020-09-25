@@ -62,11 +62,11 @@
     {% endif %}
   </div></div>
 <div class="row">
-    <div class="col-sm-12 col-md-6 col-lg-8 text-right"><i>Cancel will only affect the current screen.</i></div>
+    <div class="col-sm-12 col-md-6 col-lg-7 text-right"><i>Cancel will only affect the current screen.</i></div>
 
-  <div class="col-sm-12 col-md-6 col-lg-4 text-right">
-    {% if step >= 0 %}<input type="submit" name="back" value="<< Back" class="btn btn-primary" >{% endif %}
-    {% if step < max %}<input type="submit" name="next" value="Save & Continue >>" class="btn btn-primary" >{% endif %}
+  <div class="col-sm-12 col-md-6 col-lg-5">
+    {% if not first %}<input type="submit" name="back" value="<< Back" class="btn btn-primary" >{% endif %}
+    {% if not last %}<input type="submit" name="next" value="Save & Continue >>" class="btn btn-primary" >{% endif %}
     <input type="submit" name="finish" value="Finish" class="btn btn-primary" >
     <input type="submit" name="cancel" value="Cancel" class="btn btn-light" >
   </div>
