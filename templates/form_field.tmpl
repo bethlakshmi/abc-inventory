@@ -15,7 +15,7 @@
             {% if field.name in draft_fields %}
 	        <b>{{ field.label_tag }}</b>
 	    {% else %}
-	        {{ field.label_tag }}
+	        {{ field.label_tag }} here
 	    {% endif %}
 
             {% if field.errors %}
@@ -32,7 +32,7 @@
             {% endif %}
 	</label>
 	</div>
-	<div class="col-md-10{% if field.field.choices|length > 7 %} long_choice{%endif%}">
+	<div class="col-md-{% if field_size %}{{field_size}}{% else %}10{% endif %}{% if field.field.choices|length > 7 %} long_choice{%endif%}">
             {{ field }}
 	</div>
 	</div>

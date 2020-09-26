@@ -16,3 +16,10 @@ https://control.divio.com/api/v1/apps/serve/django-filer/2.0.0/afe0eaf3-e139-452
 # </INSTALLED_ADDONS>
 django-import-export
 pep8
+django-tempus-dominus
+coverage
+factory-boy
+mock
+pytest
+pytest-django
+pytest-cov

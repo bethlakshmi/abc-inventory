@@ -4,8 +4,14 @@
    {{page_title}}
 {% endblock %}
 {% block head %}
+    {# Include FontAwesome; required for icon display #}
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css">
+
+    {# Include Bootstrap 4 and jQuery #}
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script type="text/javascript" src="/static/tinymce/tinymce.min.js"></script>
     <script>{% include "tiny-mce-user-settings.tmpl" %}</script>
+    {{ forms.0.media }}
 {% endblock %}
 {% block content %}
 <h2 class="subtitle">{{title}}</h2>
@@ -20,7 +26,7 @@
 <form action="" method="post" enctype="multipart/form-data">
 <div class="row">
   <div class="col-12">
-    {% if step != 0 %}{% include "form_table_wrapper.tmpl" %}
+    {% if not special_handling %}{% include "form_table_wrapper.tmpl" %}
     {% else %}
       {% csrf_token %}
       {{ forms.0.step }}
@@ -42,7 +48,7 @@
                 </span>
             {% endif %}
           </label></div>
-        <div class="col-md-10{% if field.field.choices|length > 7 %} long_choice{%endif%}">
+        <div class="col-md-10">
   {{ forms.0.width }} " w X {{ forms.0.height }} " h X {{ forms.0.depth }} " d
           </div></div></div>
 
@@ -56,8 +62,8 @@
   </div><!-- end form group -->
       {% include "form_field.tmpl" with field=forms.0.disposition %}
       {% include "form_field.tmpl" with field=forms.0.year %}
-      {% include "form_field.tmpl" with field=forms.0.date_acquired %}
-      {% include "form_field.tmpl" with field=forms.0.date_deaccession %}
+      {% include "form_field.tmpl" with field=forms.0.date_acquired field_size=2 %}
+      {% include "form_field.tmpl" with field=forms.0.date_deaccession field_size=2%}
       {% include "form_field.tmpl" with field=forms.0.price %}
     {% endif %}
   </div></div>

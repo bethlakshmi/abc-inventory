@@ -90,6 +90,8 @@ class MakeItemWizard(View):
             'first': self.current_form_set['the_form'] is None,
             'last': self.form_sets[self.step+1]['next_form'] is None,
         }
+        if str(self.form.__class__.__name__) == "PhysicalItemForm":
+            context['special_handling'] = True
         return context
 
     def make_back_forms(self, request):
@@ -115,7 +117,7 @@ class MakeItemWizard(View):
         redirect = self.groundwork(request, args, kwargs)
         if redirect:
             return HttpResponseRedirect(redirect)
-        self.current_form_set = form_sets[-1]
+        self.current_form_set = self.form_sets[-1]
         if self.item:
             self.form =  self.current_form_set['next_form'](instance=self.item)
         else:

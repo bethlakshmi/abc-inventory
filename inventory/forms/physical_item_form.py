@@ -1,4 +1,5 @@
 from django.forms import (
+    DateField,
     IntegerField,
     HiddenInput,
     ModelForm,
@@ -6,12 +7,29 @@ from django.forms import (
 )
 from inventory.models import Item
 from django.core.exceptions import ValidationError
+from tempus_dominus.widgets import DatePicker
 
 
 class PhysicalItemForm(ModelForm):
     required_css_class = 'required'
     error_css_class = 'error'
     step = IntegerField(widget=HiddenInput(), initial=1)
+    date_acquired = DateField(required=False, widget=DatePicker(
+        attrs={
+            'append': 'fa fa-calendar',
+            'icon_toggle': True,
+            },
+        options={
+            'format': "M/D/YYYY",
+        }))
+    date_deaccession = DateField(required=False, widget=DatePicker(
+        attrs={
+            'append': 'fa fa-calendar',
+            'icon_toggle': True,
+            },
+        options={
+            'format': "M/D/YYYY",
+        }))
 
     class Meta:
         model = Item
