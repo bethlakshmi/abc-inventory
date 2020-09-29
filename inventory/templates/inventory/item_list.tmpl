@@ -1,6 +1,15 @@
 {% extends 'base.html' %}
+{% load static sekizai_tags %}
 {% block title %}
    {{page_title}}
+{% endblock %}
+{% block head %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.css">
 {% endblock %}
 {% block content %}
 <h2 class="subtitle">{{title}}</h2>
@@ -12,15 +21,44 @@
     {% endfor %}
   {% endif %}
   <div class="row">
-  <div class="col-8">
-  {% for item in items %}
-    <div class="{% if item.id == changed_id %}bg-success{% endif %}">
-      <a href="{% url 'inventory:items_edit' item.id %}">{{ item }}</a></div>
-  {% endfor %}
-  </div>
   <div class="col-4 text-right">
   <a href="{% url 'inventory:items_create' %}" role="button" class="btn btn-primary">Create Item</a>
   </div>
   </div>
 
+   <table data-toggle="table" data-search="true" data-show-columns="true" data-show-columns-toggle-all="true">
+      <thead>
+        <tr>
+          <th data-sortable="true">ID</th>
+          <th data-sortable="true">Title</th>
+          <th data-sortable="true">Category</th>
+          <th data-sortable="true">Disposition</th>
+          <th data-sortable="true">Dimensions</th>
+          <th data-sortable="true">Year</th>
+          <th data-sortable="true">Subject</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+  {% for item in items %}
+        <tr{% if item.id == changed_id %} class="table-success"{% endif %}>
+          <td>{{ item.pk }}</td>
+          <td>{{ item.title }}</td>
+          <td>{{ item.category }}</td>
+          <td>{{ item.disposition }}</td>
+          <td>{% if item.width %}{{ item.width.normalize }}"w{% endif %}{% if item.height %} x {{ item.height.normalize }}"h{% endif %}{% if item.depth %} x {{ item.depth.normalize }}"d{% endif %}</td>
+          <td>{{ item.year }}</td>
+          <td>{{ item.subject }}</td>
+          <td><a class="like" href="{% url 'inventory:items_edit' item.id %}" title="Edit"><i class="fas fa-edit"></i></a>
+          </td>
+        </tr>
+  {% endfor %}
+      </tbody>
+    </table>
+{% addtoblock "js" %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.js"></script>
+{% endaddtoblock %}
 {% endblock %}
