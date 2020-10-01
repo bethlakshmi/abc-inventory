@@ -20,35 +20,26 @@
     <p style= "color:red">{{error}}</p>
     {% endfor %}
   {% endif %}
-   <table data-toggle="table" data-search="true" data-show-columns="true" data-show-toggle="true" data-show-fullscreen="true" data-show-columns-toggle-all="true" data-buttons="buttons" data-detail-formatter="detailFormatter" data-detail-view="true">
-      <thead>
+<table id="table" data-search="true" data-show-columns="true" data-show-toggle="true" data-show-fullscreen="true" data-show-columns-toggle-all="true" data-buttons="buttons" data-detail-formatter="detailFormatter" data-detail-view="true">
+  <thead>
         <tr>
-          <th data-sortable="true">ID</th>
-          <th data-sortable="true">Title</th>
-          <th data-sortable="true">Category</th>
-          <th data-sortable="true">Disposition</th>
-          <th data-sortable="true">Dimensions</th>
-          <th data-sortable="true">Year</th>
-          <th data-sortable="true">Subject</th>
-          <th>Action</th>
+          <th data-field="id" data-sortable="true" rowspan="2">ID</th>
+          <th data-field="title" data-sortable="true" rowspan="2">Title</th>
+          <th data-field="category" data-sortable="true" rowspan="2">Category</th>
+          <th data-field="disposition" data-sortable="true" rowspan="2">Disposition</th>
+          <th data-sortable="true" colspan="3">Dimensions(")</th>
+          <th data-field="year" data-sortable="true" rowspan="2">Year</th>
+          <th data-field="subject" data-sortable="true" rowspan="2">Subject</th>
+          <th data-field="action" rowspan="2">Action</th>
         </tr>
-      </thead>
-      <tbody>
-  {% for item in items %}
-        <tr{% if item.id == changed_id %} class="table-success"{% endif %}>
-          <td>{{ item.pk }}</td>
-          <td>{{ item.title }}</td>
-          <td>{{ item.category }}</td>
-          <td>{{ item.disposition }}</td>
-          <td>{% if item.width %}{{ item.width.normalize }}"w{% endif %}{% if item.height %} x {{ item.height.normalize }}"h{% endif %}{% if item.depth %} x {{ item.depth.normalize }}"d{% endif %}</td>
-          <td>{{ item.year }}</td>
-          <td>{{ item.subject }}</td>
-          <td><a class="like" href="{% url 'inventory:items_edit' item.id %}" title="Edit"><i class="fas fa-edit"></i></a>
-          </td>
+        <tr>
+          <th data-field="w" data-sortable="true">W</th>
+          <th data-field="h" data-sortable="true">H</th>
+          <th data-field="d" data-sortable="true">D</th>
         </tr>
-  {% endfor %}
-      </tbody>
-    </table>
+  </thead>
+</table>
+
 {% addtoblock "js" %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
@@ -101,6 +92,29 @@
     })
     return html.join('')
   }
+</script>
+<script>
+  var $table = $('#table')
+
+  $(function() {
+    var data = [
+  {% for item in items %}
+      {
+        'id': '{{ item.pk }}',
+        'title': '{{ item.title }}',
+        'category': '{% if item.category %}{{ item.category }}{% endif %}',
+        'disposition': '{% if item.disposition %}{{ item.disposition }}{% endif %}',
+        'w': '{% if item.width %}{{ item.width.normalize }}{% endif %}',
+        'h': '{% if item.height %}{{ item.height.normalize }}{% endif %}',
+        'd': '{% if item.depth %}{{ item.depth.normalize }}{% endif %}',
+        'year': '{% if item.year %}{{ item.year }}{% endif %}',
+        'subject': '{% if item.subject %}{{ item.subject|linebreaks }}{% endif %}',
+        'action': '<a class="like" href="{% url "inventory:items_edit" item.id %}" title="Edit"><i class="fas fa-edit"></i></a>',
+      },
+  {% endfor %}
+    ]
+    $table.bootstrapTable({data: data})
+  })
 </script>
 {% endaddtoblock %}
 {% endblock %}
