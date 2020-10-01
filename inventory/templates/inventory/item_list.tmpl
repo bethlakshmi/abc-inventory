@@ -20,7 +20,7 @@
     <p style= "color:red">{{error}}</p>
     {% endfor %}
   {% endif %}
-   <table data-toggle="table" data-search="true" data-show-columns="true" data-show-toggle="true" data-show-fullscreen="true" data-show-columns-toggle-all="true" data-buttons="buttons">
+   <table data-toggle="table" data-search="true" data-show-columns="true" data-show-toggle="true" data-show-fullscreen="true" data-show-columns-toggle-all="true" data-buttons="buttons" data-detail-formatter="detailFormatter" data-detail-view="true">
       <thead>
         <tr>
           <th data-sortable="true">ID</th>
@@ -79,6 +79,28 @@
       $table.bootstrapTable('toggleView')
     })
   })
+</script>
+<script>
+  var $table = $('#table')
+  var $button = $('#button')
+  var $button2 = $('#button2')
+
+  $(function() {
+    $button.click(function () {
+      $table.bootstrapTable('expandRow', 1)
+    })
+    $button2.click(function () {
+      $table.bootstrapTable('collapseRow', 1)
+    })
+  })
+
+  function detailFormatter(index, row) {
+    var html = []
+    $.each(row, function (key, value) {
+      html.push('<p><b>' + key + ':</b> ' + value + '</p>')
+    })
+    return html.join('')
+  }
 </script>
 {% endaddtoblock %}
 {% endblock %}
