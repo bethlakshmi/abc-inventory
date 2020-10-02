@@ -20,7 +20,7 @@
     <p style= "color:red">{{error}}</p>
     {% endfor %}
   {% endif %}
-<table id="table" data-search="true" data-show-columns="true" data-show-toggle="true" data-show-fullscreen="true" data-show-columns-toggle-all="true" data-buttons="buttons" data-detail-formatter="detailFormatter" data-detail-view="true">
+<table id="table" data-search="true" data-show-columns="true" data-show-toggle="true" data-show-fullscreen="true" data-show-columns-toggle-all="true" data-buttons="buttons" data-detail-formatter="detailFormatter" data-detail-view="true" data-row-style="rowStyle">
   <thead>
         <tr>
           <th data-field="id" data-sortable="true" rowspan="2">ID</th>
@@ -110,11 +110,41 @@
         'year': '{% if item.year %}{{ item.year }}{% endif %}',
         'subject': '{% if item.subject %}{{ item.subject|linebreaks }}{% endif %}',
         'action': '<a class="like" href="{% url "inventory:items_edit" item.id %}" title="Edit"><i class="fas fa-edit"></i></a>',
+        'description': '{% if item.description %}{{ item.description|linebreaks }}{% endif %}',
+        'note': '{% if item.note %}{{ item.note|linebreaks }}{% endif %}',
+        'date_acquired': '{% if item.date_acquired %}{{ item.date_acquired }}{% endif %}',
+        'date_deaccession': '{% if item.date_deaccession %}{{ item.date_deaccession }}{% endif %}',
+        'created': '{{ item.created_at }}',
+        'updated': '{{ item.updated_at }}',
+        'tags': '{% for tag in item.tags.all %}{{ tag }}, {% endfor %}',
+        'connections': '{% for connect in item.connections.all %}{{ connect }}, {% endfor %}',
       },
   {% endfor %}
     ]
     $table.bootstrapTable({data: data})
   })
+</script>
+<script>
+  function rowStyle(row, index) {
+    var classes = [
+      'bg-blue',
+      'bg-green',
+      'bg-orange',
+      'bg-yellow',
+      'bg-red'
+    ]
+
+    if (row.id == {{changed_id}}) {
+      return {
+        classes: "table-success"
+      }
+    }
+    return {
+      css: {
+        color: 'blue'
+      }
+    }
+  }
 </script>
 {% endaddtoblock %}
 {% endblock %}
