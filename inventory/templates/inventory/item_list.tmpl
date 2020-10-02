@@ -3,6 +3,7 @@
 {% block title %}
    {{page_title}}
 {% endblock %}
+{% load thumbnail %}
 {% block head %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -87,9 +88,34 @@
 
   function detailFormatter(index, row) {
     var html = []
-    $.each(row, function (key, value) {
-      html.push('<p><b>' + key + ':</b> ' + value + '</p>')
-    })
+    html.push('<div class="row">')
+    html.push('<div class="col-6"><b>Description:</b><br>' + row.description + '<br><br>')
+    if (row.note.length > 0) {
+        html.push('<b>Notes:</b><br>' + row.note + '<br><br>')
+    }
+    if (row.texts.length > 0) {
+        html.push('<b>Texts:</b><br>' + row.texts + '<br>')
+    }
+    if (row.tags.length > 0) {
+        html.push('<b>Tags:</b> ' + row.tags + '<br>')
+    }
+    html.push('</div><div class="col-6">')
+    html.push('<b>Date Acquired:</b>  ' + row.date_acquired + '<br>')
+    if (row.date_deaccession.length > 0) {
+        html.push('<b>Date Decaccessioned:</b>  ' + row.date_deaccession + '<br>')
+    }
+    html.push('<b>Created:</b>  ' + row.created + '<br>')
+    html.push('<b>Last Update:</b>  ' + row.updated + '<br>')
+    if (row.price.length > 0) {
+        html.push('<br><b>Price:</b> ' + row.price + '<br>')
+    }    if (row.connections.length > 0) {
+        html.push('<b>Connections:</b> ' + row.connections + '<br>')
+    }
+    html.push('</div>')
+    if (row.images.length) {
+      html.push('<div class="col-12"><b>Images:<br></b>' + row.images +'</div>')
+    }
+    html.push('</div>')
     return html.join('')
   }
 </script>
@@ -101,23 +127,26 @@
   {% for item in items %}
       {
         'id': '{{ item.pk }}',
-        'title': '{{ item.title }}',
+        'title': '{{ item.title|escapejs }}',
         'category': '{% if item.category %}{{ item.category }}{% endif %}',
         'disposition': '{% if item.disposition %}{{ item.disposition }}{% endif %}',
         'w': '{% if item.width %}{{ item.width.normalize }}{% endif %}',
         'h': '{% if item.height %}{{ item.height.normalize }}{% endif %}',
         'd': '{% if item.depth %}{{ item.depth.normalize }}{% endif %}',
-        'year': '{% if item.year %}{{ item.year }}{% endif %}',
-        'subject': '{% if item.subject %}{{ item.subject|linebreaks }}{% endif %}',
+        'year': '{% if item.year %}{{ item.year|escapejs }}{% endif %}',
+        'subject': '{% if item.subject %}{{ item.subject|escapejs }}{% endif %}',
         'action': '<a class="like" href="{% url "inventory:items_edit" item.id %}" title="Edit"><i class="fas fa-edit"></i></a>',
-        'description': '{% if item.description %}{{ item.description|linebreaks }}{% endif %}',
-        'note': '{% if item.note %}{{ item.note|linebreaks }}{% endif %}',
+        'price': '{% if item.price %}${{ item.price }}{% endif %}',
+        'description': '{% if item.description %}{{ item.description.strip|escapejs }}{% endif %}',
+        'note': '{% if item.note %}{{ item.note|escapejs }}{% endif %}',
         'date_acquired': '{% if item.date_acquired %}{{ item.date_acquired }}{% endif %}',
         'date_deaccession': '{% if item.date_deaccession %}{{ item.date_deaccession }}{% endif %}',
         'created': '{{ item.created_at }}',
         'updated': '{{ item.updated_at }}',
         'tags': '{% for tag in item.tags.all %}{{ tag }}, {% endfor %}',
-        'connections': '{% for connect in item.connections.all %}{{ connect }}, {% endfor %}',
+        'connections': '{% for connect in item.connections.all %}{{ connect|escapejs }}, {% endfor %}',
+        'images': '{% for image in item.images.all %}<img src="{% thumbnail image.filer_image 250x250 %}">&nbsp;&nbsp;{% endfor %}',
+        'texts': '{% for text in item.labels.all %}<i>Text {{forloop.counter}}:</i>&nbsp;&nbsp;{{text.text|escapejs}}<br>{% endfor %}',
       },
   {% endfor %}
     ]
