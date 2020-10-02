@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}
+   {{page_title}}
+{% endblock %}
+{% block content %}
+<h2 class="subtitle">{{title}}</h2>
+<p>{{view_header_text | safe}}</p>
+
+  {% if errors %}
+    {% for error in errors %}
+    <p style= "color:red">{{error}}</p>
+    {% endfor %}
+  {% endif %}
+  <div class="row">
+  <div class="col-8">
+  {% for item in items %}
+    <div class="{% if item.id == changed_id %}bg-success{% endif %}">
+      <a href="{% url 'inventory:items_edit' item.id %}">{{ item }}</a></div>
+  {% endfor %}
+  </div>
+  <div class="col-4 text-right">
+  <a href="{% url 'inventory:items_create' %}" role="button" class="btn btn-primary">Create Item</a>
+  </div>
+  </div>
+
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+   {{page_title}}
+{% endblock %}
+{% block head %}
+    {# Include FontAwesome; required for icon display #}
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css">
+
+    {# Include Bootstrap 4 and jQuery #}
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/static/tinymce/tinymce.min.js"></script>
+    <script>{% include "tiny-mce-user-settings.tmpl" %}</script>
+    {{ forms.0.media }}
+{% endblock %}
+{% block content %}
+<h2 class="subtitle">{{title}}</h2>
+<h3 class="subtitle">{{subtitle}}</h3>
+<p>{{view_header_text | safe}}</p>
+
+  {% if errors %}
+    {% for error in errors %}
+    <p style= "color:red">{{error}}</p>
+    {% endfor %}
+  {% endif %}
+<form action="" method="post" enctype="multipart/form-data">
+<div class="row">
+  <div class="col-12">
+    {% if not special_handling %}{% include "form_table_wrapper.tmpl" %}
+    {% else %}
+      {% csrf_token %}
+      {{ forms.0.step }}
+      {{ forms.0.item_id }}
+      <div class="form-group"><div class="container"><div class="row">
+        <div class="col-md-2">
+          <label for="{{field.name}}" class="control-label">        
+            {% if field.errors %}
+              <font color="red">!&nbsp;&nbsp;
+            {% endif %} 
+            Dimensions:
+            {% if field.errors %}</font>{% endif %} 
+            {% if field.help_text %}
+                <span class="dropt" title="Help">
+                <img src= "{% static "img/question.png" %}" alt="?"/>
+                  <span style="width:200px;float:right;text-align:left;">
+                  {{ field.help_text }}
+                  </span>
+                </span>
+            {% endif %}
+          </label></div>
+        <div class="col-md-10">
+  {{ forms.0.width }} " w X {{ forms.0.height }} " h X {{ forms.0.depth }} " d
+          </div></div></div>
+
+      {% if field.errors %}
+      <div class="container"><div class="row">
+        <div class="col-md-2">&nbsp;</div>
+        <div class="col-md-4"><label for="field.name">        
+          <font color="red">{{ field.errors }}</font></label></div>
+      </div></div>
+      {% endif %}
+  </div><!-- end form group -->
+      {% include "form_field.tmpl" with field=forms.0.disposition %}
+      {% include "form_field.tmpl" with field=forms.0.year %}
+      {% include "form_field.tmpl" with field=forms.0.date_acquired field_size=2 %}
+      {% include "form_field.tmpl" with field=forms.0.date_deaccession field_size=2%}
+      {% include "form_field.tmpl" with field=forms.0.price %}
+    {% endif %}
+  </div></div>
+<div class="row">
+    <div class="col-sm-12 col-md-6 col-lg-7 text-right"><i>Cancel will only affect the current screen.</i></div>
+
+  <div class="col-sm-12 col-md-6 col-lg-5">
+    {% if not first %}<input type="submit" name="back" value="<< Back" class="btn btn-primary" >{% endif %}
+    {% if not last %}<input type="submit" name="next" value="Save & Continue >>" class="btn btn-primary" >{% endif %}
+    <input type="submit" name="finish" value="Finish" class="btn btn-primary" >
+    <input type="submit" name="cancel" value="Cancel" class="btn btn-light" >
+  </div>
+</div>
+</form>
+{% endblock %}
