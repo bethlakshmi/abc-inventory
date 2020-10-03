@@ -177,7 +177,6 @@ DEFAULT_FROM_EMAIL = 'mail@burlesque-expo.com'
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
-    'gbe.auth.EmailUsernameAuth',
 ]
 ADMINS = [('Admin',
            'admin@email.com'), ]

@@ -1,13 +1,15 @@
 from django.contrib.auth.models import User
 from factory import (
     Sequence,
-    DjangoModelFactory,
     SubFactory,
     RelatedFactory,
     LazyAttribute,
     SelfAttribute
 )
-from factory.django import ImageField
+from factory.django import (
+	DjangoModelFactory,
+	ImageField,
+)
 from datetime import (
     date,
     time,
