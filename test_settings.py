@@ -69,6 +69,8 @@ INSTALLED_APPS = [
     'easy_thumbnails',
     'mptt',
     'polymorphic',
+    'tempus_dominus',
+    'inventory',
     'import_export',
 ]
 
