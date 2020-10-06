@@ -7,8 +7,8 @@ from factory import (
     SelfAttribute
 )
 from factory.django import (
-	DjangoModelFactory,
-	ImageField,
+    DjangoModelFactory,
+    ImageField,
 )
 from datetime import (
     date,
@@ -17,9 +17,11 @@ from datetime import (
 )
 from pytz import utc
 from inventory.models import (
-	Category,
-	Disposition,
+    Category,
+    Disposition,
     Item,
+    ItemImage,
+    ItemText,
     Tag,
 )
 
@@ -40,18 +42,31 @@ class ItemFactory(DjangoModelFactory):
 
 
 class CategoryFactory(DjangoModelFactory):
-	class Meta:
-		model = Category
-	name = Sequence(lambda n: 'category_name_%d' % n)
+    class Meta:
+        model = Category
+    name = Sequence(lambda n: 'category_name_%d' % n)
 
 
 class DispositionFactory(DjangoModelFactory):
-	class Meta:
-		model = Disposition
-	state = Sequence(lambda n: 'disposition_state_%d' % n)
+    class Meta:
+        model = Disposition
+    state = Sequence(lambda n: 'disposition_state_%d' % n)
 
 
 class TagFactory(DjangoModelFactory):
-	class Meta:
-		model = Tag
-	name = Sequence(lambda n: 'tag_name_%d' % n)
+    class Meta:
+        model = Tag
+    name = Sequence(lambda n: 'tag_name_%d' % n)
+
+
+class ItemImageFactory(DjangoModelFactory):
+    class Meta:
+        model = ItemImage
+    item = SubFactory(ItemFactory)
+
+
+class ItemTextFactory(DjangoModelFactory):
+    class Meta:
+        model = ItemText
+    item = SubFactory(ItemFactory)
+    text = Sequence(lambda n: 'item text %d' % n)

@@ -6,14 +6,20 @@ from inventory.tests.factories import (
     CategoryFactory,
     DispositionFactory,
     ItemFactory,
+    ItemImageFactory,
+    ItemTextFactory,
     TagFactory,
     UserFactory
 )
-from inventory.tests.functions import login_as
+from inventory.tests.functions import (
+    login_as,
+    set_image,
+)
 from datetime import (
     date,
     timedelta,
 )
+from inventory.models import Item
 
 
 class TestItemList(TestCase):
@@ -87,12 +93,33 @@ class TestItemList(TestCase):
             response,
             "'date_deaccession': '%s'" % busy_item.date_deaccession.strftime(
                 "%b. %-d, %Y"))
-        #self.assertContains(response, "'images': ''" % busy_item.)
-        #self.assertContains(response, "'texts': ''" % busy_item.)
 
     def test_no_login(self):
         response = self.client.get(self.url)
-        self.assertRedirects(response, 
+        self.assertRedirects(response,
                              "/login/?next=/inventory/item/list",
                              fetch_redirect_response=False)
 
+    def test_list_w_image(self):
+        image = ItemImageFactory(item=self.item)
+        set_image(image)
+        login_as(self.user, self)
+        response = self.client.get(self.url)
+        self.assertContains(response, image.filer_image)
+
+    def test_list_w_text(self):
+        text = ItemTextFactory(item=self.item)
+        login_as(self.user, self)
+        response = self.client.get(self.url)
+        self.assertContains(response, text.text)
+
+    def test_list_w_no_items(self):
+        Item.objects.all().delete()
+        login_as(self.user, self)
+        response = self.client.get(self.url)
+        self.assertContains(response, "List of Items")
+
+    def test_show_changed(self):
+        login_as(self.user, self)
+        response = self.client.get(self.url + "?changed_id=%d" % self.item.pk)
+        self.assertContains(response, "if (row.id == %d) {" % self.item.pk)

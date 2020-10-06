@@ -1,3 +1,8 @@
+from django.contrib.auth.models import User
+from filer.models.imagemodels import Image
+from django.core.files import File
+
+
 def _user_for(user_or_profile):
     if type(user_or_profile) == Profile:
         user = user_or_profile.user_object
@@ -7,9 +12,25 @@ def _user_for(user_or_profile):
         raise ValueError("this function requires a Profile or User")
     return user
 
+
 def login_as(user, testcase):
     user.set_password('foo')
     user.save()
     testcase.client.login(username=user.username,
                           email=user.email,
                           password='foo')
+
+
+def set_image(itemimage):
+    superuser = User.objects.create_superuser(
+        'superuser_for_%d' % itemimage.pk,
+        'admin@importimage.com',
+        'secret')
+    path = "inventory/tests/made_up_filename.png"
+    current_img = Image.objects.create(
+        owner=superuser,
+        original_filename="made_up_filename.png",
+        file=File(open(path, 'rb')))
+    current_img.save()
+    itemimage.filer_image_id = current_img.pk
+    itemimage.save()
