@@ -34,3 +34,12 @@ def set_image(itemimage):
     current_img.save()
     itemimage.filer_image_id = current_img.pk
     itemimage.save()
+
+def assert_option_state(response, value, text, selected=False):
+    selected_state = ""
+    if selected:
+        selected_state = " selected"
+    option_state = (
+        '<option value="%s"%s>%s</option>' % (
+                    value, selected_state, text))
+    assert bytes(option_state, 'utf-8') in response.content

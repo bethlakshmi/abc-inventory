@@ -1,7 +1,6 @@
 from django.test import TestCase
 from django.test import Client
 from django.urls import reverse
-from django.core.exceptions import PermissionDenied
 from inventory.tests.factories import (
     CategoryFactory,
     DispositionFactory,
@@ -37,7 +36,7 @@ class TestItemList(TestCase):
         response = self.client.get(self.url)
         self.assertContains(response, self.item.title)
         self.assertContains(response, reverse(
-            "items_edit",
+            "item_edit",
             urlconf="inventory.urls",
             args=[self.item.pk]))
 
@@ -60,7 +59,7 @@ class TestItemList(TestCase):
         login_as(self.user, self)
         response = self.client.get(self.url)
         self.assertContains(response, reverse(
-            "items_edit",
+            "item_edit",
             urlconf="inventory.urls",
             args=[busy_item.pk]))
         self.assertContains(response, "'id': '%d'" % busy_item.pk)
@@ -97,7 +96,7 @@ class TestItemList(TestCase):
     def test_no_login(self):
         response = self.client.get(self.url)
         self.assertRedirects(response,
-                             "/login/?next=/inventory/item/list",
+                             "/login/?next=%s" % self.url,
                              fetch_redirect_response=False)
 
     def test_list_w_image(self):
