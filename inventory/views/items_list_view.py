@@ -34,9 +34,6 @@ class ItemsListView(View):
 
     @never_cache
     def get(self, request, *args, **kwargs):
-        if request.GET.get('changed_id'):
-            self.changed_id = int(request.GET['changed_id'])
-        else:
-            self.changed_id = -1
+        self.changed_id = int(request.GET.get('changed_id', default=-1))
 
         return render(request, self.template, self.get_context_dict())
