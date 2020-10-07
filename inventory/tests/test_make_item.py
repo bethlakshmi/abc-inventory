@@ -209,6 +209,18 @@ class TestMakeItem(TestCase):
         self.assertNotContains(response, "Save & Continue >>")
         self.assertContains(response, "Further Details")
 
+    def test_post_physical_back(self):
+        login_as(self.user, self)
+        physical = self.get_physical()
+        physical['back'] = "<< Back"
+        response = self.client.post(self.edit_url, data=physical)
+        self.assertContains(
+            response,
+            '<h2 class="subtitle">%s</h2>' % self.item.title)
+        self.assertNotContains(response, "<< Back")
+        self.assertContains(response, "Save & Continue >>")
+        self.assertContains(response, "The Basics")
+
     def test_post_physical_edit_finish(self):
         login_as(self.user, self)
         physical = self.get_physical()
@@ -256,6 +268,15 @@ class TestMakeItem(TestCase):
             "Updated Item: %s" % self.item.title)
         self.assertContains(response, "if (row.id == %d) {" % self.item.pk)
 
+    def test_post_further_back(self):
+        login_as(self.user, self)
+        further = self.get_further()
+        further['back'] = "<< Back"
+        response = self.client.post(self.edit_url, data=further, follow=True)
+        self.assertContains(response, "<< Back")
+        self.assertContains(response, "Save & Continue >>")
+        self.assertContains(response, "Physical Information")
+
     def test_post_further_bad_tag(self):
         login_as(self.user, self)
         further = self.get_further()
@@ -265,3 +286,13 @@ class TestMakeItem(TestCase):
         self.assertContains(response, "Further Details")
         self.assertContains(response, "<< Back")
         self.assertNotContains(response, "Save & Continue >>")
+
+    def test_cancel(self):
+        login_as(self.user, self)
+        response = self.client.post(
+            self.edit_url,
+            data={'cancel': "Cancel"},
+            follow=True)
+        self.assertContains(response, "The last update was canceled.")
+        self.assertRedirects(response,
+                             reverse("items_list", urlconf="inventory.urls"))
