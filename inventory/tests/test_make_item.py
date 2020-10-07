@@ -26,6 +26,20 @@ class TestMakeItem(TestCase):
     view_name = "item_create"
     edit_name = "item_edit"
 
+    def get_physical(self):
+        new_category = CategoryFactory()
+        return {
+            'step': 1,
+            'item_id':  self.item.pk,
+            'height': 1,
+            'width': 2,
+            'depth': 5.875,
+            'year': "c. 2000",
+            'date_acquired': "",
+            'date_deaccession': "",
+            'price': 2.50,
+        }
+
     def get_basics(self):
         new_category = CategoryFactory()
         return {
@@ -49,8 +63,8 @@ class TestMakeItem(TestCase):
             depth=2,
             subject="Subject",
             note="Note",
-            date_acquired=date.today(),
-            date_deaccession=date.today() - timedelta(days=1),
+            date_acquired=date.today() - timedelta(days=1),
+            date_deaccession=date.today(),
             price=12.50)
         self.url = reverse(self.view_name, urlconf="inventory.urls")
         self.edit_url = reverse(self.edit_name,
@@ -68,6 +82,8 @@ class TestMakeItem(TestCase):
         response = self.client.get(self.url)
         self.assertContains(response, "Creating New Item")
         self.assertContains(response, "The Basics")
+        self.assertNotContains(response, "<< Back")
+        self.assertContains(response, "Save & Continue >>")
 
     def test_get_edit(self):
         login_as(self.user, self)
@@ -81,6 +97,8 @@ class TestMakeItem(TestCase):
                             self.item.category.pk,
                             self.item.category.name,
                             True)
+        self.assertNotContains(response, "<< Back")
+        self.assertContains(response, "Save & Continue >>")
 
     def test_get_edit_bad_id(self):
         self.edit_url = reverse(self.edit_name,
@@ -99,6 +117,8 @@ class TestMakeItem(TestCase):
             response,
             '<h2 class="subtitle">%s</h2>' % basics['title'])
         self.assertContains(response, "Physical Information")
+        self.assertContains(response, "<< Back")
+        self.assertContains(response, "Save & Continue >>")
 
     def test_post_basics_create_finish(self):
         login_as(self.user, self)
@@ -119,6 +139,8 @@ class TestMakeItem(TestCase):
             response,
             '<h2 class="subtitle">%s</h2>' % basics['title'])
         self.assertContains(response, "Physical Information")
+        self.assertContains(response, "<< Back")
+        self.assertContains(response, "Save & Continue >>")
 
     def test_post_basics_edit_finish(self):
         login_as(self.user, self)
@@ -136,6 +158,69 @@ class TestMakeItem(TestCase):
         basics['category'] = basics['category'] + 1
         basics['next'] = "Save & Continue >>"
         response = self.client.post(self.url, data=basics)
-        print(response.content)
         self.assertContains(response, "Creating New Item")
+        self.assertContains(response, "The Basics")
         self.assertContains(response, "There is an error on the form.")
+        self.assertNotContains(response, "<< Back")
+        self.assertContains(response, "Save & Continue >>")
+
+    def test_post_physical_create_save_and_continue(self):
+        login_as(self.user, self)
+        physical = self.get_physical()
+        physical['next'] = "Save & Continue >>"
+        response = self.client.post(self.url, data=physical)
+        self.assertContains(
+            response,
+            '<h2 class="subtitle">%s</h2>' % self.item.title)
+        self.assertContains(response, "<< Back")
+        self.assertNotContains(response, "Save & Continue >>")
+        self.assertContains(response, "Further Details")
+
+    def test_post_physical_create_finish(self):
+        login_as(self.user, self)
+        physical = self.get_physical()
+        physical['finish'] = "Finish"
+        response = self.client.post(self.url, data=physical, follow=True)
+        self.assertContains(
+            response,
+            "Created new Item: %s" % self.item.title)
+        self.assertContains(response, "if (row.id == %d) {" % (self.item.pk))
+
+    def test_post_physical_edit_save_and_continue(self):
+        login_as(self.user, self)
+        physical = self.get_physical()
+        physical['date_acquired'] = date.today()
+        physical['next'] = "Save & Continue >>"
+        response = self.client.post(self.edit_url, data=physical)
+        self.assertContains(
+            response,
+            '<h2 class="subtitle">%s</h2>' % self.item.title)
+        self.assertContains(response, "<< Back")
+        self.assertNotContains(response, "Save & Continue >>")
+        self.assertContains(response, "Further Details")
+
+    def test_post_physical_edit_finish(self):
+        login_as(self.user, self)
+        physical = self.get_physical()
+        physical['date_deaccession'] = date.today() - timedelta(days=1)
+        physical['finish'] = "Finish"
+        response = self.client.post(self.edit_url, data=physical, follow=True)
+        self.assertContains(
+            response,
+            "Updated Item: %s" % self.item.title)
+        self.assertContains(response, "if (row.id == %d) {" % self.item.pk)
+
+    def test_post_physical_gone_before_it_came(self):
+        login_as(self.user, self)
+        physical = self.get_physical()
+        physical['date_acquired'] = date.today()
+        physical['date_deaccession'] = date.today() - timedelta(days=1)
+        physical['next'] = "Save & Continue >>"
+        response = self.client.post(self.url, data=physical)
+        self.assertContains(response, "Physical Information")
+        self.assertContains(
+            response,
+            "The date acquired cannot be AFTER the date of deaccession - " +
+            "check these dates and try again.")
+        self.assertContains(response, "<< Back")
+        self.assertContains(response, "Save & Continue >>")

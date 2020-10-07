@@ -51,8 +51,8 @@ class TestItemList(TestCase):
             depth=2,
             subject="Subject",
             note="Note",
-            date_acquired=date.today(),
-            date_deaccession=date.today() - timedelta(days=1),
+            date_acquired=date.today() - timedelta(days=1),
+            date_deaccession=date.today(),
             price=12.50)
         busy_item.tags.set([TagFactory()])
         busy_item.connections.set([self.item])
