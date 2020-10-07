@@ -26,8 +26,18 @@ class TestMakeItem(TestCase):
     view_name = "item_create"
     edit_name = "item_edit"
 
+    def get_further(self):
+        new_tag = TagFactory()
+        other_new_tag = TagFactory()
+        return {
+            'step': 2,
+            'item_id':  self.item.pk,
+            'notes': "new notes",
+            'tags': (new_tag.pk, other_new_tag.pk),
+            'connections': (self.item.pk, ),
+        }
+
     def get_physical(self):
-        new_category = CategoryFactory()
         return {
             'step': 1,
             'item_id':  self.item.pk,
@@ -224,3 +234,34 @@ class TestMakeItem(TestCase):
             "check these dates and try again.")
         self.assertContains(response, "<< Back")
         self.assertContains(response, "Save & Continue >>")
+
+    def test_post_further_create_finish(self):
+        login_as(self.user, self)
+        further = self.get_further()
+        further['finish'] = "Finish"
+        response = self.client.post(self.url, data=further, follow=True)
+        self.assertContains(
+            response,
+            "Created new Item: %s" % self.item.title)
+        self.assertContains(response, "if (row.id == %d) {" % (self.item.pk))
+
+    def test_post_further_edit_finish(self):
+        login_as(self.user, self)
+        further = self.get_further()
+        further['date_deaccession'] = date.today() - timedelta(days=1)
+        further['finish'] = "Finish"
+        response = self.client.post(self.edit_url, data=further, follow=True)
+        self.assertContains(
+            response,
+            "Updated Item: %s" % self.item.title)
+        self.assertContains(response, "if (row.id == %d) {" % self.item.pk)
+
+    def test_post_further_bad_tag(self):
+        login_as(self.user, self)
+        further = self.get_further()
+        further['connections'] = (self.item.pk+1)
+        further['finish'] = "Finish"
+        response = self.client.post(self.url, data=further)
+        self.assertContains(response, "Further Details")
+        self.assertContains(response, "<< Back")
+        self.assertNotContains(response, "Save & Continue >>")
