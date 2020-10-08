@@ -111,8 +111,6 @@ class MakeItemWizard(View):
     @never_cache
     def get(self, request, *args, **kwargs):
         redirect = self.groundwork(request, args, kwargs)
-        if redirect:
-            return HttpResponseRedirect(redirect)
         self.current_form_set = self.form_sets[-1]
         if self.item:
             self.form =  self.current_form_set['next_form'](instance=self.item)
@@ -127,9 +125,8 @@ class MakeItemWizard(View):
             messages.success(request, "The last update was canceled.")
             return HttpResponseRedirect(reverse('items_list',
                                                 urlconf='inventory.urls'))
-        redirect = self.groundwork(request, args, kwargs)
-        if redirect:
-            return HttpResponseRedirect(redirect)
+        self.groundwork(request, args, kwargs)
+
         if 'next' in list(request.POST.keys()) or (
                 'finish' in list(request.POST.keys())):
             self.make_post_forms(request)
@@ -144,7 +141,9 @@ class MakeItemWizard(View):
         elif 'back' in list(request.POST.keys()):
             self.make_back_forms(request)
         else:
-            raise Exception("button click unclear")
+            messages.error(request, "Button Click Unclear.  If you did not" +
+                " tamper with the form, contact us.")
+            self.current_form_set = {'next_form': None}
 
         if self.current_form_set['next_form'] is not None:
             self.form = self.current_form_set['next_form'](instance=self.item)
@@ -152,7 +151,7 @@ class MakeItemWizard(View):
                                                        initial=self.item.id)
             return render(request, self.template, self.make_context(request))
 
-        messages.error(request, "Unexpected logic flow.  Call Betty")
+        messages.error(request, "Unexpected logic flow.  Contact support.")
 
         return HttpResponseRedirect("%s?changed_id=%d" % (
-            reverse('items_list', urlconf='inventory.urls'), self.item.id))
+            reverse('items_list', urlconf='inventory.urls'), self.item.pk))

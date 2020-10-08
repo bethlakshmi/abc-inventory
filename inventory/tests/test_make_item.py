@@ -296,3 +296,13 @@ class TestMakeItem(TestCase):
         self.assertContains(response, "The last update was canceled.")
         self.assertRedirects(response,
                              reverse("items_list", urlconf="inventory.urls"))
+
+    def test_bad_button_name(self):
+        login_as(self.user, self)
+        response = self.client.post(
+            self.edit_url,
+            data={'bad_button': "Bad Button"},
+            follow=True)
+        self.assertContains(response, "Button Click Unclear.")
+        self.assertRedirects(response, "%s?changed_id=%d" % (
+            reverse('items_list', urlconf='inventory.urls'), self.item.pk))
