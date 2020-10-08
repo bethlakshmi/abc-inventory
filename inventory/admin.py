@@ -5,7 +5,7 @@ from import_export.admin import ImportExportActionModelAdmin
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('id',
-    	            'name',
+                    'name',
                     'help_text')
     list_editable = ('name', 'help_text')
 
@@ -19,7 +19,7 @@ class TagAdmin(admin.ModelAdmin):
 
 class DispositionAdmin(admin.ModelAdmin):
     list_display = ('id',
-    	            'state',
+                    'state',
                     'help_text',)
     list_editable = ('state',
                      'help_text',)
