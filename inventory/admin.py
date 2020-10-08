@@ -24,18 +24,22 @@ class DispositionAdmin(admin.ModelAdmin):
     list_editable = ('state',
                      'help_text',)
 
+
 class ItemTextInline(admin.TabularInline):
     model = ItemText
     extra = 1
     verbose_name_plural = "wall text"
 
+
 class ItemImageInline(admin.TabularInline):
     model = ItemImage
     extra = 1
 
+
 class SubitemInline(admin.TabularInline):
     model = Subitem
     extra = 1
+
 
 class ItemAdmin(ImportExportActionModelAdmin):
     list_display = ('id',
@@ -45,7 +49,9 @@ class ItemAdmin(ImportExportActionModelAdmin):
                     'category',
                     'disposition',
                     'year',
-                    'dimensions',
+                    'width',
+                    'height',
+                    'depth',
                     'subject',
                     'date_acquired',
                     'price',
@@ -69,28 +75,23 @@ class ItemAdmin(ImportExportActionModelAdmin):
 
     filter_horizontal = ("connections", "tags")
 
-    def dimensions(self, obj):
-        dimensions = "0w"
-        if obj.width:
-        	dimensions = "%dw" % obj.width
-        if obj.height:
-            dimensions += " x %dh" % obj.height
-        if obj.depth:
-            dimensions += " x %dd" % obj.depth
-        return str(dimensions)
 
 class ItemImageAdmin(admin.ModelAdmin):
     list_display = ('id', 'item')
 
+
 class ItemTextAdmin(admin.ModelAdmin):
     list_display = ('id', 'item', 'text')
+
 
 class SubItemAdmin(ImportExportActionModelAdmin):
     list_display = ('id',
                     'subitem_number',
                     'title',
                     'item',
-                    'dimensions')
+                    'width',
+                    'height',
+                    'depth')
     list_filter = ['item__category__name',
                    'item__disposition__state',
                    'item__subject']
@@ -103,17 +104,6 @@ class SubItemAdmin(ImportExportActionModelAdmin):
                      'item__description',
                      'item__note',
                      ]
-
-    def dimensions(self, obj):
-        dimensions = "0w"
-        if obj.width:
-            dimensions = "%dw" % obj.width
-        if obj.height:
-            dimensions += " x %dh" % obj.height
-        if obj.depth:
-            dimensions += " x %dd" % obj.depth
-        return str(dimensions)
-
 
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Disposition, DispositionAdmin)

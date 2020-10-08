@@ -5,8 +5,6 @@ from inventory.tests.factories import (
     CategoryFactory,
     DispositionFactory,
     ItemFactory,
-    ItemImageFactory,
-    ItemTextFactory,
     TagFactory,
     UserFactory
 )
