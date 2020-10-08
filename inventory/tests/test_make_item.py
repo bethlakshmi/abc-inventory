@@ -112,8 +112,8 @@ class TestMakeItem(TestCase):
 
     def test_get_edit_bad_id(self):
         self.edit_url = reverse(self.edit_name,
-                           urlconf="inventory.urls",
-                           args=[self.item.pk+1])
+                                urlconf="inventory.urls",
+                                args=[self.item.pk+1])
         login_as(self.user, self)
         response = self.client.get(self.edit_url)
         self.assertEqual(404, response.status_code)

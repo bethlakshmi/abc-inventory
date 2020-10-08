@@ -113,7 +113,7 @@ class MakeItemWizard(View):
         redirect = self.groundwork(request, args, kwargs)
         self.current_form_set = self.form_sets[-1]
         if self.item:
-            self.form =  self.current_form_set['next_form'](instance=self.item)
+            self.form = self.current_form_set['next_form'](instance=self.item)
         else:
             self.form = self.current_form_set['next_form']()
         return render(request, self.template, self.make_context(request))
@@ -141,8 +141,10 @@ class MakeItemWizard(View):
         elif 'back' in list(request.POST.keys()):
             self.make_back_forms(request)
         else:
-            messages.error(request, "Button Click Unclear.  If you did not" +
-                " tamper with the form, contact us.")
+            messages.error(
+                request,
+                "Button Click Unclear.  If you did not tamper with the form," +
+                " contact us.")
             self.current_form_set = {'next_form': None}
 
         if self.current_form_set['next_form'] is not None:

@@ -25,6 +25,7 @@ def set_image(itemimage):
     itemimage.filer_image_id = current_img.pk
     itemimage.save()
 
+
 def assert_option_state(response, value, text, selected=False):
     selected_state = ""
     if selected:
