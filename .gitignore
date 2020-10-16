@@ -29,3 +29,5 @@ local.sqlite
 .divio
 data/media/*
 data.tar.gz
+.coverage
+htmlcov/*

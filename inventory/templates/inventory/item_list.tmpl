@@ -1,6 +1,16 @@
 {% extends 'base.html' %}
+{% load static sekizai_tags %}
 {% block title %}
    {{page_title}}
+{% endblock %}
+{% load thumbnail %}
+{% block head %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.css">
 {% endblock %}
 {% block content %}
 <h2 class="subtitle">{{title}}</h2>
@@ -11,16 +21,158 @@
     <p style= "color:red">{{error}}</p>
     {% endfor %}
   {% endif %}
-  <div class="row">
-  <div class="col-8">
-  {% for item in items %}
-    <div class="{% if item.id == changed_id %}bg-success{% endif %}">
-      <a href="{% url 'inventory:items_edit' item.id %}">{{ item }}</a></div>
-  {% endfor %}
-  </div>
-  <div class="col-4 text-right">
-  <a href="{% url 'inventory:items_create' %}" role="button" class="btn btn-primary">Create Item</a>
-  </div>
-  </div>
+<table id="table" data-search="true" data-show-columns="true" data-show-toggle="true" data-show-fullscreen="true" data-show-columns-toggle-all="true" data-buttons="buttons" data-detail-formatter="detailFormatter" data-detail-view="true" data-row-style="rowStyle">
+  <thead>
+        <tr>
+          <th data-field="id" data-sortable="true" rowspan="2">ID</th>
+          <th data-field="title" data-sortable="true" rowspan="2">Title</th>
+          <th data-field="category" data-sortable="true" rowspan="2">Category</th>
+          <th data-field="disposition" data-sortable="true" rowspan="2">Disposition</th>
+          <th data-sortable="true" colspan="3">Dimensions(")</th>
+          <th data-field="year" data-sortable="true" rowspan="2">Year</th>
+          <th data-field="subject" data-sortable="true" rowspan="2">Subject</th>
+          <th data-field="price" data-sortable="true" data-visible="false" rowspan="2">Price</th>
+          <th data-field="description" data-sortable="false" data-visible="false" rowspan="2">Description</th>
+          <th data-field="note" data-sortable="false" data-visible="false" rowspan="2">Note</th>
+          <th data-field="date_acquired" data-sortable="true" data-visible="false" rowspan="2">Date Acquired</th>
+          <th data-field="date_deaccession" data-sortable="true" data-visible="false" rowspan="2">Date Deaccession</th>
+          <th data-field="created" data-sortable="true" data-visible="false" rowspan="2">Created</th>
+          <th data-field="updated" data-sortable="true" data-visible="false" rowspan="2">Updated</th>
+          <th data-field="tags" data-sortable="false" data-visible="false" rowspan="2">Tags</th>
+          <th data-field="connections" data-sortable="false" data-visible="false" rowspan="2">Connections</th>
+          <th data-field="images" data-sortable="false" data-visible="true" data-card-visible="true" rowspan="2">Images</th>
+          <th data-field="texts" data-sortable="false" data-visible="false" rowspan="2">Texts</th>
+          <th data-field="action" rowspan="2">Action</th>
+        </tr>
+        <tr>
+          <th data-field="w" data-sortable="true">W</th>
+          <th data-field="h" data-sortable="true">H</th>
+          <th data-field="d" data-sortable="true">D</th>
+        </tr>
+  </thead>
+</table>
 
+{% addtoblock "js" %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.js"></script>
+    <script>
+  function buttons () {
+    return {
+      btnAdd: {
+        text: 'Add new row',
+        icon: 'fa-plus',
+        event: function () {
+          window.location.href = "{% url 'inventory:items_create' %}";
+        },
+        attributes: {
+          title: 'Add a new item to the inventory'
+        }
+      }
+    }
+  }
+</script>
+<script>
+  var $table = $('#table')
+  var $button = $('#button')
+
+  $(function() {
+    $button.click(function () {
+      $table.bootstrapTable('toggleView')
+    })
+  })
+</script>
+<script>
+  var $table = $('#table')
+  var $button = $('#button')
+  var $button2 = $('#button2')
+
+  $(function() {
+    $button.click(function () {
+      $table.bootstrapTable('expandRow', 1)
+    })
+    $button2.click(function () {
+      $table.bootstrapTable('collapseRow', 1)
+    })
+  })
+
+  function detailFormatter(index, row) {
+    var html = []
+    html.push('<div class="row">')
+    html.push('<div class="col-6"><b>Description:</b><br>' + row.description + '<br><br>')
+    if (row.note.length > 0) {
+        html.push('<b>Notes:</b><br>' + row.note + '<br><br>')
+    }
+    if (row.texts.length > 0) {
+        html.push('<b>Texts:</b><br>' + row.texts + '<br>')
+    }
+    if (row.tags.length > 0) {
+        html.push('<b>Tags:</b> ' + row.tags + '<br>')
+    }
+    html.push('</div><div class="col-6">')
+    html.push('<b>Date Acquired:</b>  ' + row.date_acquired + '<br>')
+    if (row.date_deaccession.length > 0) {
+        html.push('<b>Date Decaccessioned:</b>  ' + row.date_deaccession + '<br>')
+    }
+    html.push('<b>Created:</b>  ' + row.created + '<br>')
+    html.push('<b>Last Update:</b>  ' + row.updated + '<br>')
+    if (row.price.length > 0) {
+        html.push('<br><b>Price:</b> ' + row.price + '<br>')
+    }    if (row.connections.length > 0) {
+        html.push('<b>Connections:</b> ' + row.connections + '<br>')
+    }
+    html.push('</div>')
+    if (row.images.length) {
+      html.push('<div class="col-12"><b>Images:<br></b>' + row.images +'</div>')
+    }
+    html.push('</div>')
+    return html.join('')
+  }
+</script>
+<script>
+  var $table = $('#table')
+
+  $(function() {
+    var data = [
+  {% for item in items %}
+      {
+        'id': '{{ item.pk }}',
+        'title': '{{ item.title|escapejs }}',
+        'category': '{% if item.category %}{{ item.category }}{% endif %}',
+        'disposition': '{% if item.disposition %}{{ item.disposition }}{% endif %}',
+        'w': '{% if item.width %}{{ item.width.normalize }}{% endif %}',
+        'h': '{% if item.height %}{{ item.height.normalize }}{% endif %}',
+        'd': '{% if item.depth %}{{ item.depth.normalize }}{% endif %}',
+        'year': '{% if item.year %}{{ item.year|escapejs }}{% endif %}',
+        'subject': '{% if item.subject %}{{ item.subject|escapejs }}{% endif %}',
+        'action': '<a class="like" href="{% url "inventory:items_edit" item.id %}" title="Edit"><i class="fas fa-edit"></i></a>',
+        'price': '{% if item.price %}${{ item.price }}{% endif %}',
+        'description': '{% if item.description %}{{ item.description.strip|escapejs }}{% endif %}',
+        'note': '{% if item.note %}{{ item.note|escapejs }}{% endif %}',
+        'date_acquired': '{% if item.date_acquired %}{{ item.date_acquired }}{% endif %}',
+        'date_deaccession': '{% if item.date_deaccession %}{{ item.date_deaccession }}{% endif %}',
+        'created': '{{ item.created_at }}',
+        'updated': '{{ item.updated_at }}',
+        'tags': '{% for tag in item.tags.all %}{{ tag }}, {% endfor %}',
+        'connections': '{% for connect in item.connections.all %}{{ connect|escapejs }}, {% endfor %}',
+        'images': '{% for image in item.images.all %}<img src="{% thumbnail image.filer_image 250x250 %}">&nbsp;&nbsp;{% endfor %}',
+        'texts': '{% for text in item.labels.all %}<i>Text {{forloop.counter}}:</i>&nbsp;&nbsp;{{text.text|escapejs}}<br>{% endfor %}',
+      },
+  {% endfor %}
+    ]
+    $table.bootstrapTable({data: data})
+  })
+</script>
+<script>
+  function rowStyle(row, index) {
+    if (row.id == {{changed_id}}) {
+      return {
+        classes: "table-success"
+      }
+    }
+    return {}
+  }
+</script>
+{% endaddtoblock %}
 {% endblock %}
