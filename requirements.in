@@ -23,3 +23,4 @@ mock
 pytest
 pytest-django
 pytest-cov
+django-autocomplete-light

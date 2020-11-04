@@ -7,6 +7,7 @@ from django.forms import (
     TextInput,
 )
 from inventory.models import Item
+from dal import autocomplete
 
 
 class BasicItemForm(ModelForm):
@@ -25,4 +26,7 @@ class BasicItemForm(ModelForm):
             'description',
             'category',
             'subject']
-        widgets = {'title': TextInput(attrs={'size': '87'})}
+        widgets = {
+            'title': TextInput(attrs={'size': '87'}),
+            'category': autocomplete.ModelSelect2(
+                url='category-autocomplete')}

@@ -58,6 +58,8 @@ INSTALLED_APPS.extend([
     'tempus_dominus',
     'inventory',
     'import_export',
+    'dal',
+    'dal_select2',
 ])
 
 # To see the settings that have been applied, use the Django diffsettings 

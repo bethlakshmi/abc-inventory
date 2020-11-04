@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static sekizai_tags %}
 {% block title %}
    {{page_title}}
 {% endblock %}
@@ -11,7 +11,6 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script type="text/javascript" src="/static/tinymce/tinymce.min.js"></script>
     <script>{% include "tiny-mce-user-settings.tmpl" %}</script>
-    {{ forms.0.media }}
 {% endblock %}
 {% block content %}
 <h2 class="subtitle">{{title}}</h2>
@@ -78,4 +77,30 @@
   </div>
 </div>
 </form>
+{% addtoblock "js" %}
+<script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+
+{{ forms.0.media }}
+
+<script>
+(function($) {
+    $('#add-form').click(function() {
+        var index = $('#id_inline_test_models-TOTAL_FORMS').val()
+        var newTable = $('#id_inline_test_models-__prefix__-DELETE').parents('table').clone()
+        newTable.find(':input').each(function() {
+            for (attr of ['name', 'id'])
+                $(this).attr(
+                    attr,
+                    $(this).attr(attr).replace('__prefix__', index)
+                )
+        })
+        newTable.insertBefore($(this))
+        $('#id_inline_test_models-TOTAL_FORMS').val(
+            parseInt($('#id_inline_test_models-TOTAL_FORMS').val()) + 1
+        )
+        newTable.slideDown()
+    })
+})($)
+</script>
+{% endaddtoblock %}
 {% endblock %}
