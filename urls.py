@@ -4,6 +4,7 @@ from aldryn_django.utils import i18n_patterns
 import aldryn_addons.urls
 from inventory.views import (
     CategoryAutocomplete,
+    ConnectionAutocomplete,
     DispositionAutocomplete,
     TagAutocomplete,
 )
@@ -15,6 +16,11 @@ urlpatterns = [
         r'^category-autocomplete/$',
         CategoryAutocomplete.as_view(create_field='name'),
         name='category-autocomplete',
+    ),
+    url(
+        r'^connection-autocomplete/$',
+        ConnectionAutocomplete.as_view(),
+        name='connection-autocomplete',
     ),
     url(
         r'^disposition-autocomplete/$',

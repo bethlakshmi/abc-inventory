@@ -20,4 +20,6 @@ class FurtherDetailForm(ModelForm):
             'connections']
         widgets = {
             'tags': autocomplete.ModelSelect2Multiple(
-                url='tag-autocomplete')}
+                url='tag-autocomplete'),
+            'connections': autocomplete.ModelSelect2Multiple(
+                url='connection-autocomplete')}

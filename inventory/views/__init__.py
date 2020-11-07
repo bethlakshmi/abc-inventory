@@ -1,4 +1,5 @@
 from .category_autocomplete import CategoryAutocomplete
+from .connection_autocomplete import ConnectionAutocomplete
 from .disposition_autocomplete import DispositionAutocomplete
 from .tag_autocomplete import TagAutocomplete
 from .items_list_view import ItemsListView
