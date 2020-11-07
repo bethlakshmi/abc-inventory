@@ -2,12 +2,9 @@ from django.views.generic import View
 from django.views.decorators.cache import never_cache
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-from django.http import Http404
 from django.urls import reverse
 from django.shortcuts import render
-from inventory.models import (
-    Item,
-)
+from inventory.models import Item
 
 
 class ItemsListView(View):
@@ -34,9 +31,5 @@ class ItemsListView(View):
 
     @never_cache
     def get(self, request, *args, **kwargs):
-        if request.GET.get('changed_id'):
-            self.changed_id = int(request.GET['changed_id'])
-        else:
-            self.changed_id = -1
-
+        self.changed_id = int(request.GET.get('changed_id', default=-1))
         return render(request, self.template, self.get_context_dict())

@@ -19,6 +19,7 @@ pep8
 django-tempus-dominus
 coverage
 factory-boy
+faker
 mock
 pytest
 pytest-django
