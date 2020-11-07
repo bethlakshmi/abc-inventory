@@ -8,6 +8,7 @@ from django.forms import (
 from inventory.models import Item
 from django.core.exceptions import ValidationError
 from tempus_dominus.widgets import DatePicker
+from dal import autocomplete
 
 
 class PhysicalItemForm(ModelForm):
@@ -44,7 +45,10 @@ class PhysicalItemForm(ModelForm):
             'price']
         widgets = {'width': NumberInput(attrs={'style': 'width: 75px'}),
                    'height': NumberInput(attrs={'style': 'width: 75px'}),
-                   'depth': NumberInput(attrs={'style': 'width: 75px'})}
+                   'depth': NumberInput(attrs={'style': 'width: 75px'}),
+                   'disposition': autocomplete.ModelSelect2(
+                        url='disposition-autocomplete')}
+
     def clean(self):
         # run the parent validation first
         cleaned_data = super(PhysicalItemForm, self).clean()

@@ -1,3 +1,4 @@
 from .category_autocomplete import CategoryAutocomplete
+from .disposition_autocomplete import DispositionAutocomplete
 from .items_list_view import ItemsListView
 from .make_item_wizard import MakeItemWizard

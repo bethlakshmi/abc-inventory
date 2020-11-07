@@ -6,7 +6,7 @@ from inventory.models import Category
 class CategoryAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
         if not self.request.user.is_authenticated:
-            return Country.objects.none()
+            return Category.objects.none()
 
         qs = Category.objects.all()
 
