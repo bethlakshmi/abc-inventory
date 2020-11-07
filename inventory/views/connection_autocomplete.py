@@ -12,10 +12,10 @@ class ConnectionAutocomplete(autocomplete.Select2QuerySetView):
 
         if self.q:
             qs = qs.filter(
-            	Q(title__icontains=self.q)|
-            	Q(description__icontains=self.q)|
-            	Q(year__icontains=self.q)|
-            	Q(subject__icontains=self.q)|
-            	Q(note__icontains=self.q))
+                Q(title__icontains=self.q) |
+                Q(description__icontains=self.q) |
+                Q(year__icontains=self.q) |
+                Q(subject__icontains=self.q) |
+                Q(note__icontains=self.q))
 
         return qs
