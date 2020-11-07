@@ -4,6 +4,7 @@ from django.forms import (
     ModelForm,
 )
 from inventory.models import Item
+from dal import autocomplete
 
 
 class FurtherDetailForm(ModelForm):
@@ -17,3 +18,6 @@ class FurtherDetailForm(ModelForm):
             'note',
             'tags',
             'connections']
+        widgets = {
+            'tags': autocomplete.ModelSelect2Multiple(
+                url='tag-autocomplete')}

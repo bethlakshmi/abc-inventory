@@ -5,6 +5,7 @@ import aldryn_addons.urls
 from inventory.views import (
     CategoryAutocomplete,
     DispositionAutocomplete,
+    TagAutocomplete,
 )
 
 
@@ -19,7 +20,13 @@ urlpatterns = [
         r'^disposition-autocomplete/$',
         DispositionAutocomplete.as_view(create_field='state'),
         name='disposition-autocomplete',
-    ),    url(r'^', include('inventory.urls')),
+    ),
+    url(
+        r'^tag-autocomplete/$',
+        TagAutocomplete.as_view(create_field='name'),
+        name='tag-autocomplete',
+    ),
+    url(r'^', include('inventory.urls')),
 ] + aldryn_addons.urls.patterns() + i18n_patterns(
     # add your own i18n patterns here
     *aldryn_addons.urls.i18n_patterns()  # MUST be the last entry!
