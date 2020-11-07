@@ -27,6 +27,9 @@
   <div class="col-12">
     {% if not special_handling %}{% include "form_table_wrapper.tmpl" %}
     {% else %}
+      <font color="red">{% if forms.0.errors %}
+        <p style= "color:red"> There is an error on the form.</p>
+      {% endif %}{{ forms.0.non_field_errors }}</font>
       {% csrf_token %}
       {{ forms.0.step }}
       {{ forms.0.item_id }}

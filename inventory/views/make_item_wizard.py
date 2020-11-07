@@ -38,22 +38,18 @@ class MakeItemWizard(View):
         -1: {
             'the_form':  None,
             'next_form': BasicItemForm,
-            'title': None,
             'next_title': first_title},
         0: {
             'the_form':  BasicItemForm,
             'next_form': PhysicalItemForm,
-            'title': first_title,
             'next_title': second_title},
         1: {
             'the_form':  PhysicalItemForm,
             'next_form': FurtherDetailForm,
-            'title': second_title,
             'next_title': third_title},
         2: {
             'the_form':  FurtherDetailForm,
             'next_form': None,
-            'title': third_title,
             'next_title': None},
     }
 
@@ -78,14 +74,14 @@ class MakeItemWizard(View):
             self.form = self.current_form_set['the_form'](
                 request.POST)
 
-    def make_context(self, request, subtitle):
+    def make_context(self, request):
         title = "Creating New Item"
         if self.item:
             title = self.item.title
         context = {
             'page_title': self.page_title,
             'title': title,
-            'subtitle': subtitle,
+            'subtitle': self.current_form_set['next_title'],
             'forms': [self.form],
             'first': self.current_form_set['the_form'] is None,
             'last': self.form_sets[self.step+1]['next_form'] is None,
@@ -115,16 +111,12 @@ class MakeItemWizard(View):
     @never_cache
     def get(self, request, *args, **kwargs):
         redirect = self.groundwork(request, args, kwargs)
-        if redirect:
-            return HttpResponseRedirect(redirect)
         self.current_form_set = self.form_sets[-1]
         if self.item:
-            self.form =  self.current_form_set['next_form'](instance=self.item)
+            self.form = self.current_form_set['next_form'](instance=self.item)
         else:
             self.form = self.current_form_set['next_form']()
-        return render(request, self.template, self.make_context(
-            request,
-            self.current_form_set['next_title']))
+        return render(request, self.template, self.make_context(request))
 
     @never_cache
     @method_decorator(login_required)
@@ -133,33 +125,35 @@ class MakeItemWizard(View):
             messages.success(request, "The last update was canceled.")
             return HttpResponseRedirect(reverse('items_list',
                                                 urlconf='inventory.urls'))
-        redirect = self.groundwork(request, args, kwargs)
-        if redirect:
-            return HttpResponseRedirect(redirect)
+        self.groundwork(request, args, kwargs)
+
         if 'next' in list(request.POST.keys()) or (
                 'finish' in list(request.POST.keys())):
             self.make_post_forms(request)
             if not self.form.is_valid():
+                self.step = self.step - 1
+                self.current_form_set = self.form_sets[self.step]
                 return render(request, self.template, self.make_context(
-                    request,
-                    self.current_form_set['title']))
+                    request))
             self.item = self.form.save()
             if 'finish' in list(request.POST.keys()):
                 return self.finish(request)
         elif 'back' in list(request.POST.keys()):
             self.make_back_forms(request)
         else:
-            raise Exception("button click unclear")
+            messages.error(
+                request,
+                "Button Click Unclear.  If you did not tamper with the form," +
+                " contact us.")
+            self.current_form_set = {'next_form': None}
 
         if self.current_form_set['next_form'] is not None:
             self.form = self.current_form_set['next_form'](instance=self.item)
             self.form.fields['item_id'] = IntegerField(widget=HiddenInput(),
                                                        initial=self.item.id)
-            return render(request, self.template, self.make_context(
-                request,
-                self.current_form_set['next_title']))
+            return render(request, self.template, self.make_context(request))
 
-        messages.error(request, "Unexpected logic flow.  Call Betty")
+        messages.error(request, "Unexpected logic flow.  Contact support.")
 
         return HttpResponseRedirect("%s?changed_id=%d" % (
-            reverse('items_list', urlconf='inventory.urls'), self.item.id))
+            reverse('items_list', urlconf='inventory.urls'), self.item.pk))
