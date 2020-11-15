@@ -8,15 +8,7 @@ from inventory.tests.factories import (
     TagFactory,
     UserFactory
 )
-from inventory.tests.functions import (
-    login_as,
-    set_image,
-)
-from datetime import (
-    date,
-    timedelta,
-)
-from inventory.models import Item
+from inventory.tests.functions import login_as
 
 
 class TestAutoComplete(TestCase):
