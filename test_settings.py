@@ -1,7 +1,7 @@
 import os
 
 """
-Django settings for expo project.
+Django settings for ABC Inventory project.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/1.11/topics/settings/
@@ -72,6 +72,8 @@ INSTALLED_APPS = [
     'tempus_dominus',
     'inventory',
     'import_export',
+    'dal',
+    'dal_select2',
 ]
 
 PASSWORD_HASHERS = (
