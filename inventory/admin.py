@@ -77,7 +77,7 @@ class ItemAdmin(ImportExportActionModelAdmin):
 
 
 class ItemImageAdmin(admin.ModelAdmin):
-    list_display = ('id', 'item')
+    list_display = ('id', 'item', 'filer_image')
 
 
 class ItemTextAdmin(admin.ModelAdmin):
