@@ -22,7 +22,7 @@ from django.forms import (
 
 class ManageItemImage(View):
     object_type = Item
-    template = 'inventory/item_wizard.tmpl'
+    template = 'inventory/manage_image.tmpl'
     page_title = 'Manage Images'
     item = None
 
@@ -48,7 +48,7 @@ class ManageItemImage(View):
         context = {
             'page_title': self.page_title,
             'title': title,
-            'forms': [self.form],
+            'form': self.form,
         }
         return context
 

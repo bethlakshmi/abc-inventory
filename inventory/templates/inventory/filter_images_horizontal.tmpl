@@ -1,0 +1,21 @@
+      <div class="panel-heading col-12">
+        <h3><span class="label label-default"><label id="{{ field.name }}">
+          {% if field.errors %}
+            <font color="red">!&nbsp;&nbsp;
+          {% elif field.css_classes == 'required'%}
+            <font color="red">*</font>
+          {% endif %}
+          {{ field.label }}:&nbsp;&nbsp;
+          {% if field.errors %}</font>{% endif %}
+        </label></span></h3>
+      </div>
+      <div class="panel-body col-12">
+      {% for checkbox in field %}
+        <div class="form-check-inline">
+        <label class="form-check-label checkbox-label" id="{{ checkbox.id_for_label }}">
+          {{ checkbox.tag }}{{ checkbox.choice_label }}
+        </label></div>{% endfor %}
+        {% if field.errors %}
+          {{ field.errors }}
+        {% endif %}
+      </div>
