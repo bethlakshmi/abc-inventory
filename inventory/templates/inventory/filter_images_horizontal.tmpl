@@ -1,4 +1,4 @@
-      <div class="panel-heading col-12">
+      <div class="form-group col-12">
         <h3><span class="label label-default"><label id="{{ field.name }}">
           {% if field.errors %}
             <font color="red">!&nbsp;&nbsp;
@@ -9,9 +9,9 @@
           {% if field.errors %}</font>{% endif %}
         </label></span></h3>
       </div>
-      <div class="panel-body col-12">
+      <div class="form-group col-md-9 col-12">
       {% for checkbox in field %}
-        <div class="form-check-inline">
+        <div class="form-check-inline image_select_list">
         <label class="form-check-label checkbox-label" id="{{ checkbox.id_for_label }}">
           {{ checkbox.tag }}{{ checkbox.choice_label }}
         </label></div>{% endfor %}
