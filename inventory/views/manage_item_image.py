@@ -12,6 +12,7 @@ from django.shortcuts import (
 from inventory.models import (
     Item,
 )
+from filer.models import Image
 from inventory.forms import ItemImageForm
 from django.contrib import messages
 from django.forms import (
@@ -70,7 +71,7 @@ class ManageItemImage(View):
     def get(self, request, *args, **kwargs):
         redirect = self.groundwork(request, args, kwargs)
         self.form = ItemImageForm(initial={
-            'current_images':  self.item.images.all()})
+            'current_images':  Image.objects.filter(itemimage__item=self.item)})
         return render(request, self.template, self.make_context(request))
 
     @never_cache
