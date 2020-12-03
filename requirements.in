@@ -25,3 +25,4 @@ pytest
 pytest-django
 pytest-cov
 django-autocomplete-light
+packaging==20.4           # via pytest
