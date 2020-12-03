@@ -20,9 +20,7 @@ from django.forms import (
     IntegerField,
     HiddenInput,
 )
-from filer.models.imagemodels import Image
-from filer.models.foldermodels import Folder
-from django.contrib.auth.models import User
+from inventory.functions import upload_and_attach
 
 
 class ManageItemImage(View):
@@ -71,25 +69,23 @@ class ManageItemImage(View):
             self.form = ItemImageForm(request.POST, request.FILES)
             if self.form.is_valid():
                 self.item.images.all().delete()
+                num_linked = 0
                 for image in self.form.cleaned_data['current_images']:
                     new_link = ItemImage(item=self.item, filer_image=image)
                     new_link.save()
+                    num_linked = num_linked + 1
                 files = request.FILES.getlist('new_images')
                 if len(files) > 0:
-                    superuser = User.objects.get(username='admin_img')
-                    folder, created = Folder.objects.get_or_create(
-                        name='ItemImageUploads')
-                    for f in files:
-                        img, created = Image.objects.get_or_create(
-                            owner=superuser,
-                            original_filename=f.name,
-                            file=f,
-                            folder=folder,
-                            author="%s" % str(request.user.username))
-                        img.save()
-                        new_link = ItemImage(item=self.item, filer_image=img)
-                        new_link.save()
-                messages.success(request, "Updated Item: %s" % self.item.title)
+                    num_uploaded = upload_and_attach(
+                        files,
+                        request.user,
+                        self.item)
+                messages.success(
+                    request,
+                    "Updated Item: %s<br>Linked %d images. Added %d images." % (
+                        self.item.title,
+                        num_linked,
+                        num_uploaded))
                 return HttpResponseRedirect("%s?changed_id=%d" % (
                     reverse('items_list', urlconf='inventory.urls'),
                     self.item.id))
