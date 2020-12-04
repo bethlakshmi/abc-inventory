@@ -8,10 +8,12 @@ from django.forms.widgets import CheckboxSelectMultiple
 from inventory.models import (
     Item,
     ItemImage,
+    UserMessage,
 )
 from django.utils.safestring import mark_safe
 from filer.models import Image
 from easy_thumbnails.files import get_thumbnailer
+from inventory.default_form_text import item_image_help
 
 
 class MultiImageField(ModelMultipleChoiceField):
@@ -27,11 +29,24 @@ class ItemImageForm(Form):
     current_images = MultiImageField(
         widget=CheckboxSelectMultiple(attrs={'style':"display: none;"}),
         queryset=Image.objects.all(),
-        required=False)
+        required=False,
+        help_text=UserMessage.objects.get_or_create(
+                view="ItemImageForm",
+                code="CURRENT_IMAGE_INSTRUCTIONS",
+                defaults={
+                    'summary': "Current Image Help text",
+                    'description': item_image_help['current_images']}
+                )[0].description)
     new_images = ImageField(
         widget=ClearableFileInput(attrs={'multiple': True}),
         required=False,
-    )
+        help_text=UserMessage.objects.get_or_create(
+                view="ItemImageForm",
+                code="NEW_IMAGE_INSTRUCTIONS",
+                defaults={
+                    'summary': "New Image Help text",
+                    'description': item_image_help['new_images']}
+                )[0].description)
     class Meta:
         model = Item
         fields = []

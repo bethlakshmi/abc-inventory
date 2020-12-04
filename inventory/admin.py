@@ -105,6 +105,18 @@ class SubItemAdmin(ImportExportActionModelAdmin):
                      'item__note',
                      ]
 
+
+class MessageAdmin(admin.ModelAdmin):
+    list_display = ('view',
+                    'code',
+                    'summary',
+                    'description')
+    list_editable = ('summary', 'description')
+    readonly_fields = ('view', 'code')
+    list_filter = ['view', 'code']
+
+
+admin.site.register(UserMessage, MessageAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Disposition, DispositionAdmin)
 admin.site.register(Item, ItemAdmin)

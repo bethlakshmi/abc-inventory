@@ -8,6 +8,7 @@
           {{ field.label }}:&nbsp;&nbsp;
           {% if field.errors %}</font>{% endif %}
         </label></span></h3>
+        {{ field.help_text }}
       </div>
       <div class="form-group col-md-9 col-12">
       {% for checkbox in field %}
