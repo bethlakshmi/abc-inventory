@@ -65,11 +65,12 @@ class ManageItemImage(View):
                                                 urlconf='inventory.urls'))
         self.groundwork(request, args, kwargs)
 
+        self.form = ItemImageForm(request.POST, request.FILES)
         if 'finish' in list(request.POST.keys()):
-            self.form = ItemImageForm(request.POST, request.FILES)
             if self.form.is_valid():
                 self.item.images.all().delete()
                 num_linked = 0
+                num_uploaded = 0
                 for image in self.form.cleaned_data['current_images']:
                     new_link = ItemImage(item=self.item, filer_image=image)
                     new_link.save()

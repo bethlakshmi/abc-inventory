@@ -39,6 +39,10 @@ class TestItemList(TestCase):
             "item_edit",
             urlconf="inventory.urls",
             args=[self.item.pk]))
+        self.assertContains(response, reverse(
+            "manage_item_image",
+            urlconf="inventory.urls",
+            args=[self.item.pk]))
 
     def test_list_items_all_the_things(self):
         busy_item = ItemFactory(
