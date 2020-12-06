@@ -7,7 +7,7 @@ from inventory.models import ItemImage
 def upload_and_attach(files, user, item=None):
     superuser = User.objects.get(username='admin_img')
     folder, created = Folder.objects.get_or_create(
-    name='ItemImageUploads')
+        name='ItemImageUploads')
     count_files = 0
     for f in files:
         img, created = Image.objects.get_or_create(

@@ -13,7 +13,7 @@ from inventory.models import (
 from django.utils.safestring import mark_safe
 from filer.models import Image
 from easy_thumbnails.files import get_thumbnailer
-from inventory.default_form_text import item_image_help
+from inventory.forms.default_form_text import item_image_help
 
 
 class MultiImageField(ModelMultipleChoiceField):
@@ -25,14 +25,16 @@ class MultiImageField(ModelMultipleChoiceField):
             other_links = "Linked to:"
             for link in obj.itemimage_set.all():
                 other_links = "%s %s;" % (other_links, link.item.title)
-        return mark_safe("<img src='%s' title='%s'/>" % (thumb_url, other_links))
+        return mark_safe(
+            "<img src='%s' title='%s'/>" % (thumb_url, other_links))
+
 
 class ItemImageForm(Form):
     required_css_class = 'required'
     error_css_class = 'error'
 
     current_images = MultiImageField(
-        widget=CheckboxSelectMultiple(attrs={'style':"display: none;"}),
+        widget=CheckboxSelectMultiple(attrs={'style': "display: none;"}),
         queryset=Image.objects.all(),
         required=False,
         help_text=UserMessage.objects.get_or_create(
@@ -52,6 +54,7 @@ class ItemImageForm(Form):
                     'summary': "New Image Help text",
                     'description': item_image_help['new_images']}
                 )[0].description)
+
     class Meta:
         model = Item
         fields = []
