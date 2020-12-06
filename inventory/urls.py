@@ -17,6 +17,6 @@ urlpatterns = [
         MakeItemWizard.as_view(),
         name='item_edit'),
     url(r'^inventory/item/images/(?P<item_id>\d+)/?',
-    	ManageItemImage.as_view(),
-    	name='manage_item_image'),
+        ManageItemImage.as_view(),
+        name='manage_item_image'),
 ]

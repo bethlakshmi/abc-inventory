@@ -24,7 +24,7 @@ class TestMakeItem(TestCase):
     '''Tests for review_costume_list view'''
     view_name = "manage_item_image"
     options = {'size': (100, 100), 'crop': False}
-    image_checkbox = '''<input type="checkbox" name="current_images" 
+    image_checkbox = '''<input type="checkbox" name="current_images"
         style="display: none;" id="id_current_images_%d" value="%d" %s>'''
 
     def setUp(self):
@@ -57,7 +57,9 @@ class TestMakeItem(TestCase):
                 self.item.title))
         self.assertContains(
             response,
-            self.image_checkbox % (0, self.itemimage.filer_image.pk, 'checked'),
+            self.image_checkbox % (
+                0,
+                self.itemimage.filer_image.pk, 'checked'),
             html=True)
 
     def test_get_wout_image(self):
@@ -131,172 +133,42 @@ class TestMakeItem(TestCase):
                 self.item.title))
         self.assertContains(response, "if (row.id == %d) {" % (self.item.pk))
 
-
-'''
-    def test_post_basics_create_finish(self):
+    def test_post_bad_image_id(self):
         login_as(self.user, self)
-        basics = self.get_basics()
-        basics['finish'] = "Finish"
-        response = self.client.post(self.url, data=basics, follow=True)
+        link_me = set_image()
+        response = self.client.post(
+            self.url,
+            data={'current_images': [self.itemimage.filer_image.pk + 100],
+                  'new_images': "",
+                  'finish': 'Save'},
+            follow=True)
         self.assertContains(
             response,
-            "Created new Item: %s" % basics['title'])
-        self.assertContains(response, "if (row.id == %d) {" % (self.item.pk+1))
+            "%d is not one of the available choices." % (
+                self.itemimage.filer_image.pk + 100))
 
-    def test_post_basics_edit_save_and_continue(self):
+    def test_post_file_uploads(self):
+        UserFactory(username='admin_img')
         login_as(self.user, self)
-        basics = self.get_basics()
-        basics['next'] = "Save & Continue >>"
-        response = self.client.post(self.edit_url, data=basics)
+        file1 = open("inventory/tests/redexpo.jpg", 'rb')
+        file2 = open("inventory/tests/10yrs.jpg", 'rb')
+        response = self.client.post(
+            self.url,
+            data={'current_images': [],
+                  'new_images': [file1, file2],
+                  'finish': 'Save'},
+            follow=True)
         self.assertContains(
             response,
-            '<h2 class="subtitle">%s</h2>' % basics['title'])
-        self.assertContains(response, "Physical Information")
-        self.assertContains(response, "<< Back")
-        self.assertContains(response, "Save & Continue >>")
-
-    def test_post_basics_edit_finish(self):
-        login_as(self.user, self)
-        basics = self.get_basics()
-        basics['finish'] = "Finish"
-        response = self.client.post(self.edit_url, data=basics, follow=True)
-        self.assertContains(
-            response,
-            "Updated Item: %s" % basics['title'])
-        self.assertContains(response, "if (row.id == %d) {" % self.item.pk)
-
-    def test_post_basics_bad_data(self):
-        login_as(self.user, self)
-        basics = self.get_basics()
-        basics['category'] = basics['category'] + 1
-        basics['next'] = "Save & Continue >>"
-        response = self.client.post(self.url, data=basics)
-        self.assertContains(response, "Creating New Item")
-        self.assertContains(response, "The Basics")
-        self.assertContains(response, "There is an error on the form.")
-        self.assertNotContains(response, "<< Back")
-        self.assertContains(response, "Save & Continue >>")
-
-    def test_post_physical_create_save_and_continue(self):
-        login_as(self.user, self)
-        physical = self.get_physical()
-        physical['next'] = "Save & Continue >>"
-        response = self.client.post(self.url, data=physical)
-        self.assertContains(
-            response,
-            '<h2 class="subtitle">%s</h2>' % self.item.title)
-        self.assertContains(response, "<< Back")
-        self.assertNotContains(response, "Save & Continue >>")
-        self.assertContains(response, "Further Details")
-
-    def test_post_physical_create_finish(self):
-        login_as(self.user, self)
-        physical = self.get_physical()
-        physical['finish'] = "Finish"
-        response = self.client.post(self.url, data=physical, follow=True)
-        self.assertContains(
-            response,
-            "Created new Item: %s" % self.item.title)
-        self.assertContains(response, "if (row.id == %d) {" % (self.item.pk))
-
-    def test_post_physical_edit_save_and_continue(self):
-        login_as(self.user, self)
-        physical = self.get_physical()
-        physical['date_acquired'] = date.today()
-        physical['next'] = "Save & Continue >>"
-        response = self.client.post(self.edit_url, data=physical)
-        self.assertContains(
-            response,
-            '<h2 class="subtitle">%s</h2>' % self.item.title)
-        self.assertContains(response, "<< Back")
-        self.assertNotContains(response, "Save & Continue >>")
-        self.assertContains(response, "Further Details")
-
-    def test_post_physical_back(self):
-        login_as(self.user, self)
-        physical = self.get_physical()
-        physical['back'] = "<< Back"
-        response = self.client.post(self.edit_url, data=physical)
-        self.assertContains(
-            response,
-            '<h2 class="subtitle">%s</h2>' % self.item.title)
-        self.assertNotContains(response, "<< Back")
-        self.assertContains(response, "Save & Continue >>")
-        self.assertContains(response, "The Basics")
-
-    def test_post_physical_edit_finish(self):
-        login_as(self.user, self)
-        physical = self.get_physical()
-        physical['date_deaccession'] = date.today() - timedelta(days=1)
-        physical['finish'] = "Finish"
-        response = self.client.post(self.edit_url, data=physical, follow=True)
-        self.assertContains(
-            response,
-            "Updated Item: %s" % self.item.title)
-        self.assertContains(response, "if (row.id == %d) {" % self.item.pk)
-
-    def test_post_physical_gone_before_it_came(self):
-        login_as(self.user, self)
-        physical = self.get_physical()
-        physical['date_acquired'] = date.today()
-        physical['date_deaccession'] = date.today() - timedelta(days=1)
-        physical['next'] = "Save & Continue >>"
-        response = self.client.post(self.url, data=physical)
-        self.assertContains(response, "Physical Information")
-        self.assertContains(
-            response,
-            "The date acquired cannot be AFTER the date of deaccession - " +
-            "check these dates and try again.")
-        self.assertContains(response, "<< Back")
-        self.assertContains(response, "Save & Continue >>")
-
-    def test_post_further_create_finish(self):
-        login_as(self.user, self)
-        further = self.get_further()
-        further['finish'] = "Finish"
-        response = self.client.post(self.url, data=further, follow=True)
-        self.assertContains(
-            response,
-            "Created new Item: %s" % self.item.title)
-        self.assertContains(response, "if (row.id == %d) {" % (self.item.pk))
-
-    def test_post_further_edit_finish(self):
-        login_as(self.user, self)
-        further = self.get_further()
-        further['date_deaccession'] = date.today() - timedelta(days=1)
-        further['finish'] = "Finish"
-        response = self.client.post(self.edit_url, data=further, follow=True)
-        self.assertContains(
-            response,
-            "Updated Item: %s" % self.item.title)
-        self.assertContains(response, "if (row.id == %d) {" % self.item.pk)
-
-    def test_post_further_back(self):
-        login_as(self.user, self)
-        further = self.get_further()
-        further['back'] = "<< Back"
-        response = self.client.post(self.edit_url, data=further, follow=True)
-        self.assertContains(response, "<< Back")
-        self.assertContains(response, "Save & Continue >>")
-        self.assertContains(response, "Physical Information")
-
-    def test_post_further_bad_tag(self):
-        login_as(self.user, self)
-        further = self.get_further()
-        further['connections'] = (self.item.pk+1)
-        further['finish'] = "Finish"
-        response = self.client.post(self.url, data=further)
-        self.assertContains(response, "Further Details")
-        self.assertContains(response, "<< Back")
-        self.assertNotContains(response, "Save & Continue >>")
+            "Updated Item: %s<br>Linked 0 images. Added 2 images." % (
+                self.item.title))
 
     def test_cancel(self):
         login_as(self.user, self)
         response = self.client.post(
-            self.edit_url,
+            self.url,
             data={'cancel': "Cancel"},
             follow=True)
         self.assertContains(response, "The last update was canceled.")
         self.assertRedirects(response,
                              reverse("items_list", urlconf="inventory.urls"))
-'''
