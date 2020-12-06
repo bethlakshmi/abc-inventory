@@ -46,14 +46,13 @@
   <div class="col-12">
       <div class="form-group col-12">
         <h3><span class="label label-default"><label id="{{ field.name }}">
-          {% if form.new_images.errors %}
-            <font color="red">!&nbsp;&nbsp;
-          {% elif form.new_images.css_classes == 'required'%}
-            <font color="red">*</font>
-          {% endif %}
-          {{ form.new_images.label }}:&nbsp;&nbsp;
-          {% if form.new_images.errors %}</font>{% endif %}
+          
+            <font color="{% if form.new_images.errors %}red{% endif %}">
+            {{ form.new_images.label }}:</font>
         </label></span></h3>
+        {% if field.errors %}
+          <font color="red">{{ field.errors }}</font>
+        {% endif %}
       {{form.new_images.help_text}}
       </div>
       <div class="form-group col-md-9 col-12">
