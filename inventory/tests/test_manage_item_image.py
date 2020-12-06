@@ -2,8 +2,6 @@ from django.test import TestCase
 from django.test import Client
 from django.urls import reverse
 from inventory.tests.factories import (
-    CategoryFactory,
-    DispositionFactory,
     ItemFactory,
     ItemImageFactory,
     TagFactory,
@@ -18,7 +16,7 @@ from datetime import (
     date,
     timedelta,
 )
-from inventory.models import Item
+from inventory.models import ItemImage
 from easy_thumbnails.files import get_thumbnailer
 
 
@@ -26,10 +24,13 @@ class TestMakeItem(TestCase):
     '''Tests for review_costume_list view'''
     view_name = "manage_item_image"
     options = {'size': (100, 100), 'crop': False}
+    image_checkbox = '''<input type="checkbox" name="current_images" 
+        style="display: none;" id="id_current_images_%d" value="%d" %s>'''
 
     def setUp(self):
         self.client = Client()
         self.user = UserFactory()
+        ItemImage.objects.all().delete()
         self.itemimage = ItemImageFactory()
         set_image(self.itemimage)
         self.item = self.itemimage.item
@@ -54,6 +55,10 @@ class TestMakeItem(TestCase):
             "<img src='%s' title='Linked to: %s;'/>" % (
                 thumb_url,
                 self.item.title))
+        self.assertContains(
+            response,
+            self.image_checkbox % (0, self.itemimage.filer_image.pk, 'checked'),
+            html=True)
 
     def test_get_wout_image(self):
         self.item = ItemFactory()
@@ -69,6 +74,10 @@ class TestMakeItem(TestCase):
         self.assertContains(
             response,
             "<img src='%s' title='No Item Links'/>" % (thumb_url))
+        self.assertContains(
+            response,
+            self.image_checkbox % (0, image.pk, ''),
+            html=True)
 
     def test_get_edit_bad_id(self):
         self.url = reverse(self.view_name,
@@ -89,7 +98,8 @@ class TestMakeItem(TestCase):
             follow=True)
         self.assertContains(
             response,
-            "Updated Item: %s<br>Linked 0 images. Added 0 images." % self.item.title)
+            "Updated Item: %s<br>Linked 0 images. Added 0 images." % (
+                self.item.title))
         self.assertContains(response, "if (row.id == %d) {" % (self.item.pk))
 
     def test_post_hacked_buttons(self):
@@ -103,6 +113,24 @@ class TestMakeItem(TestCase):
             response,
             "Button Click Unclear.  If you did not tamper with the form," +
             " contact us.")
+
+    def test_post_pick_loaded_images(self):
+        login_as(self.user, self)
+        link_me = set_image()
+
+        response = self.client.post(
+            self.url,
+            data={'current_images': [self.itemimage.filer_image.pk,
+                                     link_me.pk],
+                  'new_images': "",
+                  'finish': 'Save'},
+            follow=True)
+        self.assertContains(
+            response,
+            "Updated Item: %s<br>Linked 2 images. Added 0 images." % (
+                self.item.title))
+        self.assertContains(response, "if (row.id == %d) {" % (self.item.pk))
+
 
 '''
     def test_post_basics_create_finish(self):
