@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static sekizai_tags %}
+{% block title %}
+   {{page_title}}
+{% endblock %}
+{% block head %}
+    {# Include FontAwesome; required for icon display #}
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css">
+
+    <link href="{% static 'css/inventory.css' %}" rel="stylesheet">
+
+    {# Include Bootstrap 4 and jQuery #}
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/static/tinymce/tinymce.min.js"></script>
+    <script>{% include "tiny-mce-user-settings.tmpl" %}</script>
+{% endblock %}
+{% block content %}
+<h2 class="subtitle">{{title}}</h2>
+<h3 class="subtitle">{{subtitle}}</h3>
+<p>{{view_header_text | safe}}</p>
+
+  {% if errors %}
+    {% for error in errors %}
+    <p style= "color:red">{{error}}</p>
+    {% endfor %}
+  {% endif %}
+<form action="" method="post" enctype="multipart/form-data">
+{% csrf_token %}
+
+
+{% if selection_form.errors %}
+<div class="row">
+  <div class="col-12">
+      <font color="red">
+    <p style= "color:red"> There is an error on the selection form.</p>
+  {{ selection_form.non_field_errors }}</font>
+  </div>
+</div>
+{% endif %}
+<div class="row">
+  <div class="col-12">
+{% include "inventory/filter_images_horizontal.tmpl" with field=form.current_images %}
+  </div>
+</div>
+<div class="row">
+  <div class="col-12">
+      <div class="form-group col-12">
+        <h3><span class="label label-default"><label id="{{ field.name }}">
+          
+            <font color="{% if form.new_images.errors %}red{% endif %}">
+            {{ form.new_images.label }}:</font>
+        </label></span></h3>
+        {% if field.errors %}
+          <font color="red">{{ field.errors }}</font>
+        {% endif %}
+      {{form.new_images.help_text}}
+      </div>
+      <div class="form-group col-md-9 col-12">
+      {{form.new_images}}
+      </div>  </div>
+</div>
+<div class="row">
+
+  <div class="offset-6 col-6 offset-sm-7 col-sm-5 offset-md-8 col-md-4 offset-lg-9 col-lg-3">
+    <input type="submit" name="cancel" value="Cancel" class="btn btn-light" >
+    <input type="submit" name="finish" value="Save" class="btn btn-primary" >
+  </div>
+</div>
+</form>
+{% endblock %}
