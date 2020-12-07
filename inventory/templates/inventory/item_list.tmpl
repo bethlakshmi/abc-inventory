@@ -18,7 +18,7 @@
   <h2 class="subtitle">{{title}}</h2>
   </div>
   <div class="col-4 text-right">
-  <a href="" role="button" class="btn btn-primary">Image Upload</a>
+  <a href="{% url 'inventory:image_upload' %}" role="button" class="btn btn-primary">Image Upload</a>
   </div>
 </div>
   {% if errors %}

@@ -1,5 +1,6 @@
 from django.conf.urls import url
 from inventory.views import (
+	BulkImageUpload,
     ItemsListView,
     MakeItemWizard,
 )
@@ -15,4 +16,7 @@ urlpatterns = [
     url(r'^inventory/item/edit/(?P<item_id>\d+)/?',
         MakeItemWizard.as_view(),
         name='item_edit'),
+    url(r'^inventory/image/upload/?',
+        BulkImageUpload.as_view(),
+        name='image_upload'),
 ]
