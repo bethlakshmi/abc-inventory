@@ -302,5 +302,5 @@ class TestMakeItem(TestCase):
             data={'bad_button': "Bad Button"},
             follow=True)
         self.assertContains(response, "Button Click Unclear.")
-        self.assertRedirects(response, "%s?changed_id=%d" % (
-            reverse('items_list', urlconf='inventory.urls'), self.item.pk))
+        self.assertRedirects(response,
+                             reverse('items_list', urlconf='inventory.urls'))
