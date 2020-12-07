@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'full_page.html' %}
 {% load static sekizai_tags %}
 {% block title %}
    {{page_title}}
@@ -151,7 +151,7 @@
         'd': '{% if item.depth %}{{ item.depth.normalize }}{% endif %}',
         'year': '{% if item.year %}{{ item.year|escapejs }}{% endif %}',
         'subject': '{% if item.subject %}{{ item.subject|escapejs }}{% endif %}',
-        'action': '<a class="like" href="{% url "inventory:item_edit" item.id %}" title="Edit"><i class="fas fa-edit"></i></a>',
+        'action': '<a class="like" href="{% url "inventory:item_edit" item.id %}" title="Edit"><i class="fas fa-edit"></i></a>&nbsp;&nbsp;<a class="like" href="{% url "inventory:manage_item_image" item.id %}" title="Manage Images"><i class="far fa-images"></i></a>',
         'price': '{% if item.price %}${{ item.price }}{% endif %}',
         'description': '{% if item.description %}{{ item.description.strip|escapejs }}{% endif %}',
         'note': '{% if item.note %}{{ item.note|escapejs }}{% endif %}',
@@ -161,7 +161,7 @@
         'updated': '{{ item.updated_at }}',
         'tags': '{% for tag in item.tags.all %}{{ tag }}, {% endfor %}',
         'connections': '{% for connect in item.connections.all %}{{ connect|escapejs }}, {% endfor %}',
-        'images': '{% for image in item.images.all %}<img src="{% thumbnail image.filer_image 250x250 %}">&nbsp;&nbsp;{% endfor %}',
+        'images': '{% for image in item.images.all %}<a href="{{image.filer_image.url}}"><img src="{% thumbnail image.filer_image 100x150 %}"></a>&nbsp;&nbsp;{% endfor %}',
         'texts': '{% for text in item.labels.all %}<i>Text {{forloop.counter}}:</i>&nbsp;&nbsp;{{text.text|escapejs}}<br>{% endfor %}',
       },
   {% endfor %}

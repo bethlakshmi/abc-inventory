@@ -6,3 +6,4 @@ from .items_list_view import ItemsListView
 from .generic_wizard import GenericWizard
 from .make_item_wizard import MakeItemWizard
 from .bulk_image_upload import BulkImageUpload
+from .manage_item_image import ManageItemImage

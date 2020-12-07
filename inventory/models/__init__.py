@@ -5,3 +5,4 @@ from .item import Item
 from .item_text import ItemText
 from .item_image import ItemImage
 from .subitem import Subitem
+from .user_message import UserMessage

@@ -11,19 +11,24 @@ def login_as(user, testcase):
                           password='foo')
 
 
-def set_image(itemimage):
-    superuser = User.objects.create_superuser(
-        'superuser_for_%d' % itemimage.pk,
-        'admin@importimage.com',
-        'secret')
+def set_image(itemimage=None):
+    if User.objects.filter(username='superuser_for_test').exists():
+        superuser = User.objects.get(username='superuser_for_test')
+    else:
+        superuser = User.objects.create_superuser(
+            'superuser_for_test',
+            'admin@importimage.com',
+            'secret')
     path = "inventory/tests/made_up_filename.png"
     current_img = Image.objects.create(
         owner=superuser,
         original_filename="made_up_filename.png",
         file=File(open(path, 'rb')))
     current_img.save()
-    itemimage.filer_image_id = current_img.pk
-    itemimage.save()
+    if itemimage:
+        itemimage.filer_image_id = current_img.pk
+        itemimage.save()
+    return current_img
 
 
 def assert_option_state(response, value, text, selected=False):
