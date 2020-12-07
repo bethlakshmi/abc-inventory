@@ -5,11 +5,7 @@ from django.forms import (
     ModelMultipleChoiceField,
 )
 from django.forms.widgets import CheckboxSelectMultiple
-from inventory.models import (
-    Item,
-    ItemImage,
-    UserMessage,
-)
+from inventory.models import UserMessage
 from django.utils.safestring import mark_safe
 from filer.models import Image
 from easy_thumbnails.files import get_thumbnailer
