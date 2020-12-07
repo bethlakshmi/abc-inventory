@@ -56,7 +56,7 @@ class TestMakeItem(TestCase):
                 self.itemimage.filer_image.pk, 'checked'),
             html=True)
 
-    def test_get_wout_image(self):
+    def test_get_item_wout_image(self):
         self.item = ItemFactory()
         image = self.itemimage.filer_image
         self.itemimage.delete()
