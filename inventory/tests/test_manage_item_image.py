@@ -4,17 +4,11 @@ from django.urls import reverse
 from inventory.tests.factories import (
     ItemFactory,
     ItemImageFactory,
-    TagFactory,
     UserFactory
 )
 from inventory.tests.functions import (
     login_as,
-    assert_option_state,
     set_image
-)
-from datetime import (
-    date,
-    timedelta,
 )
 from inventory.models import ItemImage
 from easy_thumbnails.files import get_thumbnailer

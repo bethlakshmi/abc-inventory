@@ -2,7 +2,6 @@ from django.views.generic import View
 from django.views.decorators.cache import never_cache
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-from django.http import Http404
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.shortcuts import (
@@ -16,10 +15,6 @@ from inventory.models import (
 from filer.models import Image
 from inventory.forms import ItemImageForm
 from django.contrib import messages
-from django.forms import (
-    IntegerField,
-    HiddenInput,
-)
 from inventory.functions import upload_and_attach
 
 
