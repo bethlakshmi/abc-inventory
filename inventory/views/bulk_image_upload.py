@@ -1,14 +1,9 @@
 from inventory.views import GenericWizard
 from inventory.forms import (
-    BasicItemForm,
-    FurtherDetailForm,
+    ImageUploadForm,
     PhysicalItemForm,
 )
 from django.contrib import messages
-from django.forms import (
-    IntegerField,
-    HiddenInput,
-)
 
 
 class BulkImageUpload(GenericWizard):
@@ -19,10 +14,10 @@ class BulkImageUpload(GenericWizard):
     form_sets = {
         -1: {
             'the_form':  None,
-            'next_form': BasicItemForm,
+            'next_form': ImageUploadForm,
             'next_title': first_title},
         0: {
-            'the_form':  BasicItemForm,
+            'the_form':  ImageUploadForm,
             'next_form': PhysicalItemForm,
             'next_title': second_title},
         1: {

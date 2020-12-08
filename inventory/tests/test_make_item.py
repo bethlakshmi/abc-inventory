@@ -245,6 +245,45 @@ class TestMakeItem(TestCase):
         self.assertContains(response, "<< Back")
         self.assertContains(response, "Save & Continue >>")
 
+    def test_post_physical_bad_width(self):
+        login_as(self.user, self)
+        physical = self.get_physical()
+        physical['width'] = -1
+        physical['next'] = "Save & Continue >>"
+        response = self.client.post(self.url, data=physical)
+        self.assertContains(response, "Physical Information")
+        self.assertContains(
+            response,
+            "w - Ensure this value is greater than or equal to 0.00.")
+        self.assertContains(response, "!&nbsp;&nbsp;Dimensions:")
+        self.assertContains(response, "Save & Continue >>")
+
+    def test_post_physical_bad_height(self):
+        login_as(self.user, self)
+        physical = self.get_physical()
+        physical['height'] = -1
+        physical['next'] = "Save & Continue >>"
+        response = self.client.post(self.url, data=physical)
+        self.assertContains(response, "Physical Information")
+        self.assertContains(
+            response,
+            "h - Ensure this value is greater than or equal to 0.00.")
+        self.assertContains(response, "!&nbsp;&nbsp;Dimensions:")
+        self.assertContains(response, "Save & Continue >>")
+
+    def test_post_physical_bad_depth(self):
+        login_as(self.user, self)
+        physical = self.get_physical()
+        physical['depth'] = -1
+        physical['next'] = "Save & Continue >>"
+        response = self.client.post(self.url, data=physical)
+        self.assertContains(response, "Physical Information")
+        self.assertContains(
+            response,
+            "d - Ensure this value is greater than or equal to 0.00.")
+        self.assertContains(response, "!&nbsp;&nbsp;Dimensions:")
+        self.assertContains(response, "Save & Continue >>")
+
     def test_post_further_create_finish(self):
         login_as(self.user, self)
         further = self.get_further()
