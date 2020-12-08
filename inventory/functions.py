@@ -8,7 +8,7 @@ def upload_and_attach(files, user, item=None):
     superuser = User.objects.get(username='admin_img')
     folder, created = Folder.objects.get_or_create(
         name='ItemImageUploads')
-    count_files = 0
+    images = []
     for f in files:
         img, created = Image.objects.get_or_create(
             owner=superuser,
@@ -17,8 +17,8 @@ def upload_and_attach(files, user, item=None):
             folder=folder,
             author="%s" % str(user.username))
         img.save()
+        images += [img]
         if item:
             new_link = ItemImage(item=item, filer_image=img)
             new_link.save()
-            count_files = count_files + 1
-    return count_files
+    return images

@@ -41,6 +41,8 @@ class GenericWizard(View):
             'first': self.current_form_set['the_form'] is None,
             'last': self.form_sets[self.step+1]['next_form'] is None,
         }
+        if type(self.form) is list:
+            context['forms'] = self.form
         return context
 
     def make_back_forms(self, request):
@@ -77,7 +79,7 @@ class GenericWizard(View):
                 self.current_form_set = self.form_sets[self.step]
                 return render(request, self.template, self.make_context(
                     request))
-            self.finish_valid_form()
+            self.finish_valid_form(request)
             if 'finish' in list(request.POST.keys()):
                 return HttpResponseRedirect(self.finish(request))
         elif 'back' in list(request.POST.keys()):

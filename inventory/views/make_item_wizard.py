@@ -64,7 +64,7 @@ class MakeItemWizard(GenericWizard):
             context['special_handling'] = True
         return context
 
-    def finish_valid_form(self):
+    def finish_valid_form(self, request):
         self.item = self.form.save()
 
     def finish(self, request):

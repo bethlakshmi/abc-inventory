@@ -1,7 +1,9 @@
 from django.forms import (
     ClearableFileInput,
     ImageField,
+    IntegerField,
     Form,
+    HiddenInput,
     ModelMultipleChoiceField,
 )
 from django.forms.widgets import CheckboxSelectMultiple
@@ -24,9 +26,10 @@ class ImageUploadForm(Form):
         widget=ClearableFileInput(attrs={'multiple': True}),
         required=False,
         help_text=UserMessage.objects.get_or_create(
-                view="ItemImageForm",
+                view="ImageUploadForm",
                 code="NEW_IMAGE_INSTRUCTIONS",
                 defaults={
                     'summary': "New Image Help text",
                     'description': item_image_help['new_images']}
                 )[0].description)
+    step = IntegerField(widget=HiddenInput(), initial=0)
