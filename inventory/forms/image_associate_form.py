@@ -3,13 +3,12 @@ from django.forms import (
     ImageField,
     ModelForm,
     ModelMultipleChoiceField,
+    TextInput,
 )
 from django.forms.widgets import CheckboxSelectMultiple
 from inventory.models import ItemImage
 from django.utils.safestring import mark_safe
-from filer.models import Image
-from easy_thumbnails.files import get_thumbnailer
-from inventory.forms.default_form_text import item_image_help
+from dal import autocomplete
 
 
 class ImageAssociateForm(ModelForm):
@@ -19,5 +18,9 @@ class ImageAssociateForm(ModelForm):
     class Meta:
         model = ItemImage
         fields = [
-            'item',
-            'filer_image']
+            'filer_image',
+            'item']
+        widgets = {
+            'title': TextInput(attrs={'size': '87'}),
+            'item': autocomplete.ModelSelect2(
+                url='connection-autocomplete')}
