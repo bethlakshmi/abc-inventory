@@ -2,9 +2,12 @@ from inventory.views import GenericWizard
 from inventory.forms import (
     ImageUploadForm,
     ImageAssociateForm,
+    ImageAssociateMetaForm,
 )
 from django.contrib import messages
 from inventory.functions import upload_and_attach
+from django.utils.safestring import mark_safe
+from easy_thumbnails.files import get_thumbnailer
 
 
 class BulkImageUpload(GenericWizard):
@@ -27,6 +30,8 @@ class BulkImageUpload(GenericWizard):
             'next_form': None,
             'next_title': None},
     }
+    options = {'size': (100, 100), 'crop': False}
+
 
     def finish_valid_form(self, request):
         files = request.FILES.getlist('new_images')
@@ -39,19 +44,35 @@ class BulkImageUpload(GenericWizard):
         messages.success(request, "Uploaded %s Images" % 10)
         return self.return_url
 
-    def setup_form(self, form, POST=None):
+    def setup_forms(self, form, POST=None):
         if POST:
             if str(form().__class__.__name__) == "ImageUploadForm":
                 return form(POST)
             else:
-                raise Exception(str(form.__class__.__name__))
+                meta_form = ImageAssociateMetaForm(POST)
+                if not meta_form.is_valid():
+                    return []
+                forms += [meta_form]
+                for i in range(0, meta_form.cleaned_data['association_count']):
+                    association_form = form(POST, prefix=str(association_num))
+                    forms += [association_form]
+                return forms
         else:
             if str(form().__class__.__name__) == "ImageUploadForm":
                 return form()
             else:
                 forms = []
+                association_num = 0
                 for image in self.filer_images:
-                    forms += [form(initial={'filer_image': image},
-                                   prefix=str(image.pk))]
+                    association_form = form(initial={'filer_image': image},
+                                            prefix=str(association_num))
+                    thumb_url = get_thumbnailer(image).get_thumbnail(
+                        self.options).url
+                    association_form.fields['item'].label = mark_safe(
+                        "<img src='%s' title='%s'/>" % (thumb_url, image))
+                    forms += [association_form]
+                    association_num = association_num + 1
+                forms += [ImageAssociateMetaForm(
+                    initial={'association_count': association_num - 1})]
                 return forms
 

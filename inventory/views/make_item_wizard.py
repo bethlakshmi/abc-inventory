@@ -60,12 +60,12 @@ class MakeItemWizard(GenericWizard):
         if self.item:
             title = self.item.title
         context['title'] = title
-        if str(self.form.__class__.__name__) == "PhysicalItemForm":
+        if str(self.forms[0].__class__.__name__) == "PhysicalItemForm":
             context['special_handling'] = True
         return context
 
     def finish_valid_form(self, request):
-        self.item = self.form.save()
+        self.item = self.forms[0].save()
 
     def finish(self, request):
         if self.page_title == 'Create New Item':
@@ -75,15 +75,16 @@ class MakeItemWizard(GenericWizard):
 
         return "%s?changed_id=%d" % (self.return_url, self.item.id)
 
-    def setup_form(self, form, POST=None):
+    def setup_forms(self, form, POST=None):
         if POST:
             if self.item:
-                return form(POST, instance=self.item)
+                return [form(POST, instance=self.item)]
             else:
-                return form(POST)
+                return [form(POST)]
         elif self.item:
-            return form(instance=self.item)
+            edit_form = form(instance=self.item)
             self.form.fields['item_id'] = IntegerField(widget=HiddenInput(),
                                                        initial=self.item.id)
+            return [edit_form]
         else:
-            return form()
+            return [form()]

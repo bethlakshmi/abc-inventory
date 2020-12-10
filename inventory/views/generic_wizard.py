@@ -18,7 +18,7 @@ class GenericWizard(View):
     #          - there must be a -1 with the_form = None
     #          - there must be a last item with next_form and next_title 
     #            as None
-    #     - create setup_form - which can make any form in the set, the first
+    #     - create setup_forms - which can make any form in the set, the first
     #          form can be  made via either get or post, all forms after that
     #          are submitted as posts.
     #     - finish_valid_form - what to do when a form is deemed valid
@@ -37,12 +37,10 @@ class GenericWizard(View):
             'page_title': self.page_title,
             'title': self.page_title,
             'subtitle': self.current_form_set['next_title'],
-            'forms': [self.form],
+            'forms': self.forms,
             'first': self.current_form_set['the_form'] is None,
             'last': self.form_sets[self.step+1]['next_form'] is None,
         }
-        if type(self.form) is list:
-            context['forms'] = self.form
         return context
 
     def make_back_forms(self, request):
@@ -57,7 +55,7 @@ class GenericWizard(View):
     def get(self, request, *args, **kwargs):
         redirect = self.groundwork(request, args, kwargs)
         self.current_form_set = self.form_sets[-1]
-        self.form = self.setup_form(self.current_form_set['next_form'])
+        self.forms = self.setup_forms(self.current_form_set['next_form'])
         return render(request, self.template, self.make_context(request))
 
     @never_cache
@@ -70,11 +68,14 @@ class GenericWizard(View):
 
         if 'next' in list(request.POST.keys()) or (
                 'finish' in list(request.POST.keys())):
+            all_valid = True
             self.current_form_set = self.form_sets[self.step]
-            self.form = self.setup_form(
+            self.forms = self.setup_forms(
                 self.current_form_set['the_form'],
                 request.POST)
-            if not self.form.is_valid():
+            for form in self.forms:
+                all_valid = form.is_valid() and all_valid
+            if not all_valid:
                 self.step = self.step - 1
                 self.current_form_set = self.form_sets[self.step]
                 return render(request, self.template, self.make_context(
@@ -92,7 +93,7 @@ class GenericWizard(View):
             self.current_form_set = {'next_form': None}
 
         if self.current_form_set['next_form'] is not None:
-            self.form = self.setup_form(self.current_form_set['next_form'])
+            self.forms = self.setup_forms(self.current_form_set['next_form'])
             return render(request, self.template, self.make_context(request))
 
         messages.error(request, "Unexpected logic flow.  Contact support.")
