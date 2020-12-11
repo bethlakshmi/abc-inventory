@@ -23,6 +23,7 @@ class TestMakeItem(TestCase):
     '''Tests for review_costume_list view'''
     view_name = "item_create"
     edit_name = "item_edit"
+    item_id = '<input type="hidden" name="item_id" value="%d" id="id_item_id">'
 
     def get_further(self):
         new_tag = TagFactory()
@@ -127,6 +128,10 @@ class TestMakeItem(TestCase):
         self.assertContains(response, "Physical Information")
         self.assertContains(response, "<< Back")
         self.assertContains(response, "Save & Continue >>")
+        self.assertContains(
+            response,
+            self.item_id % (self.item.pk + 1),
+            html=True)
 
     def test_post_basics_create_finish(self):
         login_as(self.user, self)
@@ -149,6 +154,7 @@ class TestMakeItem(TestCase):
         self.assertContains(response, "Physical Information")
         self.assertContains(response, "<< Back")
         self.assertContains(response, "Save & Continue >>")
+        self.assertContains(response, self.item_id % self.item.pk, html=True)
 
     def test_post_basics_edit_finish(self):
         login_as(self.user, self)
@@ -183,6 +189,7 @@ class TestMakeItem(TestCase):
         self.assertContains(response, "<< Back")
         self.assertNotContains(response, "Save & Continue >>")
         self.assertContains(response, "Further Details")
+        self.assertContains(response, self.item_id % self.item.pk, html=True)
 
     def test_post_physical_create_finish(self):
         login_as(self.user, self)
@@ -206,6 +213,7 @@ class TestMakeItem(TestCase):
         self.assertContains(response, "<< Back")
         self.assertNotContains(response, "Save & Continue >>")
         self.assertContains(response, "Further Details")
+        self.assertContains(response, self.item_id % self.item.pk, html=True)
 
     def test_post_physical_back(self):
         login_as(self.user, self)

@@ -83,7 +83,7 @@ class MakeItemWizard(GenericWizard):
                 return [form(POST)]
         elif self.item:
             edit_form = form(instance=self.item)
-            self.form.fields['item_id'] = IntegerField(widget=HiddenInput(),
+            edit_form.fields['item_id'] = IntegerField(widget=HiddenInput(),
                                                        initial=self.item.id)
             return [edit_form]
         else:
