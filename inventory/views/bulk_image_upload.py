@@ -50,7 +50,11 @@ class BulkImageUpload(GenericWizard):
                     self.links = self.links + 1
 
     def finish(self, request):
-        messages.success(request, "Uploaded %s Images" % 10)
+        messages.success(
+            request,
+            "Uploaded %s images.<br>Attached %s images." % (
+                self.num_files,
+                self.links))
         return self.return_url
 
     def setup_forms(self, form, POST=None):
@@ -60,7 +64,6 @@ class BulkImageUpload(GenericWizard):
             else:
                 meta_form = ImageAssociateMetaForm(POST)
                 if not meta_form.is_valid():
-                    # TODO - better error handling here
                     return []
                 forms = [meta_form]
                 for i in range(0,
