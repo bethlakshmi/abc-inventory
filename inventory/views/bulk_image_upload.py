@@ -12,7 +12,7 @@ from easy_thumbnails.files import get_thumbnailer
 
 class BulkImageUpload(GenericWizard):
     filer_images = []
-    template = 'inventory/image_upload_wizard.tmpl'
+    template = 'inventory/generic_wizard.tmpl'
     page_title = 'Image Upload'
     first_title = 'Select Images to Upload'
     second_title = 'Connect Images to Items'
@@ -67,26 +67,28 @@ class BulkImageUpload(GenericWizard):
                     return []
                 forms = [meta_form]
                 for i in range(0,
-                               meta_form.cleaned_data['association_count']+1):
-                    association_form = form(POST, prefix=str(i))
+                               meta_form.cleaned_data['association_count']):
+                    association_form = form(POST,
+                                            prefix=str(i),
+                                            label_suffix='')
                     forms += [association_form]
                 return forms
         else:
             if str(form().__class__.__name__) == "ImageUploadForm":
                 return [form()]
             else:
-                forms = []
                 association_num = 0
+                forms = [ImageAssociateMetaForm(
+                    initial={'association_count': len(self.filer_images)})]
                 for image in self.filer_images:
                     association_form = form(initial={'filer_image': image},
-                                            prefix=str(association_num))
+                                            prefix=str(association_num),
+                                            label_suffix='')
                     thumb_url = get_thumbnailer(image).get_thumbnail(
                         self.options).url
                     association_form.fields['item'].label = mark_safe(
                         "<img src='%s' title='%s'/>" % (thumb_url, image))
                     forms += [association_form]
                     association_num = association_num + 1
-                forms += [ImageAssociateMetaForm(
-                    initial={'association_count': association_num - 1})]
                 return forms
 
