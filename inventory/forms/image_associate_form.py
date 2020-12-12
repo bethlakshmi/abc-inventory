@@ -9,12 +9,14 @@ from inventory.models import (
     ItemImage,
 )
 from dal import autocomplete
+from filer.models.imagemodels import Image
 
 
 class ImageAssociateForm(ModelForm):
     required_css_class = 'required'
     error_css_class = 'error'
-    filer_image = CharField(widget=HiddenInput())
+    filer_image = ModelChoiceField(widget=HiddenInput(),
+        queryset=Image.objects.all())
     item = ModelChoiceField(
         queryset=Item.objects.all(),
         required=False,

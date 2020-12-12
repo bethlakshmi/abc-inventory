@@ -35,10 +35,19 @@ class BulkImageUpload(GenericWizard):
 
     def finish_valid_form(self, request):
         files = request.FILES.getlist('new_images')
+        self.links = 0
+        self.num_files = len(files)
         if len(files) > 0:
             self.filer_images = upload_and_attach(
                 files,
                 request.user)
+        elif self.forms[0].__class__.__name__ == "ImageAssociateMetaForm":
+            self.num_files = self.forms[0].cleaned_data['association_count']
+            for form in self.forms:
+                if form.__class__.__name__ != "ImageAssociateMetaForm" and (
+                        form.cleaned_data['item']):
+                    form.save()
+                    self.links = self.links + 1
 
     def finish(self, request):
         messages.success(request, "Uploaded %s Images" % 10)
@@ -47,19 +56,21 @@ class BulkImageUpload(GenericWizard):
     def setup_forms(self, form, POST=None):
         if POST:
             if str(form().__class__.__name__) == "ImageUploadForm":
-                return form(POST)
+                return [form(POST)]
             else:
                 meta_form = ImageAssociateMetaForm(POST)
                 if not meta_form.is_valid():
+                    # TODO - better error handling here
                     return []
-                forms += [meta_form]
-                for i in range(0, meta_form.cleaned_data['association_count']):
-                    association_form = form(POST, prefix=str(association_num))
+                forms = [meta_form]
+                for i in range(0,
+                               meta_form.cleaned_data['association_count']+1):
+                    association_form = form(POST, prefix=str(i))
                     forms += [association_form]
                 return forms
         else:
             if str(form().__class__.__name__) == "ImageUploadForm":
-                return form()
+                return [form()]
             else:
                 forms = []
                 association_num = 0
