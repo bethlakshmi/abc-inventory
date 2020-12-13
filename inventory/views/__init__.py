@@ -1,4 +1,3 @@
-from .default_view_text import user_messages
 from .category_autocomplete import CategoryAutocomplete
 from .connection_autocomplete import ConnectionAutocomplete
 from .disposition_autocomplete import DispositionAutocomplete

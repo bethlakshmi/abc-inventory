@@ -22,6 +22,7 @@ from inventory.models import Item
 
 
 class TestItemList(TestCase):
+    '''Tests for review_costume_list view'''
     view_name = "items_list"
 
     def setUp(self):
