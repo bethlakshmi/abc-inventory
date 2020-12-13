@@ -65,13 +65,14 @@ class TestBulkImageUpload(TestCase):
                   'step': 0,
                   'next': 'Save & Continue >>'},
             follow=True)
-        self.assertContains(
-            response,
-            "Connect Images to Items")
+        print(response.content)
         image2 = Image.objects.latest('pk')
         image1 = Image.objects.get(pk=image2.pk-1)
         thumb_url = get_thumbnailer(
             image1).get_thumbnail(self.options).url
+        self.assertContains(
+            response,
+            "Connect Images to Items")
         self.assertContains(
             response,
             "<img src='%s' title='%s'/>" % (
@@ -165,7 +166,6 @@ class TestBulkImageUpload(TestCase):
                   'association_count': 2,
                   'finish': 'Finish'},
             follow=True)
-        print(response.content)
         self.assertContains(
             response,
              "There is an error on the form.",
@@ -187,80 +187,28 @@ class TestBulkImageUpload(TestCase):
                   'association_count': 4,
                   'finish': 'Finish'},
             follow=True)
-        print(response.content)
         self.assertContains(
             response,
              "There is an error on the form.",
              2)
 
-'''
-
-    def test_post_clear_images(self):
+    def test_post_attachments_invalid_association(self):
+        # The user would have to be hacking the form to do this.
+        from inventory.views import user_messages
+        img1 = set_image(self.itemimage)
+        img2 = set_image(self.itemimage)
+        item = ItemFactory()
         login_as(self.user, self)
-
         response = self.client.post(
             self.url,
-            data={'current_images': [],
-                  'new_images': "",
-                  'finish': 'Save'},
+            data={'0-filer_image': img1.pk,
+                  '1-filer_image': img2.pk,
+                  '0-item': item.pk,
+                  '1-item': "",
+                  'step': 1,
+                  'association_count': -1,
+                  'finish': 'Finish'},
             follow=True)
         self.assertContains(
             response,
-            "Updated Item: %s<br>Linked 0 images. Added 0 images." % (
-                self.item.title))
-        self.assertContains(response, "if (row.id == %d) {" % (self.item.pk))
-
-    def test_post_hacked_buttons(self):
-        login_as(self.user, self)
-
-        response = self.client.post(
-            self.url,
-            data={'current_images': [],
-                  'new_images': ""})
-        self.assertContains(
-            response,
-            "Button Click Unclear.  If you did not tamper with the form," +
-            " contact us.")
-
-    def test_post_pick_loaded_images(self):
-        login_as(self.user, self)
-        link_me = set_image()
-
-        response = self.client.post(
-            self.url,
-            data={'current_images': [self.itemimage.filer_image.pk,
-                                     link_me.pk],
-                  'new_images': "",
-                  'finish': 'Save'},
-            follow=True)
-        self.assertContains(
-            response,
-            "Updated Item: %s<br>Linked 2 images. Added 0 images." % (
-                self.item.title))
-        self.assertContains(response, "if (row.id == %d) {" % (self.item.pk))
-
-    def test_post_bad_image_id(self):
-        login_as(self.user, self)
-        link_me = set_image()
-        response = self.client.post(
-            self.url,
-            data={'current_images': [self.itemimage.filer_image.pk + 100],
-                  'new_images': "",
-                  'finish': 'Save'},
-            follow=True)
-        self.assertContains(
-            response,
-            "%d is not one of the available choices." % (
-                self.itemimage.filer_image.pk + 100))
-
-
-    def test_cancel(self):
-        login_as(self.user, self)
-        response = self.client.post(
-            self.url,
-            data={'cancel': "Cancel"},
-            follow=True)
-        self.assertContains(response, "The last update was canceled.")
-        self.assertRedirects(response,
-                             reverse("items_list", urlconf="inventory.urls"))
-'''
+            user_messages["NO_FORM_ERROR"]["description"])

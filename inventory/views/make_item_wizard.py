@@ -75,12 +75,12 @@ class MakeItemWizard(GenericWizard):
 
         return "%s?changed_id=%d" % (self.return_url, self.item.id)
 
-    def setup_forms(self, form, POST=None):
-        if POST:
+    def setup_forms(self, form, request=None):
+        if request:
             if self.item:
-                return [form(POST, instance=self.item)]
+                return [form(request.POST, instance=self.item)]
             else:
-                return [form(POST)]
+                return [form(request.POST)]
         elif self.item:
             edit_form = form(instance=self.item)
             edit_form.fields['item_id'] = IntegerField(widget=HiddenInput(),

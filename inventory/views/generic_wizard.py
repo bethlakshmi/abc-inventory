@@ -87,7 +87,7 @@ class GenericWizard(View):
                 return self.return_on_error(request, "STEP_ERROR")
             self.forms = self.setup_forms(
                 self.current_form_set['the_form'],
-                request.POST)
+                request)
             if len(self.forms) == 0:
                 return self.return_on_error(request, "NO_FORM_ERROR")
             for form in self.forms:

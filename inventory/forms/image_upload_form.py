@@ -24,7 +24,7 @@ class ImageUploadForm(Form):
 
     new_images = ImageField(
         widget=ClearableFileInput(attrs={'multiple': True}),
-        required=False,
+        required=True,
         help_text=UserMessage.objects.get_or_create(
                 view="ImageUploadForm",
                 code="NEW_IMAGE_INSTRUCTIONS",

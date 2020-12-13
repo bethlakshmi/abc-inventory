@@ -56,18 +56,18 @@ class BulkImageUpload(GenericWizard):
                 self.links))
         return self.return_url
 
-    def setup_forms(self, form, POST=None):
-        if POST:
+    def setup_forms(self, form, request=None):
+        if request:
             if str(form().__class__.__name__) == "ImageUploadForm":
-                return [form(POST)]
+                return [form(request.POST, request.FILES)]
             else:
-                meta_form = ImageAssociateMetaForm(POST)
+                meta_form = ImageAssociateMetaForm(request.POST)
                 if not meta_form.is_valid():
                     return []
                 self.num_files = meta_form.cleaned_data['association_count']
                 forms = []
                 for i in range(0, self.num_files):
-                    association_form = form(POST,
+                    association_form = form(request.POST,
                                             prefix=str(i),
                                             label_suffix='')
                     if association_form.is_valid():
