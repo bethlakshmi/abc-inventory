@@ -73,10 +73,6 @@ class GenericWizard(View):
             self.forms = self.setup_forms(
                 self.current_form_set['the_form'],
                 request.POST)
-            if len(self.forms) == 0:
-                messages.error(request,
-                               "There's been an error, please try again.")
-                return HttpResponseRedirect(self.return_url)
             for form in self.forms:
                 all_valid = form.is_valid() and all_valid
             if not all_valid:
