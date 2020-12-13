@@ -32,7 +32,6 @@ class BulkImageUpload(GenericWizard):
     }
     options = {'size': (100, 100), 'crop': False}
 
-
     def finish_valid_form(self, request):
         files = request.FILES.getlist('new_images')
         self.links = 0
@@ -98,4 +97,3 @@ class BulkImageUpload(GenericWizard):
                 forms += [ImageAssociateMetaForm(
                     initial={'association_count': association_num})]
                 return forms
-
