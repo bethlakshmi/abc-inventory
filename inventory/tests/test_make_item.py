@@ -342,11 +342,15 @@ class TestMakeItem(TestCase):
                              reverse("items_list", urlconf="inventory.urls"))
 
     def test_bad_button_name(self):
+        from inventory.views import user_messages
         login_as(self.user, self)
         response = self.client.post(
             self.edit_url,
             data={'bad_button': "Bad Button"},
             follow=True)
-        self.assertContains(response, "Button Click Unclear.")
+        self.assertContains(
+            response,
+            user_messages["BUTTON_CLICK_UNKNOWN"]["description"])
+
         self.assertRedirects(response,
                              reverse('items_list', urlconf='inventory.urls'))

@@ -112,11 +112,11 @@ class GenericWizard(View):
                     'description': user_messages["BUTTON_CLICK_UNKNOWN"]
                         ['description']}
                 )
-            messages.error(request, msg[0].description + extra_message)
+            messages.error(request, msg[0].description)
             self.current_form_set = {'next_form': None}
 
         if self.current_form_set['next_form'] is not None:
             self.forms = self.setup_forms(self.current_form_set['next_form'])
             return render(request, self.template, self.make_context(request))
 
-        return self.return_on_error(request, "LOGIC_ERROR")
+        return HttpResponseRedirect(self.return_url)

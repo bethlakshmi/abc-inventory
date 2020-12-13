@@ -32,3 +32,4 @@ data.tar.gz
 .coverage
 htmlcov/*
 data/media/MANIFEST
+.coverage.*
