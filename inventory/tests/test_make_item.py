@@ -20,7 +20,6 @@ from inventory.models import Item
 
 
 class TestMakeItem(TestCase):
-    '''Tests for review_costume_list view'''
     view_name = "item_create"
     edit_name = "item_edit"
     item_id = '<input type="hidden" name="item_id" value="%d" id="id_item_id">'

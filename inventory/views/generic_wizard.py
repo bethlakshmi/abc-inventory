@@ -7,6 +7,8 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.shortcuts import render
 from django.contrib import messages
+from inventory.models import UserMessage
+from inventory.views import user_messages
 
 
 class GenericWizard(View):
@@ -58,6 +60,17 @@ class GenericWizard(View):
         self.forms = self.setup_forms(self.current_form_set['next_form'])
         return render(request, self.template, self.make_context(request))
 
+    def return_on_error(self, request, message_code, extra_message=""):
+        msg = UserMessage.objects.get_or_create(
+                view=self.__class__.__name__,
+                code=message_code,
+                defaults={
+                    'summary': user_messages[message_code]['summary'],
+                    'description': user_messages[message_code]['description']}
+                )
+        messages.error(request, msg[0].description + extra_message)
+        return HttpResponseRedirect(self.return_url)
+
     @never_cache
     @method_decorator(login_required)
     def post(self, request, *args, **kwargs):
@@ -70,13 +83,13 @@ class GenericWizard(View):
                 'finish' in list(request.POST.keys())):
             all_valid = True
             self.current_form_set = self.form_sets[self.step]
+            if not self.current_form_set['the_form']:
+                return self.return_on_error(request, "STEP_ERROR")
             self.forms = self.setup_forms(
                 self.current_form_set['the_form'],
                 request.POST)
             if len(self.forms) == 0:
-                messages.error(request,
-                               "There's been an error, please try again.")
-                return HttpResponseRedirect(self.return_url)
+                return self.return_on_error(request, "NO_FORM_ERROR")
             for form in self.forms:
                 all_valid = form.is_valid() and all_valid
             if not all_valid:
@@ -90,16 +103,18 @@ class GenericWizard(View):
         elif 'back' in list(request.POST.keys()):
             self.make_back_forms(request)
         else:
-            messages.error(
-                request,
-                "Button Click Unclear.  If you did not tamper with the form," +
-                " contact us.")
+            msg = UserMessage.objects.get_or_create(
+                view=self.__class__.__name__,
+                code="BUTTON_CLICK_UNKNOWN",
+                defaults={
+                    'summary': user_messages["BUTTON_CLICK_UNKNOWN"]['summary'],
+                    'description': user_messages["BUTTON_CLICK_UNKNOWN"]['description']}
+                )
+            messages.error(request, msg[0].description + extra_message)
             self.current_form_set = {'next_form': None}
 
         if self.current_form_set['next_form'] is not None:
             self.forms = self.setup_forms(self.current_form_set['next_form'])
             return render(request, self.template, self.make_context(request))
 
-        messages.error(request, "Unexpected logic flow.  Contact support.")
-
-        return HttpResponseRedirect(self.return_url)
+        return self.return_on_error(request, "LOGIC_ERROR")

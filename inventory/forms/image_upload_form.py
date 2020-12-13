@@ -15,7 +15,7 @@ from inventory.models import (
 from django.utils.safestring import mark_safe
 from filer.models import Image
 from easy_thumbnails.files import get_thumbnailer
-from inventory.forms.default_form_text import item_image_help
+from inventory.forms import item_image_help
 
 
 class ImageUploadForm(Form):

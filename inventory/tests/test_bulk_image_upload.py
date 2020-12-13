@@ -12,10 +12,15 @@ from inventory.tests.functions import (
 )
 from inventory.models import ItemImage
 from easy_thumbnails.files import get_thumbnailer
+from filer.models import Image
 
 
-class TestMakeItem(TestCase):
-    view_name = "manage_item_image"
+class TestBulkImageUpload(TestCase):
+    ''' This view reuses the generic wizard that is fully tested in 
+    make_item testing.  As such, this collection limits itself to 
+    what's special for bulk image upload - including a lot of multi-form
+    logic'''
+    view_name = "image_upload"
     options = {'size': (100, 100), 'crop': False}
     image_checkbox = '''<input type="checkbox" name="current_images"
         style="display: none;" id="id_current_images_%d" value="%d" %s>'''
@@ -23,38 +28,56 @@ class TestMakeItem(TestCase):
     def setUp(self):
         self.client = Client()
         self.user = UserFactory()
-        ItemImage.objects.all().delete()
         self.itemimage = ItemImageFactory()
         set_image(self.itemimage)
-        self.item = self.itemimage.item
         self.url = reverse(self.view_name,
-                           urlconf="inventory.urls",
-                           args=[self.item.pk])
+                           urlconf="inventory.urls")
 
-    def test_no_login(self):
-        response = self.client.get(self.url)
-        self.assertRedirects(response,
-                             "/login/?next=%s" % self.url,
-                             fetch_redirect_response=False)
-
-    def test_get_w_image(self):
+    def test_get(self):
+        from inventory.forms import item_image_help
         login_as(self.user, self)
         response = self.client.get(self.url)
-        thumb_url = get_thumbnailer(
-            self.itemimage.filer_image).get_thumbnail(self.options).url
-        self.assertContains(response, "Manage Images for %s" % self.item.title)
-        self.assertContains(
-            response,
-            "<img src='%s' title='Linked to: %s;'/>" % (
-                thumb_url,
-                self.item.title))
-        self.assertContains(
-            response,
-            self.image_checkbox % (
-                0,
-                self.itemimage.filer_image.pk, 'checked'),
-            html=True)
+        self.assertContains(response, item_image_help['new_images'])
 
+    def test_upload_files_no_step_error(self):
+        from inventory.views import user_messages
+        UserFactory(username='admin_img')
+        login_as(self.user, self)
+        file1 = open("inventory/tests/redexpo.jpg", 'rb')
+        file2 = open("inventory/tests/10yrs.jpg", 'rb')
+        response = self.client.post(
+            self.url,
+            data={'new_images': [file1, file2],
+                  'next': 'Save & Continue >>'},
+            follow=True)
+        self.assertContains(
+            response,
+            user_messages["STEP_ERROR"]["description"])
+
+    def test_upload_files_continue(self):
+        UserFactory(username='admin_img')
+        login_as(self.user, self)
+        file1 = open("inventory/tests/redexpo.jpg", 'rb')
+        file2 = open("inventory/tests/10yrs.jpg", 'rb')
+        response = self.client.post(
+            self.url,
+            data={'new_images': [file1, file2],
+                  'step': 0,
+                  'next': 'Save & Continue >>'},
+            follow=True)
+        self.assertContains(
+            response,
+            "Connect Images to Items")
+        image2 = Image.objects.latest('pk')
+        thumb_url = get_thumbnailer(
+            image2).get_thumbnail(self.options).url
+        self.assertContains(
+            response,
+            "<img src='%s' title='%s'/>" % (
+                thumb_url,
+                image2))
+
+'''
     def test_get_item_wout_image(self):
         self.item = ItemFactory()
         image = self.itemimage.filer_image
@@ -140,21 +163,6 @@ class TestMakeItem(TestCase):
             "%d is not one of the available choices." % (
                 self.itemimage.filer_image.pk + 100))
 
-    def test_post_file_uploads(self):
-        UserFactory(username='admin_img')
-        login_as(self.user, self)
-        file1 = open("inventory/tests/redexpo.jpg", 'rb')
-        file2 = open("inventory/tests/10yrs.jpg", 'rb')
-        response = self.client.post(
-            self.url,
-            data={'current_images': [],
-                  'new_images': [file1, file2],
-                  'finish': 'Save'},
-            follow=True)
-        self.assertContains(
-            response,
-            "Updated Item: %s<br>Linked 0 images. Added 2 images." % (
-                self.item.title))
 
     def test_cancel(self):
         login_as(self.user, self)
@@ -165,3 +173,4 @@ class TestMakeItem(TestCase):
         self.assertContains(response, "The last update was canceled.")
         self.assertRedirects(response,
                              reverse("items_list", urlconf="inventory.urls"))
+'''
