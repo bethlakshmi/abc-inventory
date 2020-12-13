@@ -84,34 +84,116 @@ class TestBulkImageUpload(TestCase):
             "<img src='%s' title='%s'/>" % (
                 thumb_url,
                 image2))
-
-'''
-    def test_get_item_wout_image(self):
-        self.item = ItemFactory()
-        image = self.itemimage.filer_image
-        self.itemimage.delete()
-        self.url = reverse(self.view_name,
-                           urlconf="inventory.urls",
-                           args=[self.item.pk])
-        login_as(self.user, self)
-        response = self.client.get(self.url)
-        thumb_url = get_thumbnailer(image).get_thumbnail(self.options).url
-        self.assertContains(response, "Manage Images for %s" % self.item.title)
         self.assertContains(
             response,
-            "<img src='%s' title='No Item Links'/>" % (thumb_url))
+            '<input type="hidden" name="step" value="1" id="id_step">',
+            html=True)
         self.assertContains(
             response,
-            self.image_checkbox % (0, image.pk, ''),
+            '<input type="hidden" name="association_count" value="2" ' +
+            'id="id_association_count">',
             html=True)
 
-    def test_get_edit_bad_id(self):
-        self.url = reverse(self.view_name,
-                           urlconf="inventory.urls",
-                           args=[self.item.pk+1])
+    def test_upload_files_finish(self):
+        UserFactory(username='admin_img')
         login_as(self.user, self)
-        response = self.client.get(self.url)
-        self.assertEqual(404, response.status_code)
+        file1 = open("inventory/tests/redexpo.jpg", 'rb')
+        file2 = open("inventory/tests/10yrs.jpg", 'rb')
+        response = self.client.post(
+            self.url,
+            data={'new_images': [file1, file2],
+                  'step': 0,
+                  'finish': 'Finish'},
+            follow=True)
+        self.assertContains(
+            response,
+             "Uploaded 2 images.<br>Attached 0 images.")
+
+    def test_post_attachments(self):
+        img1 = set_image(self.itemimage)
+        img2 = set_image(self.itemimage)
+        item = ItemFactory()
+        login_as(self.user, self)
+        response = self.client.post(
+            self.url,
+            data={'0-filer_image': img1.pk,
+                  '1-filer_image': img2.pk,
+                  '0-item': item.pk,
+                  '1-item': "",
+                  'step': 1,
+                  'association_count': 2,
+                  'finish': 'Finish'},
+            follow=True)
+        self.assertContains(
+            response,
+             "Uploaded 2 images.<br>Attached 1 images.")
+
+    def test_post_attachments_bad_item(self):
+        # This is legit if a user selects something that is then deleted
+        # before they submit
+        img1 = set_image(self.itemimage)
+        img2 = set_image(self.itemimage)
+        item = ItemFactory()
+        login_as(self.user, self)
+        response = self.client.post(
+            self.url,
+            data={'0-filer_image': img1.pk,
+                  '1-filer_image': img2.pk,
+                  '0-item': item.pk+1,
+                  '1-item': "",
+                  'step': 1,
+                  'association_count': 2,
+                  'finish': 'Finish'},
+            follow=True)
+        self.assertContains(
+            response,
+             "That choice is not one of the available choices.")
+
+    def test_post_attachments_bad_image(self):
+        # The user would have to be hacking the form to do this.
+        img1 = set_image(self.itemimage)
+        img2 = set_image(self.itemimage)
+        item = ItemFactory()
+        login_as(self.user, self)
+        response = self.client.post(
+            self.url,
+            data={'0-filer_image': img1.pk+100,
+                  '1-filer_image': img2.pk,
+                  '0-item': item.pk,
+                  '1-item': "",
+                  'step': 1,
+                  'association_count': 2,
+                  'finish': 'Finish'},
+            follow=True)
+        print(response.content)
+        self.assertContains(
+            response,
+             "There is an error on the form.",
+             1)
+
+    def test_post_attachments_bad_association(self):
+        # The user would have to be hacking the form to do this.
+        img1 = set_image(self.itemimage)
+        img2 = set_image(self.itemimage)
+        item = ItemFactory()
+        login_as(self.user, self)
+        response = self.client.post(
+            self.url,
+            data={'0-filer_image': img1.pk,
+                  '1-filer_image': img2.pk,
+                  '0-item': item.pk,
+                  '1-item': "",
+                  'step': 1,
+                  'association_count': 4,
+                  'finish': 'Finish'},
+            follow=True)
+        print(response.content)
+        self.assertContains(
+            response,
+             "There is an error on the form.",
+             2)
+
+'''
 
     def test_post_clear_images(self):
         login_as(self.user, self)

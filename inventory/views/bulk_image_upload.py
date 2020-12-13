@@ -70,6 +70,12 @@ class BulkImageUpload(GenericWizard):
                     association_form = form(POST,
                                             prefix=str(i),
                                             label_suffix='')
+                    if association_form.is_valid():
+                        image = association_form.cleaned_data['filer_image']
+                        thumb_url = get_thumbnailer(image).get_thumbnail(
+                            self.options).url
+                        association_form.fields['item'].label = mark_safe(
+                            "<img src='%s' title='%s'/>" % (thumb_url, image))
                     forms += [association_form]
                 forms += [meta_form]
                 return forms
