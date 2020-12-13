@@ -69,6 +69,14 @@ class TestBulkImageUpload(TestCase):
             response,
             "Connect Images to Items")
         image2 = Image.objects.latest('pk')
+        image1 = Image.objects.get(pk=image2.pk-1)
+        thumb_url = get_thumbnailer(
+            image1).get_thumbnail(self.options).url
+        self.assertContains(
+            response,
+            "<img src='%s' title='%s'/>" % (
+                thumb_url,
+                image1))
         thumb_url = get_thumbnailer(
             image2).get_thumbnail(self.options).url
         self.assertContains(
