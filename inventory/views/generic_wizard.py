@@ -107,8 +107,10 @@ class GenericWizard(View):
                 view=self.__class__.__name__,
                 code="BUTTON_CLICK_UNKNOWN",
                 defaults={
-                    'summary': user_messages["BUTTON_CLICK_UNKNOWN"]['summary'],
-                    'description': user_messages["BUTTON_CLICK_UNKNOWN"]['description']}
+                    'summary': user_messages["BUTTON_CLICK_UNKNOWN"]
+                        ['summary'],
+                    'description': user_messages["BUTTON_CLICK_UNKNOWN"]
+                        ['description']}
                 )
             messages.error(request, msg[0].description + extra_message)
             self.current_form_set = {'next_form': None}
