@@ -18,13 +18,13 @@ class GenericWizard(View):
     #     - instantiate form_sets = a dict of integers (-1 to however many)
     #          - with a sub-dict with a "the_form", "next_form", "next_title"
     #          - there must be a -1 with the_form = None
-    #          - there must be a last item with next_form and next_title 
+    #          - there must be a last item with next_form and next_title
     #            as None
     #     - create setup_forms - which can make any form in the set, the first
     #          form can be  made via either get or post, all forms after that
     #          are submitted as posts.
     #     - finish_valid_form - what to do when a form is deemed valid
-    #     - finish - place to put any messaging and return a URL for how to 
+    #     - finish - place to put any messaging and return a URL for how to
     #          return to a main spot
     ##############
     step = -1
@@ -108,9 +108,9 @@ class GenericWizard(View):
                 code="BUTTON_CLICK_UNKNOWN",
                 defaults={
                     'summary': user_messages["BUTTON_CLICK_UNKNOWN"]
-                        ['summary'],
+                    ['summary'],
                     'description': user_messages["BUTTON_CLICK_UNKNOWN"]
-                        ['description']}
+                    ['description']}
                 )
             messages.error(request, msg[0].description)
             self.current_form_set = {'next_form': None}

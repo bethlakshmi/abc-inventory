@@ -11,4 +11,4 @@ class ImageAssociateMetaForm(Form):
     error_css_class = 'error'
     step = IntegerField(widget=HiddenInput(), initial=1)
     association_count = IntegerField(widget=HiddenInput(),
-    	                             validators=[MinValueValidator(0)])
+                                     validators=[MinValueValidator(0)])

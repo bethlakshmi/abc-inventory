@@ -1,6 +1,6 @@
 from django.conf.urls import url
 from inventory.views import (
-	BulkImageUpload,
+    BulkImageUpload,
     ItemsListView,
     ManageItemImage,
     MakeItemWizard,

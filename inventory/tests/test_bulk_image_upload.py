@@ -16,8 +16,8 @@ from filer.models import Image
 
 
 class TestBulkImageUpload(TestCase):
-    ''' This view reuses the generic wizard that is fully tested in 
-    make_item testing.  As such, this collection limits itself to 
+    ''' This view reuses the generic wizard that is fully tested in
+    make_item testing.  As such, this collection limits itself to
     what's special for bulk image upload - including a lot of multi-form
     logic'''
     view_name = "image_upload"
@@ -108,7 +108,7 @@ class TestBulkImageUpload(TestCase):
             follow=True)
         self.assertContains(
             response,
-             "Uploaded 2 images.<br>Attached 0 images.")
+            "Uploaded 2 images.<br>Attached 0 images.")
 
     def test_post_attachments(self):
         img1 = set_image(self.itemimage)
@@ -127,7 +127,7 @@ class TestBulkImageUpload(TestCase):
             follow=True)
         self.assertContains(
             response,
-             "Uploaded 2 images.<br>Attached 1 images.")
+            "Uploaded 2 images.<br>Attached 1 images.")
 
     def test_post_attachments_bad_item(self):
         # This is legit if a user selects something that is then deleted
@@ -148,7 +148,7 @@ class TestBulkImageUpload(TestCase):
             follow=True)
         self.assertContains(
             response,
-             "That choice is not one of the available choices.")
+            "That choice is not one of the available choices.")
 
     def test_post_attachments_bad_image(self):
         # The user would have to be hacking the form to do this.
@@ -168,8 +168,8 @@ class TestBulkImageUpload(TestCase):
             follow=True)
         self.assertContains(
             response,
-             "There is an error on the form.",
-             1)
+            "There is an error on the form.",
+            1)
 
     def test_post_attachments_bad_association(self):
         # The user would have to be hacking the form to do this.
@@ -189,8 +189,8 @@ class TestBulkImageUpload(TestCase):
             follow=True)
         self.assertContains(
             response,
-             "There is an error on the form.",
-             2)
+            "There is an error on the form.",
+            2)
 
     def test_post_attachments_invalid_association(self):
         # The user would have to be hacking the form to do this.
