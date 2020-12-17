@@ -1,0 +1,45 @@
+{% extends 'inventory/item_list.tmpl' %}
+{% block table_header %}
+        <tr>
+          <th data-field="id" data-sortable="true" rowspan="2">ID</th>
+          <th data-field="title" data-sortable="true" rowspan="2">Title</th>
+          <th data-field="parent_title" data-sortable="true" rowspan="2">Parent Title</th>
+          <th data-field="category" data-sortable="true" rowspan="2">Category</th>
+          <th data-field="disposition" data-sortable="true" rowspan="2">Disposition</th>
+          <th data-sortable="true" colspan="3">Dimensions(")</th>
+          <th data-field="year" data-sortable="true" rowspan="2">Year</th>
+          <th data-field="subject" data-sortable="true" rowspan="2">Subject</th>
+          <th data-field="description" data-sortable="false" data-visible="false" rowspan="2">Description</th>
+          <th data-field="created" data-sortable="true" data-visible="false" rowspan="2">Created</th>
+          <th data-field="updated" data-sortable="true" data-visible="false" rowspan="2">Updated</th>
+          <th data-field="tags" data-sortable="false" data-visible="false" rowspan="2">Tags</th>
+          <th data-field="action" rowspan="2">Action</th>
+        </tr>
+        <tr>
+          <th data-field="w" data-sortable="true">W</th>
+          <th data-field="h" data-sortable="true">H</th>
+          <th data-field="d" data-sortable="true">D</th>
+        </tr>
+{% endblock %}
+
+  {% block item_data %}
+  {% for subitem in items %}
+      {
+        'id': '{{ subitem.pk }}',
+        'title': '{{ subitem.title|escapejs }}',
+        'parent_title': '{{ subitem.item.title|escapejs }}',
+        'category': '{% if subitem.item.category %}{{ subitem.item.category }}{% endif %}',
+        'disposition': '{% if subitem.item.disposition %}{{ subitem.item.disposition }}{% endif %}',
+        'w': '{% if subitem.width %}{{ item.width.normalize }}{% endif %}',
+        'h': '{% if subitem.height %}{{ item.height.normalize }}{% endif %}',
+        'd': '{% if subitem.depth %}{{ item.depth.normalize }}{% endif %}',
+        'year': '{% if subitem.item.year %}{{ subitem.item.year|escapejs }}{% endif %}',
+        'subject': '{% if subitem.item.subject %}{{ subitem.item.subject|escapejs }}{% endif %}',
+        'action': 'Coming soon...',
+        'description': '{% if subitem.description %}{{ subitem.description.strip|escapejs }}{% endif %}',
+        'created': '{{ subitem.created_at }}',
+        'updated': '{{ subitem.updated_at }}',
+        'tags': '{% for tag in subitem.tags.all %}{{ tag }}, {% endfor %}',
+      },
+  {% endfor %}
+  {% endblock %}

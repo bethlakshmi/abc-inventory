@@ -23,6 +23,7 @@
   {% endif %}
 <table id="table" data-search="true" data-show-columns="true" data-show-toggle="true" data-show-fullscreen="true" data-show-columns-toggle-all="true" data-buttons="buttons" data-detail-formatter="detailFormatter" data-detail-view="true" data-row-style="rowStyle">
   <thead>
+    {% block table_header %}
         <tr>
           <th data-field="id" data-sortable="true" rowspan="2">ID</th>
           <th data-field="title" data-sortable="true" rowspan="2">Title</th>
@@ -49,6 +50,7 @@
           <th data-field="h" data-sortable="true">H</th>
           <th data-field="d" data-sortable="true">D</th>
         </tr>
+    {% endblock %}
   </thead>
 </table>
 
@@ -135,6 +137,7 @@
 
   $(function() {
     var data = [
+  {% block item_data %}
   {% for item in items %}
       {
         'id': '{{ item.pk }}',
@@ -160,6 +163,7 @@
         'texts': '{% for text in item.labels.all %}<i>Text {{forloop.counter}}:</i>&nbsp;&nbsp;{{text.text|escapejs}}<br>{% endfor %}',
       },
   {% endfor %}
+  {% endblock %}
     ]
     $table.bootstrapTable({data: data})
   })
