@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static sekizai_tags %}
+{% block title %}
+   {{page_title}}
+{% endblock %}
+{% block head %}
+    {# Include FontAwesome; required for icon display #}
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css">
+
+    <link href="{% static 'css/inventory.css' %}" rel="stylesheet">
+
+    {# Include Bootstrap 4 and jQuery #}
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/static/tinymce/tinymce.min.js"></script>
+    <script>{% include "tiny-mce-user-settings.tmpl" %}</script>
+{% endblock %}
+{% block content %}
+<h2 class="subtitle">{{title}}</h2>
+<h3 class="subtitle">{{subtitle}}</h3>
+<p>{{view_header_text | safe}}</p>
+
+  {% if errors %}
+    {% for error in errors %}
+    <p style= "color:red">{{error}}</p>
+    {% endfor %}
+  {% endif %}
+<form action="" method="post" enctype="multipart/form-data">
+<div class="row">
+  <div class="col-12">
+    {% if not special_handling %}{% include "form_table_wrapper.tmpl" %}
+    {% else %}
+       {% block special_handling_form %}
+       {% endblock %}
+    {% endif %}
+  </div></div>
+<div class="row">
+    <div class="col-sm-12 col-md-6 col-lg-7 text-right"><i>Cancel will only affect the current screen.</i></div>
+
+  <div class="col-sm-12 col-md-6 col-lg-5">
+    {% if not first %}<input type="submit" name="back" value="<< Back" class="btn btn-primary" >{% endif %}
+    {% if not last %}<input type="submit" name="next" value="Save & Continue >>" class="btn btn-primary" >{% endif %}
+    <input type="submit" name="finish" value="Finish" class="btn btn-primary" >
+    <input type="submit" name="cancel" value="Cancel" class="btn btn-light" >
+  </div>
+</div>
+</form>
+{% addtoblock "js" %}
+<script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+
+{{ forms.0.media }}
+
+<script>
+(function($) {
+    $('#add-form').click(function() {
+        var index = $('#id_inline_test_models-TOTAL_FORMS').val()
+        var newTable = $('#id_inline_test_models-__prefix__-DELETE').parents('table').clone()
+        newTable.find(':input').each(function() {
+            for (attr of ['name', 'id'])
+                $(this).attr(
+                    attr,
+                    $(this).attr(attr).replace('__prefix__', index)
+                )
+        })
+        newTable.insertBefore($(this))
+        $('#id_inline_test_models-TOTAL_FORMS').val(
+            parseInt($('#id_inline_test_models-TOTAL_FORMS').val()) + 1
+        )
+        newTable.slideDown()
+    })
+})($)
+</script>
+{% endaddtoblock %}
+{% endblock %}

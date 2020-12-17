@@ -2,14 +2,14 @@ from django.forms import (
     ClearableFileInput,
     ImageField,
     Form,
-    ModelMultipleChoiceField,
+    ModelMultipleChoiceField
 )
 from django.forms.widgets import CheckboxSelectMultiple
-from inventory.models import UserMessage
 from django.utils.safestring import mark_safe
-from filer.models import Image
 from easy_thumbnails.files import get_thumbnailer
 from inventory.forms.default_form_text import item_image_help
+from filer.models import Image
+from inventory.models import UserMessage
 
 
 class MultiImageField(ModelMultipleChoiceField):
@@ -40,6 +40,7 @@ class ItemImageForm(Form):
                     'summary': "Current Image Help text",
                     'description': item_image_help['current_images']}
                 )[0].description)
+
     new_images = ImageField(
         widget=ClearableFileInput(attrs={'multiple': True}),
         required=False,

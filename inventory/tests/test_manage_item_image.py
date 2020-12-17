@@ -15,7 +15,6 @@ from easy_thumbnails.files import get_thumbnailer
 
 
 class TestMakeItem(TestCase):
-    '''Tests for review_costume_list view'''
     view_name = "manage_item_image"
     options = {'size': (100, 100), 'crop': False}
     image_checkbox = '''<input type="checkbox" name="current_images"

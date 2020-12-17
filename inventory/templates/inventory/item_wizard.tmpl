@@ -1,32 +1,13 @@
-{% extends 'base.html' %}
-{% load static sekizai_tags %}
-{% block title %}
-   {{page_title}}
-{% endblock %}
-{% block head %}
-    {# Include FontAwesome; required for icon display #}
-    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css">
+{% extends 'inventory/generic_wizard.tmpl' %}
+{% block special_handling_form %}
+      {% if field.errors %}
+      <div class="container"><div class="row">
+        <div class="col-md-2">&nbsp;</div>
+        <div class="col-md-4"><label for="field.name">        
+          <font color="red">{{ field.errors }}</font></label></div>
+      </div></div>
+      {% endif %}
 
-    {# Include Bootstrap 4 and jQuery #}
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="/static/tinymce/tinymce.min.js"></script>
-    <script>{% include "tiny-mce-user-settings.tmpl" %}</script>
-{% endblock %}
-{% block content %}
-<h2 class="subtitle">{{title}}</h2>
-<h3 class="subtitle">{{subtitle}}</h3>
-<p>{{view_header_text | safe}}</p>
-
-  {% if errors %}
-    {% for error in errors %}
-    <p style= "color:red">{{error}}</p>
-    {% endfor %}
-  {% endif %}
-<form action="" method="post" enctype="multipart/form-data">
-<div class="row">
-  <div class="col-12">
-    {% if not special_handling %}{% include "form_table_wrapper.tmpl" %}
-    {% else %}
       <font color="red">{% if forms.0.errors %}
         <p style= "color:red"> There is an error on the form.</p>
       {% endif %}{{ forms.0.non_field_errors }}</font>
@@ -36,29 +17,22 @@
       <div class="form-group"><div class="container"><div class="row">
         <div class="col-md-2">
           <label for="{{field.name}}" class="control-label">        
-            {% if field.errors %}
-              <font color="red">!&nbsp;&nbsp;
-            {% endif %} 
-            Dimensions:
-            {% if field.errors %}</font>{% endif %} 
-            {% if field.help_text %}
-                <span class="dropt" title="Help">
-                <img src= "{% static "img/question.png" %}" alt="?"/>
-                  <span style="width:200px;float:right;text-align:left;">
-                  {{ field.help_text }}
-                  </span>
-                </span>
-            {% endif %}
+              <font {% if forms.0.width.errors or forms.0.height.errors or forms.0.depth.errors %}color="red">
+                !&nbsp;&nbsp;{% else %}>{% endif %}Dimensions:</font>
           </label></div>
         <div class="col-md-10">
-  {{ forms.0.width }} " w X {{ forms.0.height }} " h X {{ forms.0.depth }} " d
-          </div></div></div>
+        {{ forms.0.width }} " w X {{ forms.0.height }} " h X {{ forms.0.depth }} " d
+        </div></div></div>
 
-      {% if field.errors %}
+      {% if forms.0.width.errors or forms.0.height.errors or forms.0.depth.errors %}
       <div class="container"><div class="row">
         <div class="col-md-2">&nbsp;</div>
         <div class="col-md-4"><label for="field.name">        
-          <font color="red">{{ field.errors }}</font></label></div>
+          <font color="red"><ul>
+          {% if forms.0.width.errors %}<li>w - {{ forms.0.width.errors | striptags }}</li>{% endif %}
+          {% if forms.0.height.errors %}<li>h - {{ forms.0.height.errors | striptags }}</li>{% endif %}
+          {% if forms.0.depth.errors %}<li>d - {{ forms.0.depth.errors | striptags }}</li>{% endif %}</ul>
+          </font></label></div>
       </div></div>
       {% endif %}
   </div><!-- end form group -->
@@ -67,43 +41,4 @@
       {% include "form_field.tmpl" with field=forms.0.date_acquired field_size=2 %}
       {% include "form_field.tmpl" with field=forms.0.date_deaccession field_size=2%}
       {% include "form_field.tmpl" with field=forms.0.price %}
-    {% endif %}
-  </div></div>
-<div class="row">
-    <div class="col-sm-12 col-md-6 col-lg-7 text-right"><i>Cancel will only affect the current screen.</i></div>
-
-  <div class="col-sm-12 col-md-6 col-lg-5">
-    {% if not first %}<input type="submit" name="back" value="<< Back" class="btn btn-primary" >{% endif %}
-    {% if not last %}<input type="submit" name="next" value="Save & Continue >>" class="btn btn-primary" >{% endif %}
-    <input type="submit" name="finish" value="Finish" class="btn btn-primary" >
-    <input type="submit" name="cancel" value="Cancel" class="btn btn-light" >
-  </div>
-</div>
-</form>
-{% addtoblock "js" %}
-<script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
-
-{{ forms.0.media }}
-
-<script>
-(function($) {
-    $('#add-form').click(function() {
-        var index = $('#id_inline_test_models-TOTAL_FORMS').val()
-        var newTable = $('#id_inline_test_models-__prefix__-DELETE').parents('table').clone()
-        newTable.find(':input').each(function() {
-            for (attr of ['name', 'id'])
-                $(this).attr(
-                    attr,
-                    $(this).attr(attr).replace('__prefix__', index)
-                )
-        })
-        newTable.insertBefore($(this))
-        $('#id_inline_test_models-TOTAL_FORMS').val(
-            parseInt($('#id_inline_test_models-TOTAL_FORMS').val()) + 1
-        )
-        newTable.slideDown()
-    })
-})($)
-</script>
-{% endaddtoblock %}
 {% endblock %}
