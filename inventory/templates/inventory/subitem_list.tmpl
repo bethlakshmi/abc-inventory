@@ -1,4 +1,5 @@
 {% extends 'inventory/item_list.tmpl' %}
+{% load thumbnail %}
 {% block table_header %}
         <tr>
           <th data-field="id" data-sortable="true" rowspan="2">ID</th>
@@ -9,10 +10,21 @@
           <th data-sortable="true" colspan="3">Dimensions(")</th>
           <th data-field="year" data-sortable="true" rowspan="2">Year</th>
           <th data-field="subject" data-sortable="true" rowspan="2">Subject</th>
+          <th data-field="price" data-sortable="true" data-visible="false" rowspan="2">Price</th>
           <th data-field="description" data-sortable="false" data-visible="false" rowspan="2">Description</th>
+          <th data-field="item_description" data-sortable="false" data-visible="false" rowspan="2">Item Description</th>
+          <th data-field="note" data-sortable="false" data-visible="false" rowspan="2">Note</th>
+          <th data-field="date_acquired" data-sortable="true" data-visible="false" rowspan="2">Date Acquired</th>
+          <th data-field="date_deaccession" data-sortable="true" data-visible="false" rowspan="2">Date Deaccession</th>
           <th data-field="created" data-sortable="true" data-visible="false" rowspan="2">Created</th>
           <th data-field="updated" data-sortable="true" data-visible="false" rowspan="2">Updated</th>
+          <th data-field="item_created" data-sortable="true" data-visible="false" rowspan="2">Item Created</th>
+          <th data-field="item_updated" data-sortable="true" data-visible="false" rowspan="2">Item Updated</th>
           <th data-field="tags" data-sortable="false" data-visible="false" rowspan="2">Tags</th>
+          <th data-field="item_tags" data-sortable="false" data-visible="false" rowspan="2">Item Tags</th>
+          <th data-field="connections" data-sortable="false" data-visible="false" rowspan="2">Connections</th>
+          <th data-field="images" data-sortable="false" data-visible="false" data-card-visible="true" rowspan="2">Images</th>
+          <th data-field="texts" data-sortable="false" data-visible="false" rowspan="2">Texts</th>
           <th data-field="action" rowspan="2">Action</th>
         </tr>
         <tr>
@@ -21,13 +33,57 @@
           <th data-field="d" data-sortable="true">D</th>
         </tr>
 {% endblock %}
-
-  {% block item_data %}
+{% block buttons %}
+{% endblock %}
+{% block details %}
+    var html = []
+    html.push('<div class="row">')
+    html.push('<div class="col-6">')
+    if (row.description.length > 0){
+        html.push('<b>SubItem Description:</b><br>' + row.description + '<br>')
+    }
+    html.push('<b>Item Description:</b><br>' + row.item_description + '<br>')
+    if (row.note.length > 0) {
+        html.push('<b>Notes:</b><br>' + row.note + '<br><br>')
+    }
+    if (row.texts.length > 0) {
+        html.push('<b>Texts:</b><br>' + row.texts + '<br>')
+    }
+    if (row.tags.length > 0) {
+        html.push('<b>Tags:</b> ' + row.tags + '<br>')
+    }
+    if (row.item_tags.length > 0) {
+        html.push('<b>Item Tags:</b> ' + row.item_tags + '<br>')
+    }
+    html.push('</div><div class="col-6">')
+    html.push('<b>Date Acquired:</b>  ' + row.date_acquired + '<br>')
+    if (row.date_deaccession.length > 0) {
+        html.push('<b>Date Decaccessioned:</b>  ' + row.date_deaccession + '<br>')
+    }
+    html.push('<br><b><i>SubItem record -- </b></i><br>')
+    html.push('<b>Created:</b>  ' + row.created + '<br>')
+    html.push('<b>Last Update:</b>  ' + row.updated + '<br>')
+    html.push('<br><b><i>Item record -- </b></i><br>')
+    html.push('<b>Created:</b>  ' + row.item_created + '<br>')
+    html.push('<b>Last Update:</b>  ' + row.item_updated + '<br>')
+    if (row.price.length > 0) {
+        html.push('<br><b>Price:</b> ' + row.price + '<br>')
+    }    if (row.connections.length > 0) {
+        html.push('<b>Connections:</b> ' + row.connections + '<br>')
+    }
+    html.push('</div>')
+    if (row.images.length) {
+      html.push('<div class="col-12"><b>Images:<br></b>' + row.images +'</div>')
+    }
+    html.push('</div>')
+    return html.join('')
+{% endblock %}
+{% block item_data %}
   {% for subitem in items %}
       {
         'id': '{{ subitem.pk }}',
         'title': '{{ subitem.title|escapejs }}',
-        'parent_title': '{{ subitem.item.title|escapejs }}',
+        'parent_title': '{{ subitem.item.title|escapejs }} <a href="{% url "inventory:item_edit" subitem.item.id %}"title="Edit"><i class="fas fa-edit"></i></a>',
         'category': '{% if subitem.item.category %}{{ subitem.item.category }}{% endif %}',
         'disposition': '{% if subitem.item.disposition %}{{ subitem.item.disposition }}{% endif %}',
         'w': '{% if subitem.width %}{{ item.width.normalize }}{% endif %}',
@@ -40,6 +96,17 @@
         'created': '{{ subitem.created_at }}',
         'updated': '{{ subitem.updated_at }}',
         'tags': '{% for tag in subitem.tags.all %}{{ tag }}, {% endfor %}',
+        'price': '{% if subitem.item.price %}${{ subitem.item.price }}{% endif %}',
+        'item_description': '{% if subitem.item.description %}{{ subitem.item.description.strip|escapejs }}{% endif %}',
+        'note': '{% if subitem.item.note %}{{ subitem.item.note|escapejs }}{% endif %}',
+        'date_acquired': '{% if subitem.item.date_acquired %}{{ subitem.item.date_acquired }}{% endif %}',
+        'date_deaccession': '{% if subitem.item.date_deaccession %}{{ subitem.item.date_deaccession }}{% endif %}',
+        'item_created': '{{ subitem.item.created_at }}',
+        'item_updated': '{{ subitem.item.updated_at }}',
+        'item_tags': '{% for tag in subitem.item.tags.all %}{{ tag }}, {% endfor %}',
+        'connections': '{% for connect in subitem.item.connections.all %}{{ connect|escapejs }}, {% endfor %}',
+        'images': '{% for image in subitem.item.images.all %}<a href="{{image.filer_image.url}}"><img src="{% thumbnail image.filer_image 100x150 %}"></a>&nbsp;&nbsp;{% endfor %}',
+        'texts': '{% for text in subitem.item.labels.all %}<i>Text {{forloop.counter}}:</i>&nbsp;&nbsp;{{text.text|escapejs}}<br>{% endfor %}',
       },
   {% endfor %}
   {% endblock %}

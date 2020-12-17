@@ -1,9 +1,8 @@
 {% extends 'full_page.html' %}
-{% load static sekizai_tags %}
+{% load static sekizai_tags thumbnail %}
 {% block title %}
    {{page_title}}
 {% endblock %}
-{% load thumbnail %}
 {% block head %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -62,6 +61,7 @@
     <script>
   function buttons () {
     return {
+      {% block buttons %}
       btnAdd: {
         text: 'Add new row',
         icon: 'fa-plus',
@@ -72,6 +72,7 @@
           title: 'Add a new item to the inventory'
         }
       }
+      {% endblock %}
     }
   }
 </script>
@@ -100,6 +101,7 @@
   })
 
   function detailFormatter(index, row) {
+    {% block details %}
     var html = []
     html.push('<div class="row">')
     html.push('<div class="col-6"><b>Description:</b><br>' + row.description + '<br><br>')
@@ -130,6 +132,7 @@
     }
     html.push('</div>')
     return html.join('')
+    {% endblock %}
   }
 </script>
 <script>
