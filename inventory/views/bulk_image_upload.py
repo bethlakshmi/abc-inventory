@@ -42,7 +42,7 @@ class BulkImageUpload(GenericWizard):
                 request.user)
         elif self.forms[0].__class__.__name__ == "ImageAssociateForm":
             for form in self.forms:
-                if form.__class__.__name__ != "ImageAssociateMetaForm" and (
+                if form.__class__.__name__ == "ImageAssociateForm" and (
                         form.cleaned_data['item']):
                     form.save()
                     self.links = self.links + 1

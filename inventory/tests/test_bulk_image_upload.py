@@ -39,7 +39,7 @@ class TestBulkImageUpload(TestCase):
         response = self.client.get(self.url)
         self.assertContains(response, item_image_help['new_images'])
 
-    def test_upload_files_no_step_error(self):
+    def test_upload_files_missing_step_error(self):
         from inventory.views.default_view_text import user_messages
         UserFactory(username='admin_img')
         login_as(self.user, self)
