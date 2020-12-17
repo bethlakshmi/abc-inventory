@@ -3,6 +3,7 @@
 {% block table_header %}
         <tr>
           <th data-field="id" data-sortable="true" rowspan="2">ID</th>
+          <th data-field="number" data-sortable="true" rowspan="2">Number</th>
           <th data-field="title" data-sortable="true" rowspan="2">Title</th>
           <th data-field="parent_title" data-sortable="true" rowspan="2">Parent Title</th>
           <th data-field="category" data-sortable="true" rowspan="2">Category</th>
@@ -82,13 +83,14 @@
   {% for subitem in items %}
       {
         'id': '{{ subitem.pk }}',
+        'number': '{{ subitem.item.pk }}.{{ subitem.subitem_number }}',
         'title': '{{ subitem.title|escapejs }}',
         'parent_title': '{{ subitem.item.title|escapejs }} <a href="{% url "inventory:item_edit" subitem.item.id %}"title="Edit"><i class="fas fa-edit"></i></a>',
         'category': '{% if subitem.item.category %}{{ subitem.item.category }}{% endif %}',
         'disposition': '{% if subitem.item.disposition %}{{ subitem.item.disposition }}{% endif %}',
-        'w': '{% if subitem.width %}{{ item.width.normalize }}{% endif %}',
-        'h': '{% if subitem.height %}{{ item.height.normalize }}{% endif %}',
-        'd': '{% if subitem.depth %}{{ item.depth.normalize }}{% endif %}',
+        'w': '{% if subitem.width %}{{ subitem.width.normalize }}{% endif %}',
+        'h': '{% if subitem.height %}{{ subitem.height.normalize }}{% endif %}',
+        'd': '{% if subitem.depth %}{{ subitem.depth.normalize }}{% endif %}',
         'year': '{% if subitem.item.year %}{{ subitem.item.year|escapejs }}{% endif %}',
         'subject': '{% if subitem.item.subject %}{{ subitem.item.subject|escapejs }}{% endif %}',
         'action': 'Coming soon...',

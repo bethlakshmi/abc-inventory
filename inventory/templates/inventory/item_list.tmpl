@@ -20,6 +20,12 @@
     <p style= "color:red">{{error}}</p>
     {% endfor %}
   {% endif %}
+ <ul class="nav nav-tabs" id="inner">
+ {% for text, path in path_list %}
+  <li role="presentation" class="nav-item"><a href="{{ path }}" class="nav-link {% if request.path == path %}active{% endif %}">{{text}}</a></li>
+ {% endfor %}
+ </ul>
+ 
 <table id="table" data-search="true" data-show-columns="true" data-show-toggle="true" data-show-fullscreen="true" data-show-columns-toggle-all="true" data-buttons="buttons" data-detail-formatter="detailFormatter" data-detail-view="true" data-row-style="rowStyle">
   <thead>
     {% block table_header %}
