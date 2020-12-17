@@ -34,13 +34,13 @@ class TestBulkImageUpload(TestCase):
                            urlconf="inventory.urls")
 
     def test_get(self):
-        from inventory.forms import item_image_help
+        from inventory.forms.default_form_text import item_image_help
         login_as(self.user, self)
         response = self.client.get(self.url)
         self.assertContains(response, item_image_help['new_images'])
 
     def test_upload_files_no_step_error(self):
-        from inventory.views import user_messages
+        from inventory.views.default_view_text import user_messages
         UserFactory(username='admin_img')
         login_as(self.user, self)
         file1 = open("inventory/tests/redexpo.jpg", 'rb')
@@ -194,7 +194,7 @@ class TestBulkImageUpload(TestCase):
 
     def test_post_attachments_invalid_association(self):
         # The user would have to be hacking the form to do this.
-        from inventory.views import user_messages
+        from inventory.views.default_view_text import user_messages
         img1 = set_image(self.itemimage)
         img2 = set_image(self.itemimage)
         item = ItemFactory()
