@@ -13,9 +13,14 @@
     <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.css">
 {% endblock %}
 {% block content %}
-<h2 class="subtitle">{{title}}</h2>
-<p>{{view_header_text | safe}}</p>
-
+<div class="row">
+  <div class="col-8">
+  <h2 class="subtitle">{{title}}</h2>
+  </div>
+  <div class="col-4 text-right">
+  <a href="{% url 'inventory:image_upload' %}" role="button" class="btn btn-primary">Image Upload</a>
+  </div>
+</div>
   {% if errors %}
     {% for error in errors %}
     <p style= "color:red">{{error}}</p>

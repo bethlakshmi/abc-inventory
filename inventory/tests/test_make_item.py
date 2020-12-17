@@ -20,9 +20,9 @@ from inventory.models import Item
 
 
 class TestMakeItem(TestCase):
-    '''Tests for review_costume_list view'''
     view_name = "item_create"
     edit_name = "item_edit"
+    item_id = '<input type="hidden" name="item_id" value="%d" id="id_item_id">'
 
     def get_further(self):
         new_tag = TagFactory()
@@ -127,6 +127,10 @@ class TestMakeItem(TestCase):
         self.assertContains(response, "Physical Information")
         self.assertContains(response, "<< Back")
         self.assertContains(response, "Save & Continue >>")
+        self.assertContains(
+            response,
+            self.item_id % (self.item.pk + 1),
+            html=True)
 
     def test_post_basics_create_finish(self):
         login_as(self.user, self)
@@ -149,6 +153,7 @@ class TestMakeItem(TestCase):
         self.assertContains(response, "Physical Information")
         self.assertContains(response, "<< Back")
         self.assertContains(response, "Save & Continue >>")
+        self.assertContains(response, self.item_id % self.item.pk, html=True)
 
     def test_post_basics_edit_finish(self):
         login_as(self.user, self)
@@ -183,6 +188,7 @@ class TestMakeItem(TestCase):
         self.assertContains(response, "<< Back")
         self.assertNotContains(response, "Save & Continue >>")
         self.assertContains(response, "Further Details")
+        self.assertContains(response, self.item_id % self.item.pk, html=True)
 
     def test_post_physical_create_finish(self):
         login_as(self.user, self)
@@ -206,6 +212,7 @@ class TestMakeItem(TestCase):
         self.assertContains(response, "<< Back")
         self.assertNotContains(response, "Save & Continue >>")
         self.assertContains(response, "Further Details")
+        self.assertContains(response, self.item_id % self.item.pk, html=True)
 
     def test_post_physical_back(self):
         login_as(self.user, self)
@@ -243,6 +250,45 @@ class TestMakeItem(TestCase):
             "The date acquired cannot be AFTER the date of deaccession - " +
             "check these dates and try again.")
         self.assertContains(response, "<< Back")
+        self.assertContains(response, "Save & Continue >>")
+
+    def test_post_physical_bad_width(self):
+        login_as(self.user, self)
+        physical = self.get_physical()
+        physical['width'] = -1
+        physical['next'] = "Save & Continue >>"
+        response = self.client.post(self.url, data=physical)
+        self.assertContains(response, "Physical Information")
+        self.assertContains(
+            response,
+            "w - Ensure this value is greater than or equal to 0.00.")
+        self.assertContains(response, "!&nbsp;&nbsp;Dimensions:")
+        self.assertContains(response, "Save & Continue >>")
+
+    def test_post_physical_bad_height(self):
+        login_as(self.user, self)
+        physical = self.get_physical()
+        physical['height'] = -1
+        physical['next'] = "Save & Continue >>"
+        response = self.client.post(self.url, data=physical)
+        self.assertContains(response, "Physical Information")
+        self.assertContains(
+            response,
+            "h - Ensure this value is greater than or equal to 0.00.")
+        self.assertContains(response, "!&nbsp;&nbsp;Dimensions:")
+        self.assertContains(response, "Save & Continue >>")
+
+    def test_post_physical_bad_depth(self):
+        login_as(self.user, self)
+        physical = self.get_physical()
+        physical['depth'] = -1
+        physical['next'] = "Save & Continue >>"
+        response = self.client.post(self.url, data=physical)
+        self.assertContains(response, "Physical Information")
+        self.assertContains(
+            response,
+            "d - Ensure this value is greater than or equal to 0.00.")
+        self.assertContains(response, "!&nbsp;&nbsp;Dimensions:")
         self.assertContains(response, "Save & Continue >>")
 
     def test_post_further_create_finish(self):
@@ -296,11 +342,15 @@ class TestMakeItem(TestCase):
                              reverse("items_list", urlconf="inventory.urls"))
 
     def test_bad_button_name(self):
+        from inventory.views.default_view_text import user_messages
         login_as(self.user, self)
         response = self.client.post(
             self.edit_url,
             data={'bad_button': "Bad Button"},
             follow=True)
-        self.assertContains(response, "Button Click Unclear.")
-        self.assertRedirects(response, "%s?changed_id=%d" % (
-            reverse('items_list', urlconf='inventory.urls'), self.item.pk))
+        self.assertContains(
+            response,
+            user_messages["BUTTON_CLICK_UNKNOWN"]["description"])
+
+        self.assertRedirects(response,
+                             reverse('items_list', urlconf='inventory.urls'))

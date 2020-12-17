@@ -73,10 +73,11 @@ class ManageItemImage(View):
                     num_linked = num_linked + 1
                 files = request.FILES.getlist('new_images')
                 if len(files) > 0:
-                    num_uploaded = upload_and_attach(
+                    filer_images = upload_and_attach(
                         files,
                         request.user,
                         self.item)
+                    num_uploaded = len(filer_images)
                 messages.success(
                     request,
                     ("Updated Item: %s<br>Linked %d images. Added %d " +

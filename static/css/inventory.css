@@ -5,3 +5,15 @@
 .image_select_list input[type="checkbox"] + img {
   border: 6px solid white;
 }
+
+/*used for help text*/
+span.dropt {border-bottom: background: white;}
+span.dropt:hover {text-decoration: none; background: #ffffff; z-index: 6; }
+span.dropt span {position: absolute; left: -9999px;
+  margin: 20px 0 0 0px; padding: 3px 3px 3px 3px;
+  border-style:solid; border-color:black; border-width:1px; z-index: 6;}
+span.dropt:hover span {left: 30%; background: #ffffff;} 
+span.dropt span {position: absolute; left: -9999px;
+  margin: 4px 0 0 0px; padding: 3px 3px 3px 3px; 
+  border-style:solid; border-color:black; border-width:1px;}
+span.dropt:hover span {margin: 0px 0 0 0px; background: #ffffff; z-index:6;} 
