@@ -19,14 +19,14 @@ class ItemsListView(View):
 
     def get_context_dict(self):
         return {
-        'title': self.title,
-        'page_title': self.title,
-        'items': self.get_list(),
-        'changed_id': self.changed_id,
-        'path_list': [
-            ("Item List", reverse('items_list', urlconf='inventory.urls')),
-            ("SubItem List",
-             reverse('subitems_list', urlconf='inventory.urls'))]}
+            'title': self.title,
+            'page_title': self.title,
+            'items': self.get_list(),
+            'changed_id': self.changed_id,
+            'path_list': [
+                ("Item List", reverse('items_list', urlconf='inventory.urls')),
+                ("SubItem List",
+                 reverse('subitems_list', urlconf='inventory.urls'))]}
 
     def get_list(self):
         return self.object_type.objects.filter().order_by(

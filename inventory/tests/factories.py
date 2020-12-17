@@ -49,6 +49,7 @@ class SubitemFactory(DjangoModelFactory):
     item = SubFactory(ItemFactory)
     subitem_number = Sequence(lambda n: n)
 
+
 class CategoryFactory(DjangoModelFactory):
     class Meta:
         model = Category
