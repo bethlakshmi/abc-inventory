@@ -4,12 +4,14 @@ from inventory.views import (
     ItemsListView,
     ManageItemImage,
     MakeItemWizard,
+    ThemeView,
 )
 
 
 app_name = "inventory"
 
 urlpatterns = [
+    url(r'^inventory/style.css?', ThemeView.as_view(), name='theme_style'),
     url(r'^inventory/item/list/?', ItemsListView.as_view(), name='items_list'),
     url(r'^inventory/item/create/?',
         MakeItemWizard.as_view(),

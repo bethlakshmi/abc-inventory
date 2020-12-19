@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.css">
+    <link href="{% url 'inventory:theme_style' %}" rel="stylesheet">
 {% endblock %}
 {% block content %}
 <div class="row">
@@ -18,7 +19,7 @@
   <h2 class="subtitle">{{title}}</h2>
   </div>
   <div class="col-4 text-right">
-  <a href="{% url 'inventory:image_upload' %}" role="button" class="btn btn-primary">Image Upload</a>
+  <a href="{% url 'inventory:image_upload' %}" role="button" class="btn inventory-primary">Image Upload</a>
   </div>
 </div>
   {% if errors %}

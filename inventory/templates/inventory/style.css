@@ -1,0 +1,10 @@
+.inventory-primary {
+    color: {{ inventory_primary_color }};
+    background-color: {{ inventory_primary_background_color }};
+    border-color: {{ inventory_primary_border_color }};
+}
+.inventory-primary:hover {
+    color: {{ inventory_primary_color_hover }};
+    background-color: {{ inventory_primary_background_color_hover }};
+    border-color: {{ inventory_primary_border_color_hover }};
+}
