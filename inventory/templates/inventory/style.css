@@ -1,3 +1,4 @@
 {% for selector, properties in selectors.items %}{{ selector }} { {% for property, value in properties.items %}
     {{ property }}: {{ value }};{% endfor %}
-}{% endfor %}
+}
+{% endfor %}

@@ -19,7 +19,7 @@
   <h2 class="subtitle">{{title}}</h2>
   </div>
   <div class="col-4 text-right">
-  <a href="{% url 'inventory:image_upload' %}" role="button" class="btn inventory-primary">Image Upload</a>
+  <a href="{% url 'inventory:image_upload' %}" role="button" class="btn inventory-btn-primary">Image Upload</a>
   </div>
 </div>
   {% if errors %}
@@ -27,7 +27,7 @@
     <p style= "color:red">{{error}}</p>
     {% endfor %}
   {% endif %}
-<table id="table" data-search="true" data-show-columns="true" data-show-toggle="true" data-show-fullscreen="true" data-show-columns-toggle-all="true" data-buttons="buttons" data-detail-formatter="detailFormatter" data-detail-view="true" data-row-style="rowStyle">
+<table id="table" data-search="true" data-show-columns="true" data-show-toggle="true" data-show-fullscreen="true" data-show-columns-toggle-all="true" data-buttons="buttons" data-buttons-class="inventory-secondary" data-detail-formatter="detailFormatter" data-detail-view="true" data-row-style="rowStyle">
   <thead>
         <tr>
           <th data-field="id" data-sortable="true" rowspan="2">ID</th>
@@ -73,7 +73,7 @@
           window.location.href = "{% url 'inventory:item_create' %}";
         },
         attributes: {
-          title: 'Add a new item to the inventory'
+          title: 'Add a new item to the inventory',
         }
       }
     }

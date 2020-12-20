@@ -115,6 +115,23 @@ class MessageAdmin(admin.ModelAdmin):
     readonly_fields = ('view', 'code')
     list_filter = ['view', 'code']
 
+class StylePropertyAdmin(admin.ModelAdmin):
+    list_display = (
+        'pk',
+        'selector',
+        'pseudo_class',
+        'style_property',
+        'value_type')
+    list_editable = (
+        'selector',
+        'pseudo_class',
+        'style_property',
+        'value_type')
+    list_filter = [
+        'selector',
+        'pseudo_class',
+        'style_property']
+
 class StyleValueAdmin(admin.ModelAdmin):
     list_display = (
         'style_version',
@@ -137,5 +154,5 @@ admin.site.register(ItemText, ItemTextAdmin)
 admin.site.register(ItemImage, ItemImageAdmin)
 admin.site.register(Tag, TagAdmin)
 admin.site.register(StyleValue, StyleValueAdmin)
-admin.site.register(StyleProperty)
+admin.site.register(StyleProperty, StylePropertyAdmin)
 admin.site.register(StyleVersion)

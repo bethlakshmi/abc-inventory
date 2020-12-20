@@ -13,6 +13,7 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script type="text/javascript" src="/static/tinymce/tinymce.min.js"></script>
     <script>{% include "tiny-mce-user-settings.tmpl" %}</script>
+    <link href="{% url 'inventory:theme_style' %}" rel="stylesheet">
 {% endblock %}
 {% block content %}
 <h2 class="subtitle">{{title}}</h2>
@@ -37,10 +38,10 @@
     <div class="col-sm-12 col-md-6 col-lg-7 text-right"><i>Cancel will only affect the current screen.</i></div>
 
   <div class="col-sm-12 col-md-6 col-lg-5">
-    {% if not first %}<input type="submit" name="back" value="<< Back" class="btn btn-primary" >{% endif %}
-    {% if not last %}<input type="submit" name="next" value="Save & Continue >>" class="btn btn-primary" >{% endif %}
-    <input type="submit" name="finish" value="Finish" class="btn btn-primary" >
-    <input type="submit" name="cancel" value="Cancel" class="btn btn-light" >
+    {% if not first %}<input type="submit" name="back" value="<< Back" class="btn inventory-btn-primary" >{% endif %}
+    {% if not last %}<input type="submit" name="next" value="Save & Continue >>" class="btn inventory-btn-primary" >{% endif %}
+    <input type="submit" name="finish" value="Finish" class="btn inventory-btn-primary" >
+    <input type="submit" name="cancel" value="Cancel" class="btn inventory-btn-light" >
   </div>
 </div>
 </form>
