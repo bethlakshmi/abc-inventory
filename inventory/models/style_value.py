@@ -16,7 +16,10 @@ class StyleValue(Model):
     value = CharField(max_length=200)
 
     def __str__(self):
-        return ("%s - %s" % (self.style_version, self.style_property))
+        return ("%s - %s = %s" % (
+            self.style_version,
+            self.style_property,
+            self.value))
 
     class Meta:
         app_label = "inventory"
