@@ -134,6 +134,7 @@ class StylePropertyAdmin(admin.ModelAdmin):
 
 class StyleValueAdmin(admin.ModelAdmin):
     list_display = (
+        'pk',
         'style_version',
         'style_property',
         'value')
