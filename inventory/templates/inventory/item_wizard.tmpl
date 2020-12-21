@@ -4,12 +4,12 @@
       <div class="container"><div class="row">
         <div class="col-md-2">&nbsp;</div>
         <div class="col-md-4"><label for="field.name">        
-          <font color="red">{{ field.errors }}</font></label></div>
+          <font class="inventory-form-error">{{ field.errors }}</font></label></div>
       </div></div>
       {% endif %}
 
-      <font color="red">{% if forms.0.errors %}
-        <p style= "color:red"> There is an error on the form.</p>
+      <font class="inventory-form-error">{% if forms.0.errors %}
+        <p> There is an error on the form.</p>
       {% endif %}{{ forms.0.non_field_errors }}</font>
       {% csrf_token %}
       {{ forms.0.step }}
@@ -17,7 +17,7 @@
       <div class="form-group"><div class="container"><div class="row">
         <div class="col-md-2">
           <label for="{{field.name}}" class="control-label">        
-              <font {% if forms.0.width.errors or forms.0.height.errors or forms.0.depth.errors %}color="red">
+              <font {% if forms.0.width.errors or forms.0.height.errors or forms.0.depth.errors %}class="inventory-form-error">
                 !&nbsp;&nbsp;{% else %}>{% endif %}Dimensions:</font>
           </label></div>
         <div class="col-md-10">
@@ -28,7 +28,7 @@
       <div class="container"><div class="row">
         <div class="col-md-2">&nbsp;</div>
         <div class="col-md-4"><label for="field.name">        
-          <font color="red"><ul>
+          <font class="inventory-form-error"><ul>
           {% if forms.0.width.errors %}<li>w - {{ forms.0.width.errors | striptags }}</li>{% endif %}
           {% if forms.0.height.errors %}<li>h - {{ forms.0.height.errors | striptags }}</li>{% endif %}
           {% if forms.0.depth.errors %}<li>d - {{ forms.0.depth.errors | striptags }}</li>{% endif %}</ul>

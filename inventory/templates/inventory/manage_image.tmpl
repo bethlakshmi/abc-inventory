@@ -16,13 +16,11 @@
     <link href="{% url 'inventory:theme_style' %}" rel="stylesheet">
 {% endblock %}
 {% block content %}
-<h2 class="subtitle">{{title}}</h2>
-<h3 class="subtitle">{{subtitle}}</h3>
-<p>{{view_header_text | safe}}</p>
-
+<h2 class="inventory-title">{{title}}</h2>
+<h3 class="inventory-subtitle">{{subtitle}}</h3>
   {% if errors %}
     {% for error in errors %}
-    <p style= "color:red">{{error}}</p>
+    <p class="inventory-form-error">{{error}}</p>
     {% endfor %}
   {% endif %}
 <form action="" method="post" enctype="multipart/form-data">
@@ -32,8 +30,8 @@
 {% if selection_form.errors %}
 <div class="row">
   <div class="col-12">
-      <font color="red">
-    <p style= "color:red"> There is an error on the selection form.</p>
+      <font class="inventory-form-error">
+    <p class="inventory-form-error"> There is an error on the selection form.</p>
   {{ selection_form.non_field_errors }}</font>
   </div>
 </div>
@@ -48,11 +46,11 @@
       <div class="form-group col-12">
         <h3><span class="label label-default"><label id="{{ field.name }}">
           
-            <font color="{% if form.new_images.errors %}red{% endif %}">
+            <font class="{% if form.new_images.errors %}inventory-form-error{% endif %}">
             {{ form.new_images.label }}:</font>
         </label></span></h3>
         {% if field.errors %}
-          <font color="red">{{ field.errors }}</font>
+          <font class="inventory-form-error">{{ field.errors }}</font>
         {% endif %}
       {{form.new_images.help_text}}
       </div>
