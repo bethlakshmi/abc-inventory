@@ -1,0 +1,15 @@
+{% load menu_tags %}
+    <nav class="navbar navbar-expand-lg navbar-light inventory-bg-light">
+        <a class="navbar-brand" id="inventory-navbar-brand" href="#">ABC Inventory</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                {% with dropdown=True %}
+                    {% show_menu 0 100 100 100 "includes/menu.html" %}
+                {% endwith %}
+            </ul>
+        </div>
+    </nav>

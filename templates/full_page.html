@@ -1,4 +1,4 @@
-{% load static i18n cms_tags menu_tags sekizai_tags %}
+{% load static i18n cms_tags sekizai_tags %}
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}">
   <head>
@@ -19,20 +19,8 @@
   <body class="full-page">
     {% cms_toolbar %}
 
-    <nav class="navbar navbar-expand-lg navbar-light inventory-bg-light">
-        <a class="navbar-brand" href="#">ABC Inventory</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+{% include "menu_bar.tmpl" %}
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                {% with dropdown=True %}
-                    {% show_menu 0 100 100 100 "includes/menu.html" %}
-                {% endwith %}
-            </ul>
-        </div>
-    </nav>
 {% for message in messages %}
     {% if message.tags == "error" %}<div class="alert inventory-alert-danger">{% else %}<div class="alert inventory-alert-{{message.tags}}">{% endif %}
           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
