@@ -24,10 +24,7 @@ class ThemeView(View):
         context = {'selectors': {}}
         for value in StyleValue.objects.filter(
                 style_version__currently_live=True):
-            selector = value.style_property.selector
-            if value.style_property.pseudo_class:
-                selector = "%s:%s" % (selector,
-                                      value.style_property.pseudo_class)
+            selector = value.style_property.selector.__str__()
             if selector not in context['selectors'].keys():
                 context['selectors'][selector] = {}
             context['selectors'][selector][
