@@ -115,7 +115,7 @@ class MessageAdmin(admin.ModelAdmin):
     readonly_fields = ('view', 'code')
     list_filter = ['view', 'code']
 
-class StylePropertyAdmin(admin.ModelAdmin):
+class StylePropertyAdmin(ImportExportActionModelAdmin):
     list_display = (
         'pk',
         'selector',
@@ -132,7 +132,7 @@ class StylePropertyAdmin(admin.ModelAdmin):
         'pseudo_class',
         'style_property']
 
-class StyleValueAdmin(admin.ModelAdmin):
+class StyleValueAdmin(ImportExportActionModelAdmin):
     list_display = (
         'pk',
         'style_version',
