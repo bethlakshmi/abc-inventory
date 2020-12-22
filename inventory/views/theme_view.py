@@ -11,6 +11,7 @@ from django.template import (
     Context,
     loader,
 )
+from django.conf import settings
 
 
 class ThemeView(View):
@@ -22,8 +23,13 @@ class ThemeView(View):
     def get(self, request, *args, **kwargs):
         response = HttpResponse(content_type='text/css')
         context = {'selectors': {}}
-        for value in StyleValue.objects.filter(
-                style_version__currently_live=True):
+        current_values = StyleValue.objects.filter(
+            style_version__currently_live=True)
+        if settings.DEBUG:
+            current_values = StyleValue.objects.filter(
+                style_version__currently_test=True)
+
+        for value in current_values:
             selector = value.style_property.selector.__str__()
             if selector not in context['selectors'].keys():
                 context['selectors'][selector] = {}
