@@ -3,6 +3,7 @@ from django.db.models import (
     CharField,
     ForeignKey,
     Model,
+    UniqueConstraint,
 )
 from inventory.models import (
     StyleProperty,
@@ -24,4 +25,7 @@ class StyleValue(Model):
     class Meta:
         app_label = "inventory"
         ordering = ['style_version', 'style_property']
-        unique_together = [['style_property', 'style_version']]
+        constraints = [UniqueConstraint(
+            fields=['style_property', 'style_version'],
+            name='unique_value'),
+        ]

@@ -1,15 +1,16 @@
 from django.db.models import (
+    CASCADE,
     CharField,
     DateTimeField,
     Model,
-    TextField,
+    ForeignKey,
+    UniqueConstraint,
 )
+from inventory.models import StyleSelector
 
 
 class StyleProperty(Model):
-    selector = CharField(max_length=300)
-    description = TextField(blank=True)
-    pseudo_class = CharField(max_length=128, blank=True, null=True)
+    selector = ForeignKey(StyleSelector, on_delete=CASCADE)
     style_property = CharField(max_length=300)
     value_type = CharField(
         max_length=128,
@@ -19,16 +20,13 @@ class StyleProperty(Model):
     updated_at = DateTimeField(auto_now=True)
 
     def __str__(self):
-        if self.pseudo_class:
-            return ("%s:%s - %s" % (
-                self.selector,
-                self.pseudo_class,
-                self.style_property))
-        else:
-            return ("%s - %s" % (self.selector, self.style_property))
+        return ("%s - %s" % (self.selector, self.style_property))
 
     class Meta:
         app_label = "inventory"
-        ordering = ['selector', 'pseudo_class', 'style_property']
-        unique_together = [['selector', 'pseudo_class', 'style_property']]
+        ordering = ['selector', 'style_property']
         verbose_name_plural = 'style properties'
+        constraints = [UniqueConstraint(
+            fields=['selector', 'style_property'],
+            name='unique_property'),
+        ]

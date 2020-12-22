@@ -115,21 +115,31 @@ class MessageAdmin(admin.ModelAdmin):
     readonly_fields = ('view', 'code')
     list_filter = ['view', 'code']
 
-class StylePropertyAdmin(ImportExportActionModelAdmin):
+class StyleSelectorAdmin(ImportExportActionModelAdmin):
     list_display = (
         'pk',
         'selector',
         'pseudo_class',
-        'style_property',
-        'value_type')
+        'target_element_usage',
+        'used_for',
+        'description')
     list_editable = (
         'selector',
         'pseudo_class',
+        'target_element_usage',
+        'used_for')
+
+class StylePropertyAdmin(ImportExportActionModelAdmin):
+    list_display = (
+        'pk',
+        'selector',
+        'style_property',
+        'value_type')
+    list_editable = (
         'style_property',
         'value_type')
     list_filter = [
         'selector',
-        'pseudo_class',
         'style_property']
 
 class StyleValueAdmin(ImportExportActionModelAdmin):
@@ -142,8 +152,8 @@ class StyleValueAdmin(ImportExportActionModelAdmin):
     list_filter = [
         'style_version__name',
         'style_version__number',
-        'style_property__selector',
-        'style_property__pseudo_class',
+        'style_property__selector__selector',
+        'style_property__selector__pseudo_class',
         'style_property__style_property']
 
 admin.site.register(UserMessage, MessageAdmin)
@@ -156,4 +166,5 @@ admin.site.register(ItemImage, ItemImageAdmin)
 admin.site.register(Tag, TagAdmin)
 admin.site.register(StyleValue, StyleValueAdmin)
 admin.site.register(StyleProperty, StylePropertyAdmin)
+admin.site.register(StyleSelector, StyleSelectorAdmin)
 admin.site.register(StyleVersion)
