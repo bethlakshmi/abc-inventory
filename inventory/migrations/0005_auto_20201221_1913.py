@@ -188,12 +188,18 @@ init_values = {
             'target_element': 'div',
             'usage': 'Big Table',
             'prop_val': [('background-color', '#c3e6cb')]},
-        '.inventory-table': {
+        '.inventory-table > thead > tr > th': {
             'pseudo_class': '',
-            'description': 'Table - whole thing',
+            'description': 'Table - header cell borders',
             'target_element': 'div',
             'usage': 'Big Table',
-            'prop_val': [('border-color', 'grey')]},
+            'prop_val': [('border', '1px solid grey')]},
+        '.inventory-table > tbody > tr > td': {
+            'pseudo_class': '',
+            'description': 'Table - body cell borders',
+            'target_element': 'div',
+            'usage': 'Big Table',
+            'prop_val': [('border', '1px solid grey')]},
     }
 
 def initialize_style(apps, schema_editor):
