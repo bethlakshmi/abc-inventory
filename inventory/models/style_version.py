@@ -35,7 +35,7 @@ class StyleVersion(Model):
             if self.pk:
                 qs = qs.exclude(pk=self.pk)
             # and deactive them
-            qs.update(currently_live=False) 
+            qs.update(currently_live=False)
         if self.currently_test:
             # select all other active items
             qs = type(self).objects.filter(currently_test=True)
@@ -43,6 +43,6 @@ class StyleVersion(Model):
             if self.pk:
                 qs = qs.exclude(pk=self.pk)
             # and deactive them
-            qs.update(currently_test=False) 
+            qs.update(currently_test=False)
 
         super(StyleVersion, self).save(*args, **kwargs)

@@ -202,6 +202,7 @@ init_values = {
             'prop_val': [('border', '1px solid grey')]},
     }
 
+
 def initialize_style(apps, schema_editor):
     # We get the model from the versioned app registry;
     # if we directly import it, it'll be the wrong version
@@ -235,6 +236,7 @@ def initialize_style(apps, schema_editor):
                                value=val)
             value.save()
 
+
 def destroy_style(apps, schema_editor):
     StyleVersion = apps.get_model("inventory", "StyleVersion")
     StyleSelector = apps.get_model("inventory", "StyleSelector")
@@ -243,6 +245,7 @@ def destroy_style(apps, schema_editor):
         StyleSelector.objects.filter(
             selector=select_key,
             pseudo_class=select_val['pseudo_class']).delete()
+
 
 class Migration(migrations.Migration):
 

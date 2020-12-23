@@ -43,7 +43,7 @@ class TestTheme(TestCase):
             "%s {" % value.style_property.selector)
         self.assertContains(
             response,
-            "    %s: %s" % (value.style_property.style_property, 
+            "    %s: %s" % (value.style_property.style_property,
                             value.value))
         self.assertNotContains(
             response,
@@ -64,7 +64,7 @@ class TestTheme(TestCase):
             "%s {" % value.style_property.selector)
         self.assertContains(
             response,
-            "    %s: %s" % (value.style_property.style_property, 
+            "    %s: %s" % (value.style_property.style_property,
                             value.value))
         self.assertNotContains(
             response,
@@ -84,7 +84,7 @@ class TestTheme(TestCase):
             "%s {" % value.style_property.selector)
         self.assertContains(
             response,
-            "    %s: %s" % (value.style_property.style_property, 
+            "    %s: %s" % (value.style_property.style_property,
                             value.value))
         self.assertNotContains(
             response,
