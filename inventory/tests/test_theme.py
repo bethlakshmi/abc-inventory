@@ -51,3 +51,50 @@ class TestTheme(TestCase):
         self.assertNotContains(
             response,
             "    background-color: #d4edda;")
+
+    @override_settings(DEBUG=True)
+    def test_special_test_style_switch(self):
+        version = StyleVersionFactory()
+        version.currently_test = True
+        version.save()
+        value = StyleValueFactory(style_version=version)
+        response = self.client.get(self.url)
+        self.assertContains(
+            response,
+            "%s {" % value.style_property.selector)
+        self.assertContains(
+            response,
+            "    %s: %s" % (value.style_property.style_property, 
+                            value.value))
+        self.assertNotContains(
+            response,
+            ".inventory-alert-success {")
+        self.assertNotContains(
+            response,
+            "    background-color: #d4edda;")
+
+    def test_special_live_style_switch(self):
+        version = StyleVersionFactory()
+        version.currently_live = True
+        version.save()
+        value = StyleValueFactory(style_version=version)
+        response = self.client.get(self.url)
+        self.assertContains(
+            response,
+            "%s {" % value.style_property.selector)
+        self.assertContains(
+            response,
+            "    %s: %s" % (value.style_property.style_property, 
+                            value.value))
+        self.assertNotContains(
+            response,
+            ".inventory-alert-success {")
+        self.assertNotContains(
+            response,
+            "    background-color: #d4edda;")
+        self.assertEquals(
+            str(version), "%s - version %d" % (version.name, version.number))
+        self.assertEquals(
+            str(value.style_property),
+            "%s - %s" % (value.style_property.selector,
+                         value.style_property.style_property))
