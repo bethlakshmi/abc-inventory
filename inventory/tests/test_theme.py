@@ -2,23 +2,10 @@ from django.test import TestCase
 from django.test import Client
 from django.urls import reverse
 from inventory.tests.factories import (
-    CategoryFactory,
-    DispositionFactory,
-    ItemFactory,
-    ItemImageFactory,
-    ItemTextFactory,
-    TagFactory,
-    UserFactory
+    StyleVersionFactory,
+    StyleValueFactory,
 )
-from inventory.tests.functions import (
-    login_as,
-    set_image,
-)
-from datetime import (
-    date,
-    timedelta,
-)
-from inventory.models import Item
+from django.test.utils import override_settings
 
 
 class TestTheme(TestCase):
@@ -45,3 +32,22 @@ class TestTheme(TestCase):
         self.assertContains(
             response,
             "}")
+
+    @override_settings(DEBUG=True)
+    def test_special_test_style(self):
+        version = StyleVersionFactory(currently_test=True)
+        value = StyleValueFactory(style_version=version)
+        response = self.client.get(self.url)
+        self.assertContains(
+            response,
+            "%s {" % value.style_property.selector)
+        self.assertContains(
+            response,
+            "    %s: %s" % (value.style_property.style_property, 
+                            value.value))
+        self.assertNotContains(
+            response,
+            ".inventory-alert-success {")
+        self.assertNotContains(
+            response,
+            "    background-color: #d4edda;")
