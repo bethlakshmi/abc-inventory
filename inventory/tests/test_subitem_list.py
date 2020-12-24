@@ -22,7 +22,7 @@ from datetime import (
 from inventory.models import Subitem
 
 
-class TestItemList(TestCase):
+class TestSubItemList(TestCase):
     '''Tests for review_costume_list view'''
     view_name = "subitems_list"
 
