@@ -4,13 +4,13 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from inventory.models import Item
+from django.urls import reverse
 
 
 class ItemsListView(View):
     object_type = Item
     template = 'inventory/item_list.tmpl'
     bid_order_fields = ('disposition', 'category')
-    header = ("title", "description", "category", "disposition")
     title = "List of Items"
 
     @method_decorator(login_required)
@@ -18,11 +18,15 @@ class ItemsListView(View):
         return super(ItemsListView, self).dispatch(*args, **kwargs)
 
     def get_context_dict(self):
-        return {'header': self.header,
-                'title': self.title,
-                'page_title': self.title,
-                'items': self.get_list(),
-                'changed_id': self.changed_id}
+        return {
+            'title': self.title,
+            'page_title': self.title,
+            'items': self.get_list(),
+            'changed_id': self.changed_id,
+            'path_list': [
+                ("Item List", reverse('items_list', urlconf='inventory.urls')),
+                ("SubItem List",
+                 reverse('subitems_list', urlconf='inventory.urls'))]}
 
     def get_list(self):
         return self.object_type.objects.filter().order_by(

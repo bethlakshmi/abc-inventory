@@ -1,9 +1,8 @@
 {% extends 'full_page.html' %}
-{% load static sekizai_tags %}
+{% load static sekizai_tags thumbnail %}
 {% block title %}
    {{page_title}}
 {% endblock %}
-{% load thumbnail %}
 {% block head %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -26,8 +25,15 @@
     <p style= "color:red">{{error}}</p>
     {% endfor %}
   {% endif %}
+ <ul class="nav nav-tabs" id="inner">
+ {% for text, path in path_list %}
+  <li role="presentation" class="nav-item"><a href="{{ path }}" class="nav-link {% if request.path == path %}active{% endif %}">{{text}}</a></li>
+ {% endfor %}
+ </ul>
+ 
 <table id="table" data-search="true" data-show-columns="true" data-show-toggle="true" data-show-fullscreen="true" data-show-columns-toggle-all="true" data-buttons="buttons" data-detail-formatter="detailFormatter" data-detail-view="true" data-row-style="rowStyle">
   <thead>
+    {% block table_header %}
         <tr>
           <th data-field="id" data-sortable="true" rowspan="2">ID</th>
           <th data-field="title" data-sortable="true" rowspan="2">Title</th>
@@ -54,6 +60,7 @@
           <th data-field="h" data-sortable="true">H</th>
           <th data-field="d" data-sortable="true">D</th>
         </tr>
+    {% endblock %}
   </thead>
 </table>
 
@@ -65,6 +72,7 @@
     <script>
   function buttons () {
     return {
+      {% block buttons %}
       btnAdd: {
         text: 'Add new row',
         icon: 'fa-plus',
@@ -75,6 +83,7 @@
           title: 'Add a new item to the inventory'
         }
       }
+      {% endblock %}
     }
   }
 </script>
@@ -103,6 +112,7 @@
   })
 
   function detailFormatter(index, row) {
+    {% block details %}
     var html = []
     html.push('<div class="row">')
     html.push('<div class="col-6"><b>Description:</b><br>' + row.description + '<br><br>')
@@ -133,6 +143,7 @@
     }
     html.push('</div>')
     return html.join('')
+    {% endblock %}
   }
 </script>
 <script>
@@ -140,6 +151,7 @@
 
   $(function() {
     var data = [
+  {% block item_data %}
   {% for item in items %}
       {
         'id': '{{ item.pk }}',
@@ -165,6 +177,7 @@
         'texts': '{% for text in item.labels.all %}<i>Text {{forloop.counter}}:</i>&nbsp;&nbsp;{{text.text|escapejs}}<br>{% endfor %}',
       },
   {% endfor %}
+  {% endblock %}
     ]
     $table.bootstrapTable({data: data})
   })

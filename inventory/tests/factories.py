@@ -22,6 +22,7 @@ from inventory.models import (
     Item,
     ItemImage,
     ItemText,
+    Subitem,
     Tag,
 )
 
@@ -39,6 +40,14 @@ class ItemFactory(DjangoModelFactory):
     class Meta:
         model = Item
     title = Sequence(lambda n: 'Item_%d' % n)
+
+
+class SubitemFactory(DjangoModelFactory):
+    class Meta:
+        model = Subitem
+    title = Sequence(lambda n: 'SubItem_%d' % n)
+    item = SubFactory(ItemFactory)
+    subitem_number = Sequence(lambda n: n)
 
 
 class CategoryFactory(DjangoModelFactory):
