@@ -2,20 +2,23 @@
 
 from django.db import migrations
 
-init_values = {
-        '.bootstrap-table.fullscreen': {
+init_values = [
+    {
+            'selector': '.bootstrap-table.fullscreen',
             'pseudo_class': '',
             'description': 'The table, when expanded to full screen',
             'target_element': 'div',
             'usage': 'Big Table',
             'prop_val': [('background-color', 'white')]},
-        '#inventory-navbar-brand': {
+    {
+            'selector': '#inventory-navbar-brand',
             'pseudo_class': '',
             'description': 'The site name at the upper left of the navbar',
             'target_element': 'a',
             'usage': 'Navbar',
             'prop_val': [('color', 'black')]},
-        '.btn-inventory-secondary': {
+    {
+            'selector': '.btn-inventory-secondary',
             'pseudo_class': 'hover',
             'description': 'Any active, but less important button, on hover',
             'target_element': 'button',
@@ -23,7 +26,8 @@ init_values = {
             'prop_val': [('background-color', '#5a6268'),
                          ('border-color', '#5a6268'),
                          ('color', '#fff')]},
-        '.btn-inventory-secondary': {
+    {
+            'selector': '.btn-inventory-secondary',
             'pseudo_class': 'Right now - the buttons above the table.',
             'description': 'button',
             'target_element': '',
@@ -31,37 +35,43 @@ init_values = {
             'prop_val': [('background-color', '#6c757d'),
                          ('border-color', '#6c757d'),
                          ('color', '#fff')]},
-        '.detail-icon': {
+    {
+            'selector': '.detail-icon',
             'pseudo_class': '',
             'description': 'The + sign on a table',
             'target_element': 'a',
             'usage': 'Big Table',
             'prop_val': [('color', '#007bff')]},
-        '.detail-icon': {
+    {
+            'selector': '.detail-icon',
             'pseudo_class': 'hover',
             'description': 'The + sign on a table, on hover',
             'target_element': 'a',
             'usage': 'Big Table',
             'prop_val': [('color', '#0056b3')]},
-        '.inventory-detail': {
+    {
+            'selector': '.inventory-detail',
             'pseudo_class': '',
             'description': 'The action icons on a table',
             'target_element': 'a',
             'usage': 'Big Table',
             'prop_val': [('color', '#007bff')]},
-        '.inventory-detail': {
+    {
+            'selector': '.inventory-detail',
             'pseudo_class': 'hover',
             'description': 'The action icons on a table, on hover',
             'target_element': 'a',
             'usage': 'Big Table',
             'prop_val': [('color', '#0056b3')]},
-        '.dropdown-menu': {
+    {
+            'selector': '.dropdown-menu',
             'pseudo_class': '',
             'description': 'The background of the table dropdown menu',
             'target_element': 'div',
             'usage': 'Navbar',
             'prop_val': [('background-color', 'white')]},
-        '.inventory-alert-danger': {
+    {
+            'selector': '.inventory-alert-danger',
             'pseudo_class': '',
             'description': 'Alerts that show up dynamically on Error',
             'target_element': 'div',
@@ -69,7 +79,8 @@ init_values = {
             'prop_val': [('background-color', '#f8d7da'),
                          ('border-color', '#f5c6cb'),
                          ('color', '#721c24')]},
-        '.inventory-alert-info': {
+    {
+            'selector': '.inventory-alert-info',
             'pseudo_class': '',
             'description': 'Alerts that show up dynamically as Information',
             'target_element': 'div',
@@ -77,7 +88,8 @@ init_values = {
             'prop_val': [('background-color', '#d1ecf1'),
                          ('border-color', '#bee5eb'),
                          ('color', '#0c5460')]},
-        '.inventory-alert-success': {
+    {
+            'selector': '.inventory-alert-success',
             'pseudo_class': '',
             'description': 'Alerts that show up dynamically on Success',
             'target_element': 'div',
@@ -85,7 +97,8 @@ init_values = {
             'prop_val': [('background-color', '#d4edda'),
                          ('border-color', '#c3e6cb'),
                          ('color', '#155724')]},
-        '.inventory-alert-warning': {
+    {
+            'selector': '.inventory-alert-warning',
             'pseudo_class': '',
             'description': 'Alerts that show up dynamically on Warning',
             'target_element': 'div',
@@ -93,7 +106,8 @@ init_values = {
             'prop_val': [('background-color', '#fff3cd'),
                          ('border-color', '#ffeeba'),
                          ('color', '#856404')]},
-        '.inventory-btn-light': {
+    {
+            'selector': '.inventory-btn-light',
             'pseudo_class': 'hover',
             'description': 'Hover for buttons that terminate the work',
             'target_element': 'input',
@@ -101,7 +115,8 @@ init_values = {
             'prop_val': [('background-color', '#e2e6ea'),
                          ('border-color', '#e2e6ea'),
                          ('color', '#212529')]},
-        '.inventory-btn-light': {
+    {
+            'selector': '.inventory-btn-light',
             'pseudo_class': 'Buttons like cancel that interrupt work.',
             'description': 'input',
             'target_element': '',
@@ -109,7 +124,8 @@ init_values = {
             'prop_val': [('background-color', '#f8f9fa'),
                          ('border-color', '#f8f9fa'),
                          ('color', '#212529')]},
-        '.inventory-btn-primary': {
+    {
+            'selector': '.inventory-btn-primary',
             'pseudo_class': 'hover',
             'description': 'Hover for main buttons.',
             'target_element': 'input',
@@ -117,7 +133,8 @@ init_values = {
             'prop_val': [('background-color', '#0069d9'),
                          ('border-color', '#0062cc'),
                          ('color', '#fff')]},
-        '.inventory-btn-primary': {
+    {
+            'selector': '.inventory-btn-primary',
             'pseudo_class': '',
             'description': 'Buttons do the main work flow.',
             'target_element': 'input',
@@ -125,82 +142,94 @@ init_values = {
             'prop_val': [('background-color', '#007bff'),
                          ('border-color', '#007bff'),
                          ('color', '#fff')]},
-        '.inventory-form-error': {
+    {
+            'selector': '.inventory-form-error',
             'pseudo_class': '',
             'description': 'Text that informs user of a form error.',
             'target_element': 'font',
             'usage': 'Forms',
             'prop_val': [('color', 'red')]},
-        '.inventory-form-required': {
+    {
+            'selector': '.inventory-form-required',
             'pseudo_class': 'The * on required form fields',
             'description': 'font',
             'target_element': '',
             'usage': 'Forms',
             'prop_val': [('color', 'red')]},
-        '.inventory-nav-link': {
+    {
+            'selector': '.inventory-nav-link',
             'pseudo_class': 'hover',
             'description': 'Items in drop down menus on hover.',
             'target_element': 'font',
             'usage': 'Navbar',
             'prop_val': [('color', 'rgba(0,0,0,.7)')]},
-        '.inventory-nav-link': {
+    {
+            'selector': '.inventory-nav-link',
             'pseudo_class': '',
             'description': 'Items in drop down menu made with Django CMS',
             'target_element': 'font',
             'usage': 'Navbar',
             'prop_val': [('color', 'rgba(0,0,0,.5)')]},
-        '.inventory-title': {
+    {
+            'selector': '.inventory-title',
             'pseudo_class': '',
             'description': 'Biggest Header on the page',
             'target_element': 'h2',
             'usage': 'General',
             'prop_val': [('color', 'black')]},
-        '.inventory-subtitle': {
+    {
+            'selector': '.inventory-subtitle',
             'pseudo_class': '',
             'description': 'Second Biggest Header on the page',
             'target_element': 'h3',
             'usage': 'General',
             'prop_val': [('color', 'grey')]},
-        'body.full-page': {
+    {
+            'selector': 'body.full-page',
             'pseudo_class': '',
             'description': 'Body of the page, but only for things like whole page tables',
             'target_element': 'div',
             'usage': 'Big Table',
             'prop_val': [('background-color', 'white'),
                          ('color', 'black')]},
-        'body.with-margin': {
+    {
+            'selector': 'body.with-margin',
             'pseudo_class': '',
             'description': 'Body of the page, for any page with margins',
             'target_element': 'div',
             'usage': 'General',
             'prop_val': [('background-color', 'white'),
                          ('color', 'black')]},
-        '.inventory-table-header': {
+    {
+            'selector': '.inventory-table-header',
             'pseudo_class': '',
             'description': 'Table headers',
             'target_element': 'div',
             'usage': 'Big Table',
             'prop_val': [('background-color', '#F5F5F5'),
                          ('color', 'black')]},
-        '.inventory-table-success': {
+    {
+            'selector': '.inventory-table-success',
             'pseudo_class': '',
             'description': 'Table row when it was just successfully updated',
             'target_element': 'div',
             'usage': 'Big Table',
             'prop_val': [('background-color', '#c3e6cb')]},
-        '.inventory-table > thead > tr > th': {
+    {
+            'selector': '.inventory-table > thead > tr > th',
             'pseudo_class': '',
             'description': 'Table - header cell borders',
             'target_element': 'div',
             'usage': 'Big Table',
             'prop_val': [('border', '1px solid grey')]},
-        '.inventory-table > tbody > tr > td': {
+    {
+            'selector': '.inventory-table > tbody > tr > td',
             'pseudo_class': '',
             'description': 'Table - body cell borders',
             'target_element': 'div',
             'usage': 'Big Table',
             'prop_val': [('border', '1px solid grey')]},
-    }
+    ]
 
 
 def initialize_style(apps, schema_editor):
@@ -217,9 +246,9 @@ def initialize_style(apps, schema_editor):
         currently_test=True)
     version.save()
 
-    for select_key, select_val in init_values.items():
+    for select_val in init_values:
         selector = StyleSelector(
-            selector=select_key,
+            selector=select_val['selector'],
             description=select_val['description'],
             pseudo_class=select_val['pseudo_class'],
             target_element_usage=select_val['target_element'],
@@ -241,9 +270,9 @@ def destroy_style(apps, schema_editor):
     StyleVersion = apps.get_model("inventory", "StyleVersion")
     StyleSelector = apps.get_model("inventory", "StyleSelector")
     StyleVersion.objects.filter(name="Baseline", number=1.0).delete()
-    for select_key, select_val in init_values.items():
+    for select_val in init_values:
         StyleSelector.objects.filter(
-            selector=select_key,
+            selector=select_val['selector'],
             pseudo_class=select_val['pseudo_class']).delete()
 
 
