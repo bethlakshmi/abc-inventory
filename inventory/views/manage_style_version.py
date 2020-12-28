@@ -37,6 +37,7 @@ class ManageStyleVersion(View):
             'page_title': self.page_title,
             'title': title,
             'forms': forms,
+            'version': self.style_version,
         }
         return context
 
