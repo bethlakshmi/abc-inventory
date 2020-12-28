@@ -28,9 +28,9 @@ init_values = [
                          ('color', '#fff')]},
     {
             'selector': '.btn-inventory-secondary',
-            'pseudo_class': 'Right now - the buttons above the table.',
-            'description': 'button',
-            'target_element': '',
+            'pseudo_class': '',
+            'description': 'Right now - the buttons above the table.',
+            'target_element': 'button',
             'usage': 'Big Table',
             'prop_val': [('background-color', '#6c757d'),
                          ('border-color', '#6c757d'),
@@ -117,9 +117,9 @@ init_values = [
                          ('color', '#212529')]},
     {
             'selector': '.inventory-btn-light',
-            'pseudo_class': 'Buttons like cancel that interrupt work.',
-            'description': 'input',
-            'target_element': '',
+            'pseudo_class': '',
+            'description': 'Buttons like cancel that interrupt work.',
+            'target_element': 'input',
             'usage': 'Forms',
             'prop_val': [('background-color', '#f8f9fa'),
                          ('border-color', '#f8f9fa'),
@@ -151,9 +151,9 @@ init_values = [
             'prop_val': [('color', 'red')]},
     {
             'selector': '.inventory-form-required',
-            'pseudo_class': 'The * on required form fields',
-            'description': 'font',
-            'target_element': '',
+            'pseudo_class': '',
+            'description': 'The * on required form fields',
+            'target_element': 'font',
             'usage': 'Forms',
             'prop_val': [('color', 'red')]},
     {
