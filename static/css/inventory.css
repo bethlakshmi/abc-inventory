@@ -18,3 +18,10 @@ span.dropt span {position: absolute; left: -9999px;
   border-style:solid; border-color:black; border-width:1px;}
 span.dropt:hover span {margin: 0px 0 0 0px; background: #ffffff; z-index:6;} 
 body.full-page {padding: 5px;}
+
+.inventory-table > thead > tr > th {
+  border: 1px solid grey;
+}
+.inventory-table > tbody > tr > td {
+  border: 1px solid grey;
+}
