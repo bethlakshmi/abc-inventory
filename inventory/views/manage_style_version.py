@@ -14,6 +14,8 @@ from inventory.models import (
 )
 from inventory.forms import ColorStyleValueForm
 from django.contrib import messages
+from inventory.models import UserMessage
+from inventory.views.default_view_text import user_messages
 
 
 class ManageStyleVersion(View):
@@ -28,12 +30,21 @@ class ManageStyleVersion(View):
         self.style_version = get_object_or_404(StyleVersion, id=version_id)
 
     def make_context(self, forms):
+        message_code = "THEME_INSTRUCTIONS"
+        msg = UserMessage.objects.get_or_create(
+                view=self.__class__.__name__,
+                code=message_code,
+                defaults={
+                    'summary': user_messages[message_code]['summary'],
+                    'description': user_messages[message_code]['description']}
+                )
         title = "Creating New Style Version"
         if self.style_version:
             title = "Manage Styles Settings for %s, version %d" % (
                 self.style_version.name,
                 self.style_version.number)
         context = {
+            'instructions': msg[0].description,
             'page_title': self.page_title,
             'title': title,
             'forms': forms,

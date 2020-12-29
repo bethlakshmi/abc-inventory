@@ -15,16 +15,17 @@
 {% endblock %}
 {% block content %}
 <h2 class="inventory-title">{{title}}</h2>
+<p>{{ instructions | safe }}</p>
+
 <form action="" method="post" enctype="multipart/form-data">
-<div class="row">
-  <div class="col-12">
+
     {% for value, form in forms %}
     {% ifchanged value.style_property.selector.used_for %}<h4>{{ value.style_property.selector.used_for }}</h4>{% endifchanged %}
     {% ifchanged value.style_property.selector %}<code><b>{{ value.style_property.selector }}</b></code><br><i>{{value.style_property.selector.description}}</i><br><br>{% endifchanged %}
     {% include "form_table.tmpl" %}
-    {% endfor %}  </div></div>
+    {% endfor %}
 <div class="row">
-  <div class="col-sm-12 col-md-6 col-lg-5">
+  <div class="col-sm-12 col-md-6 offset-md-6 col-lg-5 offset-lg-7">
     <input type="submit" name="update" value="Update" class="btn inventory-btn-primary" >
     <input type="submit" name="finish" value="Finish" class="btn inventory-btn-primary" >
     <input type="submit" name="cancel" value="Cancel" class="btn inventory-btn-light" >
