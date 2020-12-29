@@ -35,4 +35,4 @@ urlpatterns = [
         name='manage_item_image'),
     url(r'^inventory/style_edit/(?P<version_id>\d+)/?',
         ManageTheme.as_view(),
-        name='manage_theme'),]
+        name='manage_theme')]
