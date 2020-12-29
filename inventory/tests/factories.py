@@ -112,4 +112,4 @@ class StyleValueFactory(DjangoModelFactory):
         model = StyleValue
     style_property = SubFactory(StylePropertyFactory)
     style_version = SubFactory(StyleVersionFactory)
-    value = "pink"
+    value = "rgba(1, 1, 1, 0)"

@@ -18,9 +18,9 @@ from inventory.models import UserMessage
 from inventory.views.default_view_text import user_messages
 
 
-class ManageStyleVersion(View):
+class ManageTheme(View):
     object_type = StyleVersion
-    template = 'inventory/manage_style_version.tmpl'
+    template = 'inventory/manage_theme.tmpl'
     page_title = 'Manage Style Settings'
     style_version = None
 
@@ -38,11 +38,9 @@ class ManageStyleVersion(View):
                     'summary': user_messages[message_code]['summary'],
                     'description': user_messages[message_code]['description']}
                 )
-        title = "Creating New Style Version"
-        if self.style_version:
-            title = "Manage Styles Settings for %s, version %d" % (
-                self.style_version.name,
-                self.style_version.number)
+        title = "Manage Styles Settings for %s, version %d" % (
+            self.style_version.name,
+            self.style_version.number)
         context = {
             'instructions': msg[0].description,
             'page_title': self.page_title,
@@ -72,7 +70,7 @@ class ManageStyleVersion(View):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(ManageStyleVersion, self).dispatch(*args, **kwargs)
+        return super(ManageTheme, self).dispatch(*args, **kwargs)
 
     @never_cache
     def get(self, request, *args, **kwargs):

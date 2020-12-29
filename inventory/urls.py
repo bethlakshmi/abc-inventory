@@ -4,7 +4,7 @@ from inventory.views import (
     ItemsListView,
     MakeItemWizard,
     ManageItemImage,
-    ManageStyleVersion,
+    ManageTheme,
     SubItemsListView,
     ThemeView,
 )
@@ -34,5 +34,5 @@ urlpatterns = [
         ManageItemImage.as_view(),
         name='manage_item_image'),
     url(r'^inventory/style_edit/(?P<version_id>\d+)/?',
-        ManageStyleVersion.as_view(),
-        name='manage_style_version'),]
+        ManageTheme.as_view(),
+        name='manage_theme'),]
