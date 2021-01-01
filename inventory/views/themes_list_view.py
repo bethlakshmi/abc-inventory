@@ -4,11 +4,12 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from inventory.models import StyleVersion
+from inventory.models import Subitem
 
 
 class ThemesListView(View):
     object_type = StyleVersion
-    template = 'inventory/version_list.tmpl'
+    template = 'inventory/theme_list.tmpl'
     title = "List of Themes and Versions"
 
     @method_decorator(login_required)
@@ -19,7 +20,8 @@ class ThemesListView(View):
         return {
             'title': self.title,
             'page_title': self.title,
-            'items': self.object_type.objects.filter(),
+            'themes': self.object_type.objects.all(),
+            'items': Subitem.objects.all(),
             'changed_id': self.changed_id}
 
     @never_cache
