@@ -112,14 +112,14 @@ init_values = [
             'description': 'The help text hover',
             'target_element': 'span',
             'usage': 'Forms',
-            'prop_val': [('background', 'rgb(255,255,255,1)')]},
+            'prop_val': [('background', 'rgba(255,255,255,1)')]},
     {
             'selector': 'span.dropt span',
             'pseudo_class': 'hover',
             'description': 'The help text hover',
             'target_element': 'span',
             'usage': 'Forms',
-            'prop_val': [('border-color', 'rgb(0,0,0,1)')]},
+            'prop_val': [('border-color', 'rgba(0,0,0,1)')]},
     {
             'selector': '.inventory-btn-light',
             'pseudo_class': 'hover',
