@@ -32,7 +32,7 @@
  {% endfor %}
  </ul>
  
-<table id="table" data-search="true" data-show-columns="true" data-show-toggle="true" data-show-fullscreen="true" data-show-columns-toggle-all="true" data-buttons="buttons" data-detail-formatter="detailFormatter" data-detail-view="true" data-row-style="rowStyle" class="inventory-table" data-buttons-class="inventory-secondary" >
+<table id="table" data-search="true" data-show-columns="true" data-show-toggle="true" data-show-fullscreen="true" data-show-columns-toggle-all="true" data-buttons="buttons" {% if not details_off %}data-detail-formatter="detailFormatter" data-detail-view="true" {% endif %}data-row-style="rowStyle" class="inventory-table" data-buttons-class="inventory-secondary" >
   <thead class='inventory-table-header'>
     {% block table_header %}
         <tr>

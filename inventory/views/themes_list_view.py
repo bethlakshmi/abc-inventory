@@ -22,6 +22,7 @@ class ThemesListView(View):
             'page_title': self.title,
             'themes': self.object_type.objects.all(),
             'items': Subitem.objects.all(),
+            'details_off': True,
             'changed_id': self.changed_id}
 
     @never_cache
