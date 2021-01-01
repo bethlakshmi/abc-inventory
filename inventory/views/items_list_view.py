@@ -10,7 +10,7 @@ from django.urls import reverse
 class ItemsListView(View):
     object_type = Item
     template = 'inventory/item_list.tmpl'
-    bid_order_fields = ('disposition', 'category')
+    order_fields = ('disposition', 'category')
     title = "List of Items"
 
     @method_decorator(login_required)
@@ -30,7 +30,7 @@ class ItemsListView(View):
 
     def get_list(self):
         return self.object_type.objects.filter().order_by(
-            *self.bid_order_fields)
+            *self.order_fields)
 
     @never_cache
     def get(self, request, *args, **kwargs):
