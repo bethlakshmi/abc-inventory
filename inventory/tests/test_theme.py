@@ -22,13 +22,13 @@ class TestTheme(TestCase):
             ".inventory-alert-success {")
         self.assertContains(
             response,
-            "    background-color: #d4edda;")
+            "    background-color: rgba(212, 237, 218, 1);")
         self.assertContains(
             response,
-            "    border-color: #c3e6cb;")
+            "    border-color: rgba(195, 230, 203, 1);")
         self.assertContains(
             response,
-            "    color: #155724;")
+            "    color: rgba(21, 87, 36, 1);")
         self.assertContains(
             response,
             "}")
@@ -50,7 +50,7 @@ class TestTheme(TestCase):
             ".inventory-alert-success {")
         self.assertNotContains(
             response,
-            "    background-color: #d4edda;")
+            "    background-color: rgba(212, 237, 218, 1);")
 
     @override_settings(DEBUG=True)
     def test_special_test_style_switch(self):
@@ -71,7 +71,7 @@ class TestTheme(TestCase):
             ".inventory-alert-success {")
         self.assertNotContains(
             response,
-            "    background-color: #d4edda;")
+            "    background-color: rgba(212, 237, 218, 1);")
 
     def test_special_live_style_switch(self):
         version = StyleVersionFactory()
@@ -91,7 +91,35 @@ class TestTheme(TestCase):
             ".inventory-alert-success {")
         self.assertNotContains(
             response,
-            "    background-color: #d4edda;")
+            "    background-color: rgba(212, 237, 218, 1);")
+        self.assertEquals(
+            str(version), "%s - version %d" % (version.name, version.number))
+        self.assertEquals(
+            str(value.style_property),
+            "%s - %s" % (value.style_property.selector,
+                         value.style_property.style_property))
+
+    def test_ondemand_switch(self):
+        version = StyleVersionFactory()
+        version.save()
+        value = StyleValueFactory(style_version=version)
+        response = self.client.get(reverse(
+            self.view_name,
+            urlconf="inventory.urls",
+            args=[version.pk]))
+        self.assertContains(
+            response,
+            "%s {" % value.style_property.selector)
+        self.assertContains(
+            response,
+            "    %s: %s" % (value.style_property.style_property,
+                            value.value))
+        self.assertNotContains(
+            response,
+            ".inventory-alert-success {")
+        self.assertNotContains(
+            response,
+            "    background-color: rgba(212, 237, 218, 1);")
         self.assertEquals(
             str(version), "%s - version %d" % (version.name, version.number))
         self.assertEquals(

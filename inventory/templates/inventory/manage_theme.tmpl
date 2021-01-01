@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static sekizai_tags %}
+{% block title %}
+   {{page_title}}
+{% endblock %}
+{% block head %}
+    {# Include FontAwesome; required for icon display #}
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css">
+
+    <link href="{% static 'css/inventory.css' %}" rel="stylesheet">
+
+    {# Include Bootstrap 4 and jQuery #}
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <link href="{% url 'inventory:theme_style' version.pk %}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+<h2 class="inventory-title">{{title}}</h2>
+<p>{{ instructions | safe }}</p>
+
+<form action="" method="post" enctype="multipart/form-data">
+
+    {% for value, form in forms %}
+    {% ifchanged value.style_property.selector.used_for %}<h4>{{ value.style_property.selector.used_for }}</h4>{% endifchanged %}
+    {% ifchanged value.style_property.selector %}<code><b>{{ value.style_property.selector }}</b></code><br><i>{{value.style_property.selector.description}}</i><br><br>{% endifchanged %}
+    {% include "form_table.tmpl" %}
+    {% endfor %}
+<div class="row">
+  <div class="col-sm-12 col-md-6 offset-md-6 col-lg-5 offset-lg-7">
+    <input type="submit" name="update" value="Update" class="btn inventory-btn-primary" >
+    <input type="submit" name="finish" value="Finish" class="btn inventory-btn-primary" >
+    <input type="submit" name="cancel" value="Cancel" class="btn inventory-btn-light" >
+  </div>
+</div>
+</form>
+{% addtoblock "js" %}
+<script src="/static/js/jscolor.js"></script>
+{% endaddtoblock %}
+{% endblock %}
