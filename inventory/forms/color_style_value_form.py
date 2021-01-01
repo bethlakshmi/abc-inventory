@@ -9,7 +9,6 @@ from inventory.models import (
     StyleProperty,
     StyleValue,
 )
-from dal import autocomplete
 
 
 class ColorStyleValueForm(ModelForm):

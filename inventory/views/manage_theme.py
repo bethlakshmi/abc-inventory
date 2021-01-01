@@ -11,10 +11,10 @@ from django.shortcuts import (
 from inventory.models import (
     StyleValue,
     StyleVersion,
+    UserMessage,
 )
 from inventory.forms import ColorStyleValueForm
 from django.contrib import messages
-from inventory.models import UserMessage
 from inventory.views.default_view_text import user_messages
 
 

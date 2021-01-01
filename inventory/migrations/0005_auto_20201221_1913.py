@@ -107,6 +107,20 @@ init_values = [
                          ('border-color', 'rgba(255, 238, 186, 1)'),
                          ('color', 'rgba(133, 100, 4, 1)')]},
     {
+            'selector': 'span.dropt:hover span',
+            'pseudo_class': 'hover',
+            'description': 'The help text hover',
+            'target_element': 'span',
+            'usage': 'Forms',
+            'prop_val': [('background', 'rgb(255,255,255,1)')]},
+    {
+            'selector': 'span.dropt span',
+            'pseudo_class': 'hover',
+            'description': 'The help text hover',
+            'target_element': 'span',
+            'usage': 'Forms',
+            'prop_val': [('border-color', 'rgb(0,0,0,1)')]},
+    {
             'selector': '.inventory-btn-light',
             'pseudo_class': 'hover',
             'description': 'Hover for buttons that terminate the work',

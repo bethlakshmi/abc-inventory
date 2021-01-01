@@ -3,7 +3,7 @@
       {% if field.errors %}
       <div class="container"><div class="row">
         <div class="col-md-2">&nbsp;</div>
-        <div class="col-md-4"><label for="field.name">        
+        <div class="col-md-4"><label for="{{field.name}}">        
           <font class="inventory-form-error">{{ field.errors }}</font></label></div>
       </div></div>
       {% endif %}
@@ -27,7 +27,7 @@
       {% if forms.0.width.errors or forms.0.height.errors or forms.0.depth.errors %}
       <div class="container"><div class="row">
         <div class="col-md-2">&nbsp;</div>
-        <div class="col-md-4"><label for="field.name">        
+        <div class="col-md-4"><label for="{{field.name}}">        
           <font class="inventory-form-error"><ul>
           {% if forms.0.width.errors %}<li>w - {{ forms.0.width.errors | striptags }}</li>{% endif %}
           {% if forms.0.height.errors %}<li>h - {{ forms.0.height.errors | striptags }}</li>{% endif %}
