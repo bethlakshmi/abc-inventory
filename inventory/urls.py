@@ -7,6 +7,7 @@ from inventory.views import (
     ManageTheme,
     SubItemsListView,
     ThemeView,
+    ThemesListView,
 )
 
 
@@ -18,6 +19,9 @@ urlpatterns = [
         name='theme_style'),
     url(r'^inventory/style.css', ThemeView.as_view(), name='theme_style'),
     url(r'^inventory/item/list/?', ItemsListView.as_view(), name='items_list'),
+    url(r'^inventory/theme/list/?',
+        ThemesListView.as_view(),
+        name='themes_list'),
     url(r'^inventory/subitem/list/?',
         SubItemsListView.as_view(),
         name='subitems_list'),

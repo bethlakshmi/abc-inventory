@@ -6,14 +6,14 @@ from django.shortcuts import render
 from inventory.models import StyleVersion
 
 
-class ThemeListView(View):
-    object_type = Item
+class ThemesListView(View):
+    object_type = StyleVersion
     template = 'inventory/version_list.tmpl'
     title = "List of Themes and Versions"
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(ThemeListView, self).dispatch(*args, **kwargs)
+        return super(ThemesListView, self).dispatch(*args, **kwargs)
 
     def get_context_dict(self):
         return {

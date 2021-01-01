@@ -10,3 +10,4 @@ from .bulk_image_upload import BulkImageUpload
 from .manage_item_image import ManageItemImage
 from .theme_view import ThemeView
 from .manage_theme import ManageTheme
+from .themes_list_view import ThemesListView
