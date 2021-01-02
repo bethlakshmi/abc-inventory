@@ -236,7 +236,7 @@ init_values = [
             something that is live.''',
             'target_element': 'div',
             'usage': 'Big Table',
-            'prop_val': [('color', 'rgba(40, 167, 69,1)')]},
+            'prop_val': [('color', 'rgba(35,145,60,1)')]},
     {
             'selector': '.inventory-table > thead > tr > th',
             'pseudo_class': '',

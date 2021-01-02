@@ -83,7 +83,7 @@ class ManageTheme(View):
     def post(self, request, *args, **kwargs):
         if 'cancel' in list(request.POST.keys()):
             messages.success(request, "The last update was canceled.")
-            return HttpResponseRedirect(reverse('items_list',
+            return HttpResponseRedirect(reverse('themes_list',
                                                 urlconf='inventory.urls'))
         self.groundwork(request, args, kwargs)
         forms = self.setup_forms(request)
@@ -96,8 +96,9 @@ class ManageTheme(View):
                 form.save()
             messages.success(request, "Updated %s" % self.style_version)
             if 'finish' in list(request.POST.keys()):
-                return HttpResponseRedirect(
-                    reverse('items_list', urlconf='inventory.urls'))
+                return HttpResponseRedirect("%s?changed_id=%d" % (
+                    reverse('themes_list', urlconf='inventory.urls'),
+                    self.style_version.pk))
         else:
             messages.error(
                 request,
