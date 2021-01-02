@@ -44,7 +44,7 @@ class TestThemesList(TestCase):
             html=True)
         self.assertContains(
             response,
-            '<i class="inventory-text-success fas fa-check-circle"></i>',
+            '<i class="inventory-text-success fas fa-check-circle"',
             2)
 
     def test_list_all_the_things(self):
@@ -55,7 +55,7 @@ class TestThemesList(TestCase):
         self.assertContains(response, boring_version.name)
         self.assertContains(
             response,
-            '<i class="inventory-text-success fas fa-check-circle"></i>',
+            '<i class="inventory-text-success fas fa-check-circle"',
             2)
         self.assertContains(response, reverse(
             "manage_theme",

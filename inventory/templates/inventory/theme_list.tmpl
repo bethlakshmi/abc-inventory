@@ -1,5 +1,8 @@
 {% extends 'inventory/item_list.tmpl' %}
 {% load thumbnail %}
+{% block control_buttons %}
+  <a href="{% url 'inventory:items_list' %}" role="button" class="btn inventory-btn-primary">Manage Items</a>
+{% endblock %}
 {% block table_header %}
         <tr>
           <th data-field="id" data-sortable="true">ID</th>
@@ -11,9 +14,6 @@
           <th data-field="currently_test"  data-sortable="true">On Test</th>
           <th data-field="action">Action</th>
         </tr>
-{% endblock %}
-{% block control_buttons %}
-  <a href="{% url 'inventory:items_list' %}" role="button" class="btn inventory-btn-primary">Manage Items</a>
 {% endblock %}
 {% block buttons %}
 {% endblock %}
@@ -28,8 +28,8 @@
         'action': '<a class="inventory-detail" href="{% url 'inventory:manage_theme' theme.id %}" title="Edit"><i class="fas fa-edit"></i></a>&nbsp;&nbsp;<a class="inventory-detail"  title="Clone - not yet available"><i class="fas fa-clone"></i></a>',
         'created': '{{ theme.created_at }}',
         'updated': '{{ theme.updated_at }}',
-        'currently_live': '{% if theme.currently_live %}<i class="inventory-text-success fas fa-check-circle"></i>{% endif %}',
-        'currently_test': '{% if theme.currently_test %}<i class="inventory-text-success fas fa-check-circle"></i>{% endif %}',
+        'currently_live': '{% if theme.currently_live %}<i class="inventory-text-success fas fa-check-circle" title="This version is currently publicly visible on the live site"></i>{% endif %}',
+        'currently_test': '{% if theme.currently_test %}<i class="inventory-text-success fas fa-check-circle" title="This version is currently visible on all test sites (anything with DEBUG on)"></i>{% endif %}',
       },
   {% endfor %}
   {% endblock %}
