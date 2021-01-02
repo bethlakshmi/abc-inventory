@@ -201,7 +201,8 @@ init_values = [
     {
             'selector': 'body.full-page',
             'pseudo_class': '',
-            'description': 'Body of the page, but only for things like whole page tables',
+            'description': '''Body of the page, but only for things like
+            whole page tables''',
             'target_element': 'div',
             'usage': 'Big Table',
             'prop_val': [('background-color', 'rgba(255,255,255,1)'),
@@ -232,7 +233,7 @@ init_values = [
     {
             'selector': '.inventory-text-success',
             'pseudo_class': '',
-            'description': '''Text that means to show success, like icons for 
+            'description': '''Text that means to show success, like icons for
             something that is live.''',
             'target_element': 'div',
             'usage': 'Big Table',

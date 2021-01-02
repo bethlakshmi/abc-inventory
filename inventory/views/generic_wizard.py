@@ -7,6 +7,7 @@ from django.urls import reverse
 from django.contrib import messages
 from inventory.models import UserMessage
 from inventory.views.default_view_text import user_messages
+from django.shortcuts import render
 
 
 class GenericWizard(View):
