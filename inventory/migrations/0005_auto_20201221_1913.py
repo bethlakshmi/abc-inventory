@@ -230,6 +230,14 @@ init_values = [
             'usage': 'Big Table',
             'prop_val': [('background-color', 'rgba(195, 230, 203, 1)')]},
     {
+            'selector': '.inventory-text-success',
+            'pseudo_class': '',
+            'description': '''Text that means to show success, like icons for 
+            something that is live.''',
+            'target_element': 'div',
+            'usage': 'Big Table',
+            'prop_val': [('color', 'rgba(40, 167, 69,1)')]},
+    {
             'selector': '.inventory-table > thead > tr > th',
             'pseudo_class': '',
             'description': 'Table - header cell borders',
