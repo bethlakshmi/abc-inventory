@@ -89,8 +89,9 @@ class TestManageTheme(TestCase):
         self.assertContains(
             response,
             "Updated %s" % self.value.style_version)
-        self.assertRedirects(response,
-                             reverse("items_list", urlconf="inventory.urls"))
+        self.assertRedirects(response, "%s?changed_id=%d" % (
+            reverse('themes_list', urlconf='inventory.urls'),
+            self.value.style_version.pk))
 
     def test_post_basics_update(self):
         login_as(self.user, self)
@@ -119,7 +120,7 @@ class TestManageTheme(TestCase):
             follow=True)
         self.assertContains(response, "The last update was canceled.")
         self.assertRedirects(response,
-                             reverse("items_list", urlconf="inventory.urls"))
+                             reverse("themes_list", urlconf="inventory.urls"))
 
     def test_post_basics_bad_data(self):
         login_as(self.user, self)

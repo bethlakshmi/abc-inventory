@@ -16,6 +16,7 @@ from inventory.models import (
 from inventory.forms import ColorStyleValueForm
 from django.contrib import messages
 from inventory.views.default_view_text import user_messages
+from datetime import datetime
 
 
 class ManageTheme(View):
@@ -94,6 +95,8 @@ class ManageTheme(View):
         if all_valid:
             for value, form in forms:
                 form.save()
+            self.style_version.updated_at = datetime.now()
+            self.style_version.save()
             messages.success(request, "Updated %s" % self.style_version)
             if 'finish' in list(request.POST.keys()):
                 return HttpResponseRedirect("%s?changed_id=%d" % (
