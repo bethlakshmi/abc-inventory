@@ -6,9 +6,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.http import Http404
 from django.shortcuts import get_object_or_404
-from inventory.models import (
-    StyleVersion,
-)
+from inventory.models import StyleVersion
 from django.contrib import messages
 
 

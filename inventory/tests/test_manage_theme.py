@@ -6,10 +6,7 @@ from inventory.tests.factories import (
     StyleVersionFactory,
     UserFactory
 )
-from inventory.tests.functions import (
-    login_as,
-    assert_option_state,
-)
+from inventory.tests.functions import login_as
 from datetime import (
     date,
     timedelta,
