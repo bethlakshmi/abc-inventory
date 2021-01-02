@@ -75,7 +75,7 @@ class ManageTheme(View):
 
     @never_cache
     def get(self, request, *args, **kwargs):
-        redirect = self.groundwork(request, args, kwargs)
+        self.groundwork(request, args, kwargs)
         forms = self.setup_forms()
         return render(request, self.template, self.make_context(forms))
 

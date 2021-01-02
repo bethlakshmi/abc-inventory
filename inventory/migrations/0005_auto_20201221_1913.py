@@ -238,6 +238,14 @@ init_values = [
             'usage': 'Big Table',
             'prop_val': [('color', 'rgba(35,145,60,1)')]},
     {
+            'selector': '.inventory-text-muted',
+            'pseudo_class': '',
+            'description': '''Text that is possibly active, but muted to
+            defer so something else.''',
+            'target_element': 'div',
+            'usage': 'Big Table',
+            'prop_val': [('color', 'rgba(108, 117, 125,1)')]},
+    {
             'selector': '.inventory-table > thead > tr > th',
             'pseudo_class': '',
             'description': 'Table - header cell borders',
