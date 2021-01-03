@@ -4,7 +4,6 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from inventory.models import StyleVersion
-from inventory.models import Subitem
 
 
 class ThemesListView(View):
@@ -21,7 +20,6 @@ class ThemesListView(View):
             'title': self.title,
             'page_title': self.title,
             'themes': self.object_type.objects.all(),
-            'items': Subitem.objects.all(),
             'details_off': True,
             'changed_id': self.changed_id}
 
