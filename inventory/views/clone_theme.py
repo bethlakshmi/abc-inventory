@@ -8,48 +8,29 @@ from django.shortcuts import (
     get_object_or_404,
     render,
 )
+from inventory.views import ManageTheme
 from inventory.models import (
     StyleValue,
     StyleVersion,
     UserMessage,
 )
-from inventory.forms import ColorStyleValueForm
+from inventory.forms import (
+    ColorStyleValueForm,
+    ThemeVersionForm,
+)
 from django.contrib import messages
 from inventory.views.default_view_text import user_messages
 from datetime import datetime
 
 
-class ManageTheme(View):
-    object_type = StyleVersion
-    template = 'inventory/manage_theme.tmpl'
-    page_title = 'Manage Style Settings'
-    style_version = None
-    title_format = "Manage Styles Settings for %s, version %d"
-    instruction_code = "THEME_INSTRUCTIONS"
+class CloneTheme(ManageTheme):
+    page_title = 'Clone Style Settings'
+    title_format = "Clone Style Settings for %s, version %d"
+    instruction_code = "CLONE_INSTRUCTIONS"
 
-    def groundwork(self, request, args, kwargs):
-        self.style_version = None
-        version_id = kwargs.get("version_id")
-        self.style_version = get_object_or_404(StyleVersion, id=version_id)
-
-    def make_context(self, forms):
-        msg = UserMessage.objects.get_or_create(
-            view=self.__class__.__name__,
-            code=self.instruction_code,
-            defaults={
-                'summary': user_messages[self.instruction_code]['summary'],
-                'description': user_messages[self.instruction_code][
-                'description']}
-            )
-        title = self.title_format % (self.style_version.name,
-                                     self.style_version.number)
-        context = {
-            'instructions': msg[0].description,
-            'page_title': self.page_title,
-            'title': title,
-            'forms': forms,
-            'version': self.style_version,
-        }
+    def make_context(self, version_form, forms):
+        context = super(CloneTheme, self).make_context(forms)
+        context['version_form'] = version_form
         return context
 
     def setup_forms(self, request=None):
@@ -61,25 +42,28 @@ class ManageTheme(View):
                 'style_property__selector__pseudo_class',
                 'style_property__style_property'):
             if request:
+                version_form = ThemeVersionForm(request.POST)
                 form = ColorStyleValueForm(request.POST,
-                                           instance=value,
                                            prefix=str(value.pk))
             else:
+                version_form = ThemeVersionForm()
                 form = ColorStyleValueForm(instance=value,
                                            prefix=str(value.pk))
             form['value'].label = str(value.style_property.style_property)
             forms += [(value, form)]
-        return forms
+        return (version_form, forms)
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(ManageTheme, self).dispatch(*args, **kwargs)
+        return super(CloneTheme, self).dispatch(*args, **kwargs)
 
     @never_cache
     def get(self, request, *args, **kwargs):
         self.groundwork(request, args, kwargs)
-        forms = self.setup_forms()
-        return render(request, self.template, self.make_context(forms))
+        (version_form, forms) = self.setup_forms()
+        return render(request,
+                      self.template,
+                      self.make_context(version_form, forms))
 
     @never_cache
     @method_decorator(login_required)
@@ -89,7 +73,7 @@ class ManageTheme(View):
             return HttpResponseRedirect(reverse('themes_list',
                                                 urlconf='inventory.urls'))
         self.groundwork(request, args, kwargs)
-        forms = self.setup_forms(request)
+        (version_form, forms) = self.setup_forms(request)
         all_valid = True
         for value, form in forms:
             if not form.is_valid():

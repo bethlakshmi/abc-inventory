@@ -1,8 +1,6 @@
 from django.forms import (
     CharField,
-    HiddenInput,
     ModelForm,
-    ModelChoiceField,
     TextInput,
 )
 from inventory.models import (

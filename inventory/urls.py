@@ -2,6 +2,7 @@ from django.conf.urls import url
 from inventory.views import (
     ActivateTheme,
     BulkImageUpload,
+    CloneTheme,
     ItemsListView,
     MakeItemWizard,
     ManageItemImage,
@@ -43,4 +44,7 @@ urlpatterns = [
         name='activate_theme'),
     url(r'^inventory/style_edit/(?P<version_id>\d+)/?',
         ManageTheme.as_view(),
+        name='manage_theme'),
+    url(r'^inventory/style_clone/(?P<version_id>\d+)/?',
+        CloneTheme.as_view(),
         name='manage_theme')]
