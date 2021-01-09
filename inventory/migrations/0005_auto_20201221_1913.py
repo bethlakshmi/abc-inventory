@@ -201,7 +201,8 @@ init_values = [
     {
             'selector': 'body.full-page',
             'pseudo_class': '',
-            'description': 'Body of the page, but only for things like whole page tables',
+            'description': '''Body of the page, but only for things like
+            whole page tables''',
             'target_element': 'div',
             'usage': 'Big Table',
             'prop_val': [('background-color', 'rgba(255,255,255,1)'),
@@ -229,6 +230,22 @@ init_values = [
             'target_element': 'div',
             'usage': 'Big Table',
             'prop_val': [('background-color', 'rgba(195, 230, 203, 1)')]},
+    {
+            'selector': '.inventory-text-success',
+            'pseudo_class': '',
+            'description': '''Text that means to show success, like icons for
+            something that is live.''',
+            'target_element': 'div',
+            'usage': 'Big Table',
+            'prop_val': [('color', 'rgba(35,145,60,1)')]},
+    {
+            'selector': '.inventory-text-muted',
+            'pseudo_class': '',
+            'description': '''Text that is possibly active, but muted to
+            defer so something else.''',
+            'target_element': 'div',
+            'usage': 'Big Table',
+            'prop_val': [('color', 'rgba(108, 117, 125,1)')]},
     {
             'selector': '.inventory-table > thead > tr > th',
             'pseudo_class': '',

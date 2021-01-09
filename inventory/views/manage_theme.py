@@ -16,6 +16,7 @@ from inventory.models import (
 from inventory.forms import ColorStyleValueForm
 from django.contrib import messages
 from inventory.views.default_view_text import user_messages
+from datetime import datetime
 
 
 class ManageTheme(View):
@@ -56,7 +57,8 @@ class ManageTheme(View):
                 style_version=self.style_version).order_by(
                 'style_property__selector__used_for',
                 'style_property__selector__selector',
-                'style_property__selector__pseudo_class'):
+                'style_property__selector__pseudo_class',
+                'style_property__style_property'):
             if request:
                 form = ColorStyleValueForm(request.POST,
                                            instance=value,
@@ -74,7 +76,7 @@ class ManageTheme(View):
 
     @never_cache
     def get(self, request, *args, **kwargs):
-        redirect = self.groundwork(request, args, kwargs)
+        self.groundwork(request, args, kwargs)
         forms = self.setup_forms()
         return render(request, self.template, self.make_context(forms))
 
@@ -83,7 +85,7 @@ class ManageTheme(View):
     def post(self, request, *args, **kwargs):
         if 'cancel' in list(request.POST.keys()):
             messages.success(request, "The last update was canceled.")
-            return HttpResponseRedirect(reverse('items_list',
+            return HttpResponseRedirect(reverse('themes_list',
                                                 urlconf='inventory.urls'))
         self.groundwork(request, args, kwargs)
         forms = self.setup_forms(request)
@@ -94,10 +96,13 @@ class ManageTheme(View):
         if all_valid:
             for value, form in forms:
                 form.save()
+            self.style_version.updated_at = datetime.now()
+            self.style_version.save()
             messages.success(request, "Updated %s" % self.style_version)
             if 'finish' in list(request.POST.keys()):
-                return HttpResponseRedirect(
-                    reverse('items_list', urlconf='inventory.urls'))
+                return HttpResponseRedirect("%s?changed_id=%d" % (
+                    reverse('themes_list', urlconf='inventory.urls'),
+                    self.style_version.pk))
         else:
             messages.error(
                 request,

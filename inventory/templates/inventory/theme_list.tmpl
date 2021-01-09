@@ -1,0 +1,34 @@
+{% extends 'inventory/item_list.tmpl' %}
+{% block control_buttons %}
+  <a href="{% url 'inventory:items_list' %}" role="button" class="btn inventory-btn-primary">Manage Items</a>
+{% endblock %}
+{% block table_header %}
+        <tr>
+          <th data-field="id" data-sortable="true">ID</th>
+          <th data-field="name" data-sortable="true">Name</th>
+          <th data-field="number" data-sortable="true">Number</th>
+          <th data-field="created" data-sortable="true">Created</th>
+          <th data-field="updated" data-sortable="true">Updated</th>
+          <th data-field="currently_live" data-sortable="true">On Live</th>
+          <th data-field="currently_test"  data-sortable="true">On Test</th>
+          <th data-field="action">Action</th>
+        </tr>
+{% endblock %}
+{% block buttons %}
+{% endblock %}
+{% block details %}
+{% endblock %}
+{% block item_data %}
+  {% for theme in themes %}
+      {
+        'id': '{{ theme.pk }}',
+        'number': '{{ theme.number|floatformat:1 }}',
+        'name': '{{ theme.name }}',
+        'action': '<a class="inventory-detail" href="{% url 'inventory:manage_theme' theme.id %}" title="Edit"><i class="fas fa-edit"></i></a>&nbsp;&nbsp;<a class="inventory-detail"  title="Clone - not yet available"><i class="fas fa-clone"></i></a>',
+        'created': '{{ theme.created_at }}',
+        'updated': '{{ theme.updated_at }}',
+        'currently_live': '{% if theme.currently_live %}<i class="inventory-text-success fas fa-check-circle" title="This version is currently publicly visible on the live site"></i>{% else %}<a href="{% url 'inventory:activate_theme' theme.pk 'live' %}"><i class="fas fa-upload inventory-text-muted" title="Activate this version on the live site"></i></a>{% endif %}',
+        'currently_test': '{% if theme.currently_test %}<i class="inventory-text-success fas fa-check-circle" title="This version is currently visible on all test sites (anything with DEBUG on)"></i>{% else %}<a href="{% url 'inventory:activate_theme' theme.pk 'test' %}"><i class="fas fa-upload inventory-text-muted" title="Activate this version on all test sites"></i></a>{% endif %}',
+      },
+  {% endfor %}
+  {% endblock %}

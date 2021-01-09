@@ -18,21 +18,20 @@
   <h2 class="inventory-title">{{title}}</h2>
   </div>
   <div class="col-4 text-right">
-  <a href="{% url 'inventory:image_upload' %}" role="button" class="btn inventory-btn-primary">Image Upload</a>
+{% block control_buttons %}
+ <a href="{% url 'inventory:themes_list' %}" role="button" class="btn inventory-btn-primary">Manage Themes</a>&nbsp;
+ <a href="{% url 'inventory:image_upload' %}" role="button" class="btn inventory-btn-primary">Image Upload</a>
+{% endblock %}
   </div>
 </div>
-  {% if errors %}
-    {% for error in errors %}
-    <p style= "color:red">{{error}}</p>
-    {% endfor %}
-  {% endif %}
+{% if path_list %}
  <ul class="nav nav-tabs" id="inner">
  {% for text, path in path_list %}
   <li role="presentation" class="nav-item"><a href="{{ path }}" class="nav-link {% if request.path == path %}active{% endif %}">{{text}}</a></li>
  {% endfor %}
  </ul>
- 
-<table id="table" data-search="true" data-show-columns="true" data-show-toggle="true" data-show-fullscreen="true" data-show-columns-toggle-all="true" data-buttons="buttons" data-detail-formatter="detailFormatter" data-detail-view="true" data-row-style="rowStyle" class="inventory-table" data-buttons-class="inventory-secondary" >
+ {% endif %}
+<table id="table" data-search="true" data-show-columns="true" data-show-toggle="true" data-show-fullscreen="true" data-show-columns-toggle-all="true" data-buttons="buttons" {% if not details_off %}data-detail-formatter="detailFormatter" data-detail-view="true" {% endif %}data-row-style="rowStyle" class="inventory-table" data-buttons-class="inventory-secondary" >
   <thead class='inventory-table-header'>
     {% block table_header %}
         <tr>

@@ -93,7 +93,8 @@ class TestTheme(TestCase):
             response,
             "    background-color: rgba(212, 237, 218, 1);")
         self.assertEquals(
-            str(version), "%s - version %d" % (version.name, version.number))
+            str(version),
+            "{} - version {:.1f}".format(version.name, version.number))
         self.assertEquals(
             str(value.style_property),
             "%s - %s" % (value.style_property.selector,
@@ -121,7 +122,8 @@ class TestTheme(TestCase):
             response,
             "    background-color: rgba(212, 237, 218, 1);")
         self.assertEquals(
-            str(version), "%s - version %d" % (version.name, version.number))
+            str(version),
+            "{} - version {:.1f}".format(version.name, version.number))
         self.assertEquals(
             str(value.style_property),
             "%s - %s" % (value.style_property.selector,
