@@ -11,7 +11,6 @@ from datetime import (
     date,
     timedelta,
 )
-from inventory.models import Item
 
 
 class TestManageTheme(TestCase):

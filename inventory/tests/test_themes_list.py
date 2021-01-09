@@ -5,14 +5,7 @@ from inventory.tests.factories import (
     StyleVersionFactory,
     UserFactory
 )
-from inventory.tests.functions import (
-    login_as,
-    set_image,
-)
-from datetime import (
-    date,
-    timedelta,
-)
+from inventory.tests.functions import login_as
 from inventory.models import StyleVersion
 
 
