@@ -47,4 +47,4 @@ urlpatterns = [
         name='manage_theme'),
     url(r'^inventory/style_clone/(?P<version_id>\d+)/?',
         CloneTheme.as_view(),
-        name='manage_theme')]
+        name='clone_theme')]

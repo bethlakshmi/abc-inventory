@@ -35,6 +35,11 @@ class CloneTheme(ManageTheme):
 
     def setup_forms(self, request=None):
         forms = []
+        if request:
+            version_form = ThemeVersionForm(request.POST)
+        else:
+            version_form = ThemeVersionForm()
+
         for value in StyleValue.objects.filter(
                 style_version=self.style_version).order_by(
                 'style_property__selector__used_for',
@@ -42,20 +47,14 @@ class CloneTheme(ManageTheme):
                 'style_property__selector__pseudo_class',
                 'style_property__style_property'):
             if request:
-                version_form = ThemeVersionForm(request.POST)
                 form = ColorStyleValueForm(request.POST,
                                            prefix=str(value.pk))
             else:
-                version_form = ThemeVersionForm()
                 form = ColorStyleValueForm(instance=value,
                                            prefix=str(value.pk))
             form['value'].label = str(value.style_property.style_property)
             forms += [(value, form)]
         return (version_form, forms)
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super(CloneTheme, self).dispatch(*args, **kwargs)
 
     @never_cache
     def get(self, request, *args, **kwargs):
@@ -74,23 +73,31 @@ class CloneTheme(ManageTheme):
                                                 urlconf='inventory.urls'))
         self.groundwork(request, args, kwargs)
         (version_form, forms) = self.setup_forms(request)
-        all_valid = True
+        all_valid = version_form.is_valid()
         for value, form in forms:
             if not form.is_valid():
                 all_valid = False
         if all_valid:
+            new_version = version_form.save()
             for value, form in forms:
-                form.save()
-            self.style_version.updated_at = datetime.now()
-            self.style_version.save()
-            messages.success(request, "Updated %s" % self.style_version)
+                instance = form.save(commit=False)
+                instance.style_version = new_version
+                instance.save()
+            messages.success(request, "Cloned %s from %s" % (
+                new_version,
+                self.style_version))
             if 'finish' in list(request.POST.keys()):
                 return HttpResponseRedirect("%s?changed_id=%d" % (
                     reverse('themes_list', urlconf='inventory.urls'),
-                    self.style_version.pk))
+                    new_version.pk))
+            if 'update' in list(request.POST.keys()):
+                return HttpResponseRedirect(
+                    reverse('manage_theme',
+                            urlconf='inventory.urls',
+                            args=[new_version.pk]))
         else:
             messages.error(
                 request,
                 "Something was wrong, correct the errors below and try again.")
 
-        return render(request, self.template, self.make_context(forms))
+        return render(request, self.template, self.make_context(version_form, forms))
