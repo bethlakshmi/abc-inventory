@@ -24,7 +24,7 @@ class ManageTheme(View):
     template = 'inventory/manage_theme.tmpl'
     page_title = 'Manage Style Settings'
     style_version = None
-    title_format = "Manage Styles Settings for %s, version %d"
+    title_format = "Manage Styles Settings for {}, version {:.1f}"
     instruction_code = "THEME_INSTRUCTIONS"
 
     def groundwork(self, request, args, kwargs):
@@ -39,10 +39,9 @@ class ManageTheme(View):
             defaults={
                 'summary': user_messages[self.instruction_code]['summary'],
                 'description': user_messages[self.instruction_code][
-                'description']}
-            )
-        title = self.title_format % (self.style_version.name,
-                                     self.style_version.number)
+                    'description']})
+        title = self.title_format.format(self.style_version.name,
+                                         self.style_version.number)
         context = {
             'instructions': msg[0].description,
             'page_title': self.page_title,

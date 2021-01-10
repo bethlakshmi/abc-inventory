@@ -25,7 +25,7 @@ from datetime import datetime
 
 class CloneTheme(ManageTheme):
     page_title = 'Clone Style Settings'
-    title_format = "Clone Style Settings for %s, version %d"
+    title_format = "Clone Styles Settings for {}, version {:.1f}"
     instruction_code = "CLONE_INSTRUCTIONS"
 
     def make_context(self, version_form, forms):
@@ -86,7 +86,8 @@ class CloneTheme(ManageTheme):
             messages.success(request, "Cloned %s from %s" % (
                 new_version,
                 self.style_version))
-            if 'finish' in list(request.POST.keys()):
+            if 'finish' in list(request.POST.keys()) or 'clone' in list(
+                    request.POST.keys()):
                 return HttpResponseRedirect("%s?changed_id=%d" % (
                     reverse('themes_list', urlconf='inventory.urls'),
                     new_version.pk))
@@ -100,4 +101,6 @@ class CloneTheme(ManageTheme):
                 request,
                 "Something was wrong, correct the errors below and try again.")
 
-        return render(request, self.template, self.make_context(version_form, forms))
+        return render(request,
+                      self.template,
+                      self.make_context(version_form, forms))

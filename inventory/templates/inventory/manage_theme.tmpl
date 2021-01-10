@@ -41,7 +41,7 @@
             <input class="form-control" type="number" name="number" value="{{version.next_version|floatformat:1}}" min="0.1" step="any" id="id_number">
         </div>
         <div class="form-group">
-            <input type="submit" name="clone" value="Clone" class="btn inventory-btn-primary" >
+          <input type="submit" name="clone" value="Clone" class="btn inventory-btn-primary" formaction="{% url 'inventory:clone_theme' version.pk %}">
         </div>
     </div>
     {% endif %}
