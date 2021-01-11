@@ -11,7 +11,7 @@ from decimal import Decimal
 from inventory.models import StyleVersion
 
 
-class TestManageTheme(TestCase):
+class TestCloneTheme(TestCase):
     view_name = "clone_theme"
 
     def setUp(self):
