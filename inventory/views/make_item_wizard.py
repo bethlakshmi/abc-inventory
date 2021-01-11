@@ -64,19 +64,28 @@ class MakeItemWizard(GenericWizard):
         context['title'] = title
         if str(self.forms[0].__class__.__name__) == "PhysicalItemForm":
             context['special_handling'] = True
+        if str(self.forms[0].__class__.__name__) == "FurtherDetailForm":
+            context['add'] = True
         return context
 
     def finish_valid_form(self, request):
         self.item = self.forms[0].save()
         if self.forms[0].__class__.__name__ == "FurtherDetailForm":
             for form in self.forms[1:-1]:
-                form.save()
+                if len(form.cleaned_data["text"]) == 0:
+                    label = form.save(commit=False)
+                    label.delete()
+                else:
+                    form.save()
             if self.forms[-1].cleaned_data["text"] and len(
                     self.forms[-1].cleaned_data["text"]):
                 self.new_label = self.forms[-1].save(commit=False)
                 self.new_label.item = self.item
                 self.new_label.save()
-
+                if 'add' in list(request.POST.keys()):
+                    messages.success(
+                        request,
+                        "Created new text: %s" % self.new_label.text)
 
     def finish(self, request):
         if self.page_title == 'Create New Item':
