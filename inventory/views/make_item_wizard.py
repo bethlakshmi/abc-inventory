@@ -4,6 +4,7 @@ from inventory.models import Item
 from inventory.forms import (
     BasicItemForm,
     FurtherDetailForm,
+    LabelForm,
     PhysicalItemForm,
 )
 from django.contrib import messages
@@ -21,6 +22,7 @@ class MakeItemWizard(GenericWizard):
     second_title = 'Physical Information'
     third_title = 'Further Details'
     item = None
+    new_label = None
     form_sets = {
         -1: {
             'the_form':  None,
@@ -66,6 +68,15 @@ class MakeItemWizard(GenericWizard):
 
     def finish_valid_form(self, request):
         self.item = self.forms[0].save()
+        if self.forms[0].__class__.__name__ == "FurtherDetailForm":
+            for form in self.forms[1:-1]:
+                form.save()
+            if self.forms[-1].cleaned_data["text"] and len(
+                    self.forms[-1].cleaned_data["text"]):
+                self.new_label = self.forms[-1].save(commit=False)
+                self.new_label.item = self.item
+                self.new_label.save()
+
 
     def finish(self, request):
         if self.page_title == 'Create New Item':
@@ -76,15 +87,37 @@ class MakeItemWizard(GenericWizard):
         return "%s?changed_id=%d" % (self.return_url, self.item.id)
 
     def setup_forms(self, form, request=None):
+        i = 1
         if request:
             if self.item:
-                return [form(request.POST, instance=self.item)]
+                form_set = [form(request.POST, instance=self.item)]
+                if form_set[0].__class__.__name__ == "FurtherDetailForm":
+                    for label in self.item.labels.all():
+                        form = LabelForm(request.POST,
+                                         instance=label,
+                                         prefix=str(label.pk))
+                        form.fields["text"].label = "Text %d" % i
+                        form_set += [form]
+                        i = i + 1
+                    form_set += [LabelForm(request.POST)]
+                    form_set[-1].fields["text"].label = "New Text"
+                return form_set
             else:
                 return [form(request.POST)]
         elif self.item:
             edit_form = form(instance=self.item)
             edit_form.fields['item_id'] = IntegerField(widget=HiddenInput(),
                                                        initial=self.item.id)
-            return [edit_form]
+            form_set = [edit_form]
+            if form_set[0].__class__.__name__ == "FurtherDetailForm":
+                for label in self.item.labels.all():
+                    form = LabelForm(instance=label,
+                                     prefix=str(label.pk))
+                    form.fields['text'].label = "Text %d" % i
+                    form_set += [form]
+                    i = i + 1
+                form_set += [LabelForm(initial={'item': self.item})]
+                form_set[-1].fields["text"].label = "New Text"
+            return form_set
         else:
             return [form()]
