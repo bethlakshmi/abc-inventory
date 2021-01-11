@@ -20,7 +20,6 @@ from inventory.forms import (
 )
 from django.contrib import messages
 from inventory.views.default_view_text import user_messages
-from datetime import datetime
 
 
 class CloneTheme(ManageTheme):
