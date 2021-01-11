@@ -75,6 +75,9 @@ class MakeItemWizard(GenericWizard):
                 if len(form.cleaned_data["text"]) == 0:
                     label = form.save(commit=False)
                     label.delete()
+                    messages.success(
+                        request,
+                        "Deleted a text item")
                 else:
                     form.save()
             if self.forms[-1].cleaned_data["text"] and len(
