@@ -6,3 +6,4 @@ from .item_image_form import ItemImageForm
 from .image_associate_form import ImageAssociateForm
 from .image_associate_meta_form import ImageAssociateMetaForm
 from .color_style_value_form import ColorStyleValueForm
+from .label_form import LabelForm

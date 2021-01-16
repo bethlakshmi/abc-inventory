@@ -78,8 +78,8 @@ class GenericWizard(View):
             messages.success(request, "The last update was canceled.")
             return HttpResponseRedirect(self.return_url)
 
-        if 'next' in list(request.POST.keys()) or (
-                'finish' in list(request.POST.keys())):
+        if 'next' in list(request.POST.keys()) or 'finish' in list(
+                request.POST.keys()) or 'add' in list(request.POST.keys()):
             all_valid = True
             self.current_form_set = self.form_sets[self.step]
             if not self.current_form_set['the_form']:
@@ -99,6 +99,9 @@ class GenericWizard(View):
             self.finish_valid_form(request)
             if 'finish' in list(request.POST.keys()):
                 return HttpResponseRedirect(self.finish(request))
+            if 'add' in list(request.POST.keys()):
+                self.step = self.step - 1
+                self.current_form_set = self.form_sets[self.step]
         elif 'back' in list(request.POST.keys()):
             self.make_back_forms(request)
         else:
