@@ -22,6 +22,9 @@ class StyleVersion(Model):
     def __str__(self):
         return ("{} - version {:.1f}".format(self.name, self.number))
 
+    def next_version(self):
+        return self.number + Decimal(0.1)
+
     class Meta:
         app_label = "inventory"
         ordering = ['name', 'number']

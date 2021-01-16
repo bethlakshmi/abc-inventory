@@ -65,7 +65,6 @@ class TestBulkImageUpload(TestCase):
                   'step': 0,
                   'next': 'Save & Continue >>'},
             follow=True)
-        print(response.content)
         image2 = Image.objects.latest('pk')
         image1 = Image.objects.get(pk=image2.pk-1)
         thumb_url = get_thumbnailer(

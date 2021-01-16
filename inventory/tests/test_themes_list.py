@@ -28,6 +28,10 @@ class TestThemesList(TestCase):
             "manage_theme",
             urlconf="inventory.urls",
             args=[self.version.pk]))
+        self.assertContains(response, reverse(
+            "clone_theme",
+            urlconf="inventory.urls",
+            args=[self.version.pk]))
         self.assertContains(
             response,
             ('<a href="%s" role="button" class="btn inventory-btn-primary">' +
@@ -55,7 +59,15 @@ class TestThemesList(TestCase):
             urlconf="inventory.urls",
             args=[self.version.pk]))
         self.assertContains(response, reverse(
+            "clone_theme",
+            urlconf="inventory.urls",
+            args=[self.version.pk]))
+        self.assertContains(response, reverse(
             "manage_theme",
+            urlconf="inventory.urls",
+            args=[boring_version.pk]))
+        self.assertContains(response, reverse(
+            "clone_theme",
             urlconf="inventory.urls",
             args=[boring_version.pk]))
 
