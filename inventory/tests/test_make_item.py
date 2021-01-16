@@ -5,6 +5,7 @@ from inventory.tests.factories import (
     CategoryFactory,
     DispositionFactory,
     ItemFactory,
+    ItemTextFactory,
     TagFactory,
     UserFactory
 )
@@ -16,7 +17,10 @@ from datetime import (
     date,
     timedelta,
 )
-from inventory.models import Item
+from inventory.models import (
+    Item,
+    ItemText,
+)
 
 
 class TestMakeItem(TestCase):
@@ -34,6 +38,7 @@ class TestMakeItem(TestCase):
             'notes': "new notes",
             'tags': (new_tag.pk, other_new_tag.pk),
             'connections': (self.item.pk, ),
+            'text': "",
         }
 
     def get_physical(self):
@@ -183,6 +188,11 @@ class TestMakeItem(TestCase):
         self.assertNotContains(response, "Save & Continue >>")
         self.assertContains(response, "Further Details")
         self.assertContains(response, self.item_id % self.item.pk, html=True)
+        self.assertContains(
+            response,
+            '<textarea name="text" cols="40" rows="10" class="user-tiny-mce"' +
+            'id="id_text">\n</textarea>',
+            html=True)
 
     def test_post_physical_create_finish(self):
         login_as(self.user, self)
@@ -195,6 +205,7 @@ class TestMakeItem(TestCase):
         self.assertContains(response, "if (row.id == %d) {" % (self.item.pk))
 
     def test_post_physical_edit_save_and_continue(self):
+        label = ItemTextFactory(item=self.item)
         login_as(self.user, self)
         physical = self.get_physical()
         physical['date_acquired'] = date.today()
@@ -205,6 +216,19 @@ class TestMakeItem(TestCase):
         self.assertNotContains(response, "Save & Continue >>")
         self.assertContains(response, "Further Details")
         self.assertContains(response, self.item_id % self.item.pk, html=True)
+        self.assertContains(
+            response,
+            '<textarea name="text" cols="40" rows="10" class="user-tiny-mce"' +
+            'id="id_text">\n</textarea>',
+            html=True)
+        self.assertContains(
+            response,
+            ('<textarea name="%d-text" cols="40" rows="10" ' +
+             'class="user-tiny-mce" id="id_%d-text">%s</textarea>') % (
+                label.pk,
+                label.pk,
+                label.text),
+            html=True)
 
     def test_post_physical_back(self):
         login_as(self.user, self)
@@ -226,6 +250,7 @@ class TestMakeItem(TestCase):
             response,
             "Updated Item: %s" % self.item.title)
         self.assertContains(response, "if (row.id == %d) {" % self.item.pk)
+        self.assertNotContains
 
     def test_post_physical_gone_before_it_came(self):
         login_as(self.user, self)
@@ -286,10 +311,30 @@ class TestMakeItem(TestCase):
         further = self.get_further()
         further['finish'] = "Finish"
         response = self.client.post(self.url, data=further, follow=True)
+        self.assertRedirects(response, "%s?changed_id=%s" % (
+            reverse("items_list", urlconf="inventory.urls"),
+            self.item.pk))
         self.assertContains(
             response,
             "Created new Item: %s" % self.item.title)
         self.assertContains(response, "if (row.id == %d) {" % (self.item.pk))
+        self.assertNotContains(response, "Text:")
+
+    def test_post_further_create_text(self):
+        login_as(self.user, self)
+        further = self.get_further()
+        further["text"] = "New text for %d" % self.item.pk
+        further['finish'] = "Finish"
+        response = self.client.post(self.url, data=further, follow=True)
+        self.assertRedirects(response, "%s?changed_id=%s" % (
+            reverse("items_list", urlconf="inventory.urls"),
+            self.item.pk))
+        self.assertContains(
+            response,
+            "Created new Item: %s" % self.item.title)
+        self.assertContains(response, "if (row.id == %d) {" % (self.item.pk))
+        self.assertContains(response, "<i>Text 1:</i>&nbsp;&nbsp;%s<br>" % (
+            further["text"]))
 
     def test_post_further_edit_finish(self):
         login_as(self.user, self)
@@ -297,10 +342,33 @@ class TestMakeItem(TestCase):
         further['date_deaccession'] = date.today() - timedelta(days=1)
         further['finish'] = "Finish"
         response = self.client.post(self.edit_url, data=further, follow=True)
+        self.assertRedirects(response, "%s?changed_id=%s" % (
+            reverse("items_list", urlconf="inventory.urls"),
+            self.item.pk))
         self.assertContains(
             response,
             "Updated Item: %s" % self.item.title)
         self.assertContains(response, "if (row.id == %d) {" % self.item.pk)
+        self.assertNotContains(response, "Text:")
+
+    def test_post_further_edit_text(self):
+        label = ItemTextFactory(item=self.item)
+        login_as(self.user, self)
+        further = self.get_further()
+        further['date_deaccession'] = date.today() - timedelta(days=1)
+        further['%d-text' % label.pk] = "edited text for pk %d" % label.pk
+        further['finish'] = "Finish"
+        response = self.client.post(self.edit_url, data=further, follow=True)
+        self.assertRedirects(response, "%s?changed_id=%s" % (
+            reverse("items_list", urlconf="inventory.urls"),
+            self.item.pk))
+        self.assertContains(
+            response,
+            "Updated Item: %s" % self.item.title)
+        self.assertContains(response, "if (row.id == %d) {" % self.item.pk)
+        self.assertContains(response, "<i>Text 1:</i>&nbsp;&nbsp;%s<br>" % (
+            further['%d-text' % label.pk]))
+        self.assertNotContains(response, "<i>Text 2:</i>")
 
     def test_post_further_back(self):
         login_as(self.user, self)
@@ -344,3 +412,53 @@ class TestMakeItem(TestCase):
 
         self.assertRedirects(response,
                              reverse('items_list', urlconf='inventory.urls'))
+
+    def test_post_further_add_text(self):
+        login_as(self.user, self)
+        further = self.get_further()
+        further["text"] = "New text for %d" % self.item.pk
+        further['add'] = "Add & Keep Working"
+        response = self.client.post(self.url, data=further, follow=True)
+        label = ItemText.objects.get(text=further["text"])
+        self.assertContains(response, "Further Details")
+        self.assertContains(
+            response,
+            "Created new text: %s" % further["text"])
+        self.assertContains(
+            response,
+            ('<textarea name="%d-text" cols="40" rows="10" ' +
+             'class="user-tiny-mce" id="id_%d-text">%s</textarea>') % (
+                label.pk,
+                label.pk,
+                label.text),
+            html=True)
+        self.assertContains(
+            response,
+            '<textarea name="text" cols="40" rows="10" class="user-tiny-mce"' +
+            'id="id_text">\n</textarea>',
+            html=True)
+
+    def test_post_further_delete_text(self):
+        label = ItemTextFactory(item=self.item)
+        login_as(self.user, self)
+        further = self.get_further()
+        further['%d-text' % label.pk] = ""
+        further['add'] = "Add & Keep Working"
+        response = self.client.post(self.url, data=further, follow=True)
+        self.assertContains(response, "Further Details")
+        self.assertContains(
+            response,
+            "Deleted a text item")
+        self.assertNotContains(
+            response,
+            ('<textarea name="%d-text" cols="40" rows="10" ' +
+             'class="user-tiny-mce" id="id_%d-text">%s</textarea>') % (
+                label.pk,
+                label.pk,
+                label.text),
+            html=True)
+        self.assertContains(
+            response,
+            '<textarea name="text" cols="40" rows="10" class="user-tiny-mce"' +
+            'id="id_text">\n</textarea>',
+            html=True)

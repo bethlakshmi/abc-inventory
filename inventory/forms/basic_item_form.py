@@ -16,7 +16,7 @@ class BasicItemForm(ModelForm):
 
     description = CharField(
         required=False,
-        widget=Textarea(attrs={'id': 'user-tiny-mce'}))
+        widget=Textarea(attrs={'class': 'user-tiny-mce'}))
     step = IntegerField(widget=HiddenInput(), initial=0)
 
     class Meta:
