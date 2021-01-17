@@ -1,10 +1,10 @@
       <div class="form-group col-12">
         <h3><span class="label label-default"><label id="{{ field.name }}">
-          <font {% if field.errors %}color="red"{% endif %}>
+          <font {% if field.errors %}class="inventory-form-error"{% endif %}>
           {{ field.label }}:</font>
         </label></span></h3>
         {% if field.errors %}
-          <font color="red">{{ field.errors }}</font>
+          <font class="inventory-form-error">{{ field.errors }}</font>
         {% endif %}
         {{ field.help_text }}
       </div>

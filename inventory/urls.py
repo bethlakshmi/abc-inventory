@@ -1,17 +1,29 @@
 from django.conf.urls import url
 from inventory.views import (
+    ActivateTheme,
     BulkImageUpload,
+    CloneTheme,
     ItemsListView,
-    ManageItemImage,
     MakeItemWizard,
+    ManageItemImage,
+    ManageTheme,
     SubItemsListView,
+    ThemeView,
+    ThemesListView,
 )
 
 
 app_name = "inventory"
 
 urlpatterns = [
+    url(r'^inventory/(?P<version_id>\d+)/style.css',
+        ThemeView.as_view(),
+        name='theme_style'),
+    url(r'^inventory/style.css', ThemeView.as_view(), name='theme_style'),
     url(r'^inventory/item/list/?', ItemsListView.as_view(), name='items_list'),
+    url(r'^inventory/theme/list/?',
+        ThemesListView.as_view(),
+        name='themes_list'),
     url(r'^inventory/subitem/list/?',
         SubItemsListView.as_view(),
         name='subitems_list'),
@@ -27,4 +39,12 @@ urlpatterns = [
     url(r'^inventory/item/images/(?P<item_id>\d+)/?',
         ManageItemImage.as_view(),
         name='manage_item_image'),
-]
+    url(r'^inventory/activate/(?P<version_id>\d+)/(?P<target_system>[-\w]+)/?',
+        ActivateTheme.as_view(),
+        name='activate_theme'),
+    url(r'^inventory/style_edit/(?P<version_id>\d+)/?',
+        ManageTheme.as_view(),
+        name='manage_theme'),
+    url(r'^inventory/style_clone/(?P<version_id>\d+)/?',
+        CloneTheme.as_view(),
+        name='clone_theme')]

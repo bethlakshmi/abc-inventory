@@ -116,6 +116,57 @@ class MessageAdmin(admin.ModelAdmin):
     list_filter = ['view', 'code']
 
 
+class StyleSelectorAdmin(ImportExportActionModelAdmin):
+    list_display = (
+        'pk',
+        'selector',
+        'pseudo_class',
+        'target_element_usage',
+        'used_for',
+        'description')
+    list_editable = (
+        'selector',
+        'pseudo_class',
+        'target_element_usage',
+        'used_for')
+
+
+class StylePropertyAdmin(ImportExportActionModelAdmin):
+    list_display = (
+        'pk',
+        'selector',
+        'style_property',
+        'value_type')
+    list_editable = (
+        'style_property',
+        'value_type')
+    list_filter = [
+        'selector',
+        'style_property']
+
+
+class StyleValueAdmin(ImportExportActionModelAdmin):
+    list_display = (
+        'pk',
+        'style_version',
+        'style_property',
+        'value')
+    list_editable = ('value', )
+    list_filter = [
+        'style_version__name',
+        'style_version__number',
+        'style_property__selector__selector',
+        'style_property__selector__pseudo_class',
+        'style_property__style_property']
+
+
+class StyleVersionAdmin(ImportExportActionModelAdmin):
+    list_display = (
+        'name',
+        'number',
+        'currently_live',
+        'currently_test')
+
 admin.site.register(UserMessage, MessageAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Disposition, DispositionAdmin)
@@ -124,3 +175,7 @@ admin.site.register(Subitem, SubItemAdmin)
 admin.site.register(ItemText, ItemTextAdmin)
 admin.site.register(ItemImage, ItemImageAdmin)
 admin.site.register(Tag, TagAdmin)
+admin.site.register(StyleValue, StyleValueAdmin)
+admin.site.register(StyleProperty, StylePropertyAdmin)
+admin.site.register(StyleSelector, StyleSelectorAdmin)
+admin.site.register(StyleVersion, StyleVersionAdmin)

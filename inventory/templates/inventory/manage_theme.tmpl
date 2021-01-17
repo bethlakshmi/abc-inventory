@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static sekizai_tags %}
+{% block title %}
+   {{page_title}}
+{% endblock %}
+{% block head %}
+    {# Include FontAwesome; required for icon display #}
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css">
+
+    <link href="{% static 'css/inventory.css' %}" rel="stylesheet">
+
+    {# Include Bootstrap 4 and jQuery #}
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <link href="{% url 'inventory:theme_style' version.pk %}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+<h2 class="inventory-title">{{title}}</h2>
+<p>{{ instructions | safe }}</p>
+
+<form action="" method="post" enctype="multipart/form-data">
+    {% if version_form %}
+    <h4>New Theme Settings</h4>
+    {% include "form_table.tmpl" with form=version_form %}
+    {% endif %}
+    {% for value, form in forms %}
+    {% ifchanged value.style_property.selector.used_for %}<h4>{{ value.style_property.selector.used_for }}</h4>{% endifchanged %}
+    {% ifchanged value.style_property.selector %}<code><b>{{ value.style_property.selector }}</b></code><br><i>{{value.style_property.selector.description}}</i><br><br>{% endifchanged %}
+    {% include "form_table.tmpl" %}
+    {% endfor %}
+<div class="row">
+  <div class="col-sm-12 col-md-6 offset-md-6 col-lg-5 offset-lg-7 dropdown">
+    {% if not version_form %}
+    <button type="submit" id="dropdownMenuButton" class="btn btn-inventory-secondary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Clone Version</button>
+    <div class="dropdown-menu px-4 py-3" aria-labelledby="dropdownMenuButton">
+        <div class="form-group">
+            <label for="id_name"><font class="inventory-form-required">*</font>Version Name:</label>
+            <input class="form-control" type="text" name="name" value="{{version.name}}" maxlength="128" id="id_name">
+        </div>
+        <div class="form-group">
+            <label for="id_number"><font class="inventory-form-required">*</font> Version Number:</label>
+            <input class="form-control" type="number" name="number" value="{{version.next_version|floatformat:1}}" min="0.1" step="any" id="id_number">
+        </div>
+        <div class="form-group">
+          <input type="submit" name="clone" value="Clone" class="btn inventory-btn-primary" formaction="{% url 'inventory:clone_theme' version.pk %}">
+        </div>
+    </div>
+    {% endif %}
+    <input type="submit" name="update" value="Update" class="btn inventory-btn-primary" >
+    <input type="submit" name="finish" value="Finish" class="btn inventory-btn-primary" >
+    <input type="submit" name="cancel" value="Cancel" class="btn inventory-btn-light" >
+  </div>
+</div>
+</form>
+{% addtoblock "js" %}
+<script src="/static/js/jscolor.js"></script>
+{% endaddtoblock %}
+{% endblock %}

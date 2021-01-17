@@ -2,13 +2,12 @@ from django.views.generic import View
 from django.views.decorators.cache import never_cache
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-from django.http import Http404
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from django.shortcuts import render
 from django.contrib import messages
 from inventory.models import UserMessage
 from inventory.views.default_view_text import user_messages
+from django.shortcuts import render
 
 
 class GenericWizard(View):

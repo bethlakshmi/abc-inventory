@@ -22,6 +22,10 @@ from inventory.models import (
     Item,
     ItemImage,
     ItemText,
+    StyleProperty,
+    StyleSelector,
+    StyleValue,
+    StyleVersion,
     Subitem,
     Tag,
 )
@@ -79,3 +83,33 @@ class ItemTextFactory(DjangoModelFactory):
         model = ItemText
     item = SubFactory(ItemFactory)
     text = Sequence(lambda n: 'item text %d' % n)
+
+
+class StyleVersionFactory(DjangoModelFactory):
+    class Meta:
+        model = StyleVersion
+    name = Sequence(lambda n: 'Style Version %d' % n)
+    number = 1.0
+
+
+class StyleSelectorFactory(DjangoModelFactory):
+    class Meta:
+        model = StyleSelector
+    selector = Sequence(lambda n: 'style_selector_%d' % n)
+    target_element_usage = "div"
+    used_for = "General"
+
+
+class StylePropertyFactory(DjangoModelFactory):
+    class Meta:
+        model = StyleProperty
+    selector = SubFactory(StyleSelectorFactory)
+    style_property = Sequence(lambda n: 'style_property_%d' % n)
+
+
+class StyleValueFactory(DjangoModelFactory):
+    class Meta:
+        model = StyleValue
+    style_property = SubFactory(StylePropertyFactory)
+    style_version = SubFactory(StyleVersionFactory)
+    value = "rgba(1, 1, 1, 0)"

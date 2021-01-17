@@ -1,4 +1,4 @@
-{% load static i18n cms_tags menu_tags sekizai_tags %}
+{% load static i18n cms_tags sekizai_tags %}
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}">
   <head>
@@ -16,25 +16,12 @@
     {% block head %}
     {% endblock head %}
   </head>
-  <body>
+  <body class="with-margin">
     {% cms_toolbar %}
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">ABC Inventory</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                {% with dropdown=True %}
-                    {% show_menu 0 100 100 100 "includes/menu.html" %}
-                {% endwith %}
-            </ul>
-        </div>
-    </nav>
+{% include "menu_bar.tmpl" %}
 {% for message in messages %}
-    {% if message.tags == "error" %}<div class="alert alert-danger">{% else %}<div class="alert alert-{{message.tags}}">{% endif %}
+    {% if message.tags == "error" %}<div class="alert inventory-alert-danger">{% else %}<div class="alert inventory-alert-{{message.tags}}">{% endif %}
           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
           <strong>{{message.tags|capfirst}}:</strong> {{message|safe}}
     </div>
@@ -48,7 +35,7 @@
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 
     {% render_block "js" %}
     {{ ALDRYN_SNAKE.render_tail }}

@@ -8,3 +8,8 @@ from .generic_wizard import GenericWizard
 from .make_item_wizard import MakeItemWizard
 from .bulk_image_upload import BulkImageUpload
 from .manage_item_image import ManageItemImage
+from .theme_view import ThemeView
+from .activate_theme import ActivateTheme
+from .manage_theme import ManageTheme
+from .clone_theme import CloneTheme
+from .themes_list_view import ThemesListView

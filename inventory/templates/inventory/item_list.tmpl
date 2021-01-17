@@ -10,29 +10,29 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.css">
+    <link href="{% url 'inventory:theme_style' %}" rel="stylesheet">
 {% endblock %}
 {% block content %}
 <div class="row">
   <div class="col-8">
-  <h2 class="subtitle">{{title}}</h2>
+  <h2 class="inventory-title">{{title}}</h2>
   </div>
   <div class="col-4 text-right">
-  <a href="{% url 'inventory:image_upload' %}" role="button" class="btn btn-primary">Image Upload</a>
+{% block control_buttons %}
+ <a href="{% url 'inventory:themes_list' %}" role="button" class="btn inventory-btn-primary">Manage Themes</a>&nbsp;
+ <a href="{% url 'inventory:image_upload' %}" role="button" class="btn inventory-btn-primary">Image Upload</a>
+{% endblock %}
   </div>
 </div>
-  {% if errors %}
-    {% for error in errors %}
-    <p style= "color:red">{{error}}</p>
-    {% endfor %}
-  {% endif %}
+{% if path_list %}
  <ul class="nav nav-tabs" id="inner">
  {% for text, path in path_list %}
   <li role="presentation" class="nav-item"><a href="{{ path }}" class="nav-link {% if request.path == path %}active{% endif %}">{{text}}</a></li>
  {% endfor %}
  </ul>
- 
-<table id="table" data-search="true" data-show-columns="true" data-show-toggle="true" data-show-fullscreen="true" data-show-columns-toggle-all="true" data-buttons="buttons" data-detail-formatter="detailFormatter" data-detail-view="true" data-row-style="rowStyle">
-  <thead>
+ {% endif %}
+<table id="table" data-search="true" data-show-columns="true" data-show-toggle="true" data-show-fullscreen="true" data-show-columns-toggle-all="true" data-buttons="buttons" {% if not details_off %}data-detail-formatter="detailFormatter" data-detail-view="true" {% endif %}data-row-style="rowStyle" class="inventory-table" data-buttons-class="inventory-secondary" >
+  <thead class='inventory-table-header'>
     {% block table_header %}
         <tr>
           <th data-field="id" data-sortable="true" rowspan="2">ID</th>
@@ -80,7 +80,7 @@
           window.location.href = "{% url 'inventory:item_create' %}";
         },
         attributes: {
-          title: 'Add a new item to the inventory'
+          title: 'Add a new item to the inventory',
         }
       }
       {% endblock %}
@@ -163,7 +163,7 @@
         'd': '{% if item.depth %}{{ item.depth.normalize }}{% endif %}',
         'year': '{% if item.year %}{{ item.year|escapejs }}{% endif %}',
         'subject': '{% if item.subject %}{{ item.subject|escapejs }}{% endif %}',
-        'action': '<a class="like" href="{% url "inventory:item_edit" item.id %}" title="Edit"><i class="fas fa-edit"></i></a>&nbsp;&nbsp;<a class="like" href="{% url "inventory:manage_item_image" item.id %}" title="Manage Images"><i class="far fa-images"></i></a>',
+        'action': '<a class="inventory-detail" href="{% url "inventory:item_edit" item.id %}" title="Edit"><i class="fas fa-edit"></i></a>&nbsp;&nbsp;<a class="inventory-detail" href="{% url "inventory:manage_item_image" item.id %}" title="Manage Images"><i class="far fa-images"></i></a>',
         'price': '{% if item.price %}${{ item.price }}{% endif %}',
         'description': '{% if item.description %}{{ item.description.strip|escapejs }}{% endif %}',
         'note': '{% if item.note %}{{ item.note|escapejs }}{% endif %}',
@@ -186,7 +186,7 @@
   function rowStyle(row, index) {
     if (row.id == {{changed_id}}) {
       return {
-        classes: "table-success"
+        classes: "inventory-table-success"
       }
     }
     return {}

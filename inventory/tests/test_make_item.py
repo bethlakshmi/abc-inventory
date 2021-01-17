@@ -27,6 +27,7 @@ class TestMakeItem(TestCase):
     view_name = "item_create"
     edit_name = "item_edit"
     item_id = '<input type="hidden" name="item_id" value="%d" id="id_item_id">'
+    title_html = '<h2 class="inventory-title">%s</h2>'
 
     def get_further(self):
         new_tag = TagFactory()
@@ -101,8 +102,7 @@ class TestMakeItem(TestCase):
     def test_get_edit(self):
         login_as(self.user, self)
         response = self.client.get(self.edit_url)
-        self.assertContains(response,
-                            '<h2 class="subtitle">%s</h2>' % self.item.title)
+        self.assertContains(response, self.title_html % self.item.title)
         self.assertContains(response, "The Basics")
         self.assertContains(response, self.item.description)
         self.assertContains(response, self.item.subject)
@@ -126,9 +126,7 @@ class TestMakeItem(TestCase):
         basics = self.get_basics()
         basics['next'] = "Save & Continue >>"
         response = self.client.post(self.url, data=basics)
-        self.assertContains(
-            response,
-            '<h2 class="subtitle">%s</h2>' % basics['title'])
+        self.assertContains(response, self.title_html % basics['title'])
         self.assertContains(response, "Physical Information")
         self.assertContains(response, "<< Back")
         self.assertContains(response, "Save & Continue >>")
@@ -152,9 +150,7 @@ class TestMakeItem(TestCase):
         basics = self.get_basics()
         basics['next'] = "Save & Continue >>"
         response = self.client.post(self.edit_url, data=basics)
-        self.assertContains(
-            response,
-            '<h2 class="subtitle">%s</h2>' % basics['title'])
+        self.assertContains(response, self.title_html % basics['title'])
         self.assertContains(response, "Physical Information")
         self.assertContains(response, "<< Back")
         self.assertContains(response, "Save & Continue >>")
@@ -187,9 +183,7 @@ class TestMakeItem(TestCase):
         physical = self.get_physical()
         physical['next'] = "Save & Continue >>"
         response = self.client.post(self.url, data=physical)
-        self.assertContains(
-            response,
-            '<h2 class="subtitle">%s</h2>' % self.item.title)
+        self.assertContains(response, self.title_html % self.item.title)
         self.assertContains(response, "<< Back")
         self.assertNotContains(response, "Save & Continue >>")
         self.assertContains(response, "Further Details")
@@ -217,9 +211,7 @@ class TestMakeItem(TestCase):
         physical['date_acquired'] = date.today()
         physical['next'] = "Save & Continue >>"
         response = self.client.post(self.edit_url, data=physical)
-        self.assertContains(
-            response,
-            '<h2 class="subtitle">%s</h2>' % self.item.title)
+        self.assertContains(response, self.title_html % self.item.title)
         self.assertContains(response, "<< Back")
         self.assertNotContains(response, "Save & Continue >>")
         self.assertContains(response, "Further Details")
@@ -243,9 +235,7 @@ class TestMakeItem(TestCase):
         physical = self.get_physical()
         physical['back'] = "<< Back"
         response = self.client.post(self.edit_url, data=physical)
-        self.assertContains(
-            response,
-            '<h2 class="subtitle">%s</h2>' % self.item.title)
+        self.assertContains(response, self.title_html % self.item.title)
         self.assertNotContains(response, "<< Back")
         self.assertContains(response, "Save & Continue >>")
         self.assertContains(response, "The Basics")
