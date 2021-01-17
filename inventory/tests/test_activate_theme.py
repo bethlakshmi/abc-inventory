@@ -80,7 +80,7 @@ class TestActivateTheme(TestCase):
                 urlconf="inventory.urls",
                 args=[self.active_version.pk, "live"]))
 
-    def test_get_bad_id(self):
+    def test_activate_bad_id(self):
         login_as(self.user, self)
         response = self.client.get(reverse(
             self.view_name,
@@ -88,7 +88,7 @@ class TestActivateTheme(TestCase):
             args=[self.active_version.pk+1, "live"]))
         self.assertEqual(404, response.status_code)
 
-    def test_get_bad_system(self):
+    def test_activate_bad_system(self):
         login_as(self.user, self)
         response = self.client.get(reverse(
             self.view_name,
