@@ -28,31 +28,18 @@ class StyleValueForm(ModelForm):
         fields = ['style_property']
 
     def __init__(self, *args, **kwargs):
-        super(StyleValueForm, self).__init__(*args, **kwargs)
-        i = 0
-        value_format = []
         style_property = None
-        if self.instance:
-            style_property = self.instance.style_property
-            value_tempates = self.instance.style_property.value_type.split()
+        if 'style_property' in kwargs:
+            style_property = kwargs.pop('style_property')
+
+        super(StyleValueForm, self).__init__(*args, **kwargs)
+        value_format = []
+        if 'instance' in kwargs:
+            instance = kwargs.get('instance')
+            style_property = instance.style_property
             values = self.instance.value.split()
-            if len(value_tempates) != len(values):
-                user_msg = UserMessage.objects.get_or_create(
-                    view="StyleValueForm",
-                    code="TEMPLATE_VALUE_MISMATCH",
-                    defaults={
-                        'summary': "Property Template Does Not Match Value",
-                        'description': theme_help['mismatch']})
-                raise Exception("%s, VALUE: %s" % (user_msg[0].description,
-                                                   self.instance))
-            for template, value in zip(value_tempates, values):
-                value_format += [(i, template, value)]
-                i = i + 1
-        elif self.style_property:
-            style_property = self.style_property
-            for template in self.style_property.value_type.split():
-                value_format += [(i, template, "")]
-                i = i + 1
+        elif style_property:
+            values = kwargs.get('initial')['value'].split()
         else:
             raise Exception(UserMessage.objects.get_or_create(
                 view="StyleValueForm",
@@ -60,7 +47,18 @@ class StyleValueForm(ModelForm):
                 defaults={
                     'summary': "Theme Setup Error",
                     'description': theme_help['no_args']})[0].description)
-        for i, template, value in value_format:
+        i = 0
+        value_templates = style_property.value_type.split()
+        if len(value_templates) != len(values):
+            user_msg = UserMessage.objects.get_or_create(
+                view="StyleValueForm",
+                code="TEMPLATE_VALUE_MISMATCH",
+                defaults={
+                    'summary': "Property Template Does Not Match Value",
+                    'description': theme_help['mismatch']})
+            raise Exception("%s, VALUE: %s" % (user_msg[0].description,
+                                               instance))
+        for template, value in zip(value_templates, values):
             help_text = None
             help_key = "%s-%d" % (style_property.style_property, i)
             if help_key in style_value_help:
@@ -72,10 +70,14 @@ class StyleValueForm(ModelForm):
                     label="color",
                     help_text=help_text)
             elif template == "px":
+                initial = None
+                if len(value) > 0:
+                    initial = int(''.join(filter(str.isdigit, value)))
                 self.fields['value_%d' % i] = IntegerField(
-                    initial=int(''.join(filter(str.isdigit, value))),
+                    initial=initial,
                     label="pixels",
                     help_text=help_text)
+            i = i + 1
 
     def save(self, commit=True):
         style_value = super(StyleValueForm, self).save(commit=False)

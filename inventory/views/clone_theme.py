@@ -47,11 +47,12 @@ class CloneTheme(ManageTheme):
                 'style_property__style_property'):
             if request:
                 form = StyleValueForm(request.POST,
-                                           prefix=str(value.pk))
+                                      style_property=value.style_property,
+                                      initial={'value': value.value},
+                                      prefix=str(value.pk))
             else:
                 form = StyleValueForm(instance=value,
-                                           prefix=str(value.pk))
-            form['value'].label = str(value.style_property.style_property)
+                                      prefix=str(value.pk))
             forms += [(value, form)]
         return (version_form, forms)
 
