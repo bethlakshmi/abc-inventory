@@ -15,7 +15,7 @@ from inventory.models import (
     UserMessage,
 )
 from inventory.forms import (
-    ColorStyleValueForm,
+    StyleValueForm,
     ThemeVersionForm,
 )
 from django.contrib import messages
@@ -46,10 +46,10 @@ class CloneTheme(ManageTheme):
                 'style_property__selector__pseudo_class',
                 'style_property__style_property'):
             if request:
-                form = ColorStyleValueForm(request.POST,
+                form = StyleValueForm(request.POST,
                                            prefix=str(value.pk))
             else:
-                form = ColorStyleValueForm(instance=value,
+                form = StyleValueForm(instance=value,
                                            prefix=str(value.pk))
             form['value'].label = str(value.style_property.style_property)
             forms += [(value, form)]

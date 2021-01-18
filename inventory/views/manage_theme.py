@@ -13,7 +13,7 @@ from inventory.models import (
     StyleVersion,
     UserMessage,
 )
-from inventory.forms import ColorStyleValueForm
+from inventory.forms import StyleValueForm
 from django.contrib import messages
 from inventory.views.default_view_text import user_messages
 from datetime import datetime
@@ -60,13 +60,12 @@ class ManageTheme(View):
                 'style_property__selector__pseudo_class',
                 'style_property__style_property'):
             if request:
-                form = ColorStyleValueForm(request.POST,
-                                           instance=value,
-                                           prefix=str(value.pk))
+                form = StyleValueForm(request.POST,
+                                      instance=value,
+                                      prefix=str(value.pk))
             else:
-                form = ColorStyleValueForm(instance=value,
-                                           prefix=str(value.pk))
-            form['value'].label = str(value.style_property.style_property)
+                form = StyleValueForm(instance=value,
+                                      prefix=str(value.pk))
             forms += [(value, form)]
         return forms
 
