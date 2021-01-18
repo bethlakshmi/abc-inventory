@@ -32,9 +32,9 @@ class CloneTheme(ManageTheme):
         context['version_form'] = version_form
         return context
 
-    def setup_forms(self, request=None):
+    def setup_forms(self, request):
         forms = []
-        if request:
+        if request.POST:
             version_form = ThemeVersionForm(request.POST)
         else:
             version_form = ThemeVersionForm()
@@ -45,21 +45,24 @@ class CloneTheme(ManageTheme):
                 'style_property__selector__selector',
                 'style_property__selector__pseudo_class',
                 'style_property__style_property'):
-            if request:
-                form = StyleValueForm(request.POST,
-                                      style_property=value.style_property,
-                                      initial={'value': value.value},
-                                      prefix=str(value.pk))
-            else:
-                form = StyleValueForm(instance=value,
-                                      prefix=str(value.pk))
-            forms += [(value, form)]
+            try:
+                if request.POST:
+                    form = StyleValueForm(request.POST,
+                                          style_property=value.style_property,
+                                          initial={'value': value.value},
+                                          prefix=str(value.pk))
+                else:
+                    form = StyleValueForm(instance=value,
+                                          prefix=str(value.pk))
+                forms += [(value, form)]
+            except Exception as e:
+                messages.error(request, e)
         return (version_form, forms)
 
     @never_cache
     def get(self, request, *args, **kwargs):
         self.groundwork(request, args, kwargs)
-        (version_form, forms) = self.setup_forms()
+        (version_form, forms) = self.setup_forms(request)
         return render(request,
                       self.template,
                       self.make_context(version_form, forms))
@@ -74,6 +77,8 @@ class CloneTheme(ManageTheme):
         self.groundwork(request, args, kwargs)
         (version_form, forms) = self.setup_forms(request)
         all_valid = version_form.is_valid()
+        if len(messages.get_messages(request)) > 0:
+            all_valid = False
         for value, form in forms:
             if not form.is_valid():
                 all_valid = False

@@ -22,13 +22,13 @@ class TestTheme(TestCase):
             ".inventory-alert-success {")
         self.assertContains(
             response,
-            "    background-color: rgba(212, 237, 218, 1);")
+            "    background-color: rgba(212,237,218,1);")
         self.assertContains(
             response,
-            "    border-color: rgba(195, 230, 203, 1);")
+            "    border-color: rgba(195,230,203,1);")
         self.assertContains(
             response,
-            "    color: rgba(21, 87, 36, 1);")
+            "    color: rgba(21,87,36,1);")
         self.assertContains(
             response,
             "}")
@@ -50,7 +50,7 @@ class TestTheme(TestCase):
             ".inventory-alert-success {")
         self.assertNotContains(
             response,
-            "    background-color: rgba(212, 237, 218, 1);")
+            "    background-color: rgba(212,237,218,1);")
 
     @override_settings(DEBUG=True)
     def test_special_test_style_switch(self):
@@ -71,7 +71,7 @@ class TestTheme(TestCase):
             ".inventory-alert-success {")
         self.assertNotContains(
             response,
-            "    background-color: rgba(212, 237, 218, 1);")
+            "    background-color: rgba(212,237,218,1);")
 
     def test_special_live_style_switch(self):
         version = StyleVersionFactory()
@@ -91,7 +91,7 @@ class TestTheme(TestCase):
             ".inventory-alert-success {")
         self.assertNotContains(
             response,
-            "    background-color: rgba(212, 237, 218, 1);")
+            "    background-color: rgba(212,237,218,1);")
         self.assertEquals(
             str(version),
             "{} - version {:.1f}".format(version.name, version.number))
@@ -120,7 +120,7 @@ class TestTheme(TestCase):
             ".inventory-alert-success {")
         self.assertNotContains(
             response,
-            "    background-color: rgba(212, 237, 218, 1);")
+            "    background-color: rgba(212,237,218,1);")
         self.assertEquals(
             str(version),
             "{} - version {:.1f}".format(version.name, version.number))

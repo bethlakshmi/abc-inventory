@@ -37,7 +37,7 @@ class StyleValueForm(ModelForm):
         if 'instance' in kwargs:
             instance = kwargs.get('instance')
             style_property = instance.style_property
-            values = self.instance.value.split()
+            values = instance.value.split()
         elif style_property:
             values = kwargs.get('initial')['value'].split()
         else:
@@ -56,8 +56,8 @@ class StyleValueForm(ModelForm):
                 defaults={
                     'summary': "Property Template Does Not Match Value",
                     'description': theme_help['mismatch']})
-            raise Exception("%s, VALUE: %s" % (user_msg[0].description,
-                                               instance))
+            raise Exception("%s, VALUES: %s" % (user_msg[0].description,
+                                               values))
         for template, value in zip(value_templates, values):
             help_text = None
             help_key = "%s-%d" % (style_property.style_property, i)

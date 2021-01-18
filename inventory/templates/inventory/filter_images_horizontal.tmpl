@@ -1,0 +1,17 @@
+      <div class="form-group col-12">
+        <h3><span class="label label-default"><label id="{{ field.name }}">
+          <font {% if field.errors %}class="inventory-form-error"{% endif %}>
+          {{ field.label }}:</font>
+        </label></span></h3>
+        {% if field.errors %}
+          <font class="inventory-form-error">{{ field.errors }}</font>
+        {% endif %}
+        {{ field.help_text }}
+      </div>
+      <div class="form-group col-md-9 col-12">
+      {% for checkbox in field %}
+        <div class="form-check-inline image_select_list">
+        <label class="form-check-label checkbox-label" id="{{ checkbox.id_for_label }}">
+          {{ checkbox.tag }}{{ checkbox.choice_label }}
+        </label></div>{% endfor %}
+      </div>
