@@ -12,7 +12,7 @@ from inventory.tests.functions import login_as
 class TestManageTheme(TestCase):
     view_name = "manage_theme"
     px_input = ('<input type="number" name="%d-value_%d" value="%d" required' +
-    ' id="id_%d-value_%d">')
+                ' id="id_%d-value_%d">')
 
     def setUp(self):
         self.client = Client()

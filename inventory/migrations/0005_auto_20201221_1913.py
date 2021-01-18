@@ -194,7 +194,7 @@ init_values = [
                 ('color', 'rgba(0,0,0,1)'),
                 ('text-shadow',
                  'px px px rgba',
-                  '5px 5px 5px rgba(10,255,255,1)')]
+                 '5px 5px 5px rgba(10,255,255,1)')]
     },
     {
             'selector': '.inventory-subtitle',
@@ -268,13 +268,13 @@ init_values = [
     ]
 
 
-def initialize_style(apps,schema_editor):
+def initialize_style(apps, schema_editor):
     # We get the model from the versioned app registry;
     # if we directly import it,it'll be the wrong version
-    StyleVersion = apps.get_model("inventory","StyleVersion")
-    StyleSelector = apps.get_model("inventory","StyleSelector")
-    StyleProperty = apps.get_model("inventory","StyleProperty")
-    StyleValue = apps.get_model("inventory","StyleValue")
+    StyleVersion = apps.get_model("inventory", "StyleVersion")
+    StyleSelector = apps.get_model("inventory", "StyleSelector")
+    StyleProperty = apps.get_model("inventory", "StyleProperty")
+    StyleValue = apps.get_model("inventory", "StyleValue")
     version = StyleVersion(
         name="Baseline",
         number=1.0,
@@ -312,10 +312,10 @@ def initialize_style(apps,schema_editor):
             value.save()
 
 
-def destroy_style(apps,schema_editor):
-    StyleVersion = apps.get_model("inventory","StyleVersion")
-    StyleSelector = apps.get_model("inventory","StyleSelector")
-    StyleVersion.objects.filter(name="Baseline",number=1.0).delete()
+def destroy_style(apps, schema_editor):
+    StyleVersion = apps.get_model("inventory", "StyleVersion")
+    StyleSelector = apps.get_model("inventory", "StyleSelector")
+    StyleVersion.objects.filter(name="Baseline", number=1.0).delete()
     for select_val in init_values:
         StyleSelector.objects.filter(
             selector=select_val['selector'],
@@ -329,5 +329,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(initialize_style,reverse_code=destroy_style),
+        migrations.RunPython(initialize_style, reverse_code=destroy_style),
     ]
