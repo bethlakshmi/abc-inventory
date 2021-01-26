@@ -10,8 +10,8 @@ from django.forms import (
 from inventory.models import (
     StyleProperty,
     StyleValue,
+    UserMessage,
 )
-from inventory.models import UserMessage
 from inventory.forms.default_form_text import (
     theme_help,
     style_value_help,
