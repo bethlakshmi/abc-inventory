@@ -13,7 +13,10 @@ from inventory.models import (
     StyleVersion,
     UserMessage,
 )
-from inventory.forms import StyleValueForm
+from inventory.forms import (
+    StyleValueForm,
+    StyleValueImageForm,
+)
 from django.contrib import messages
 from inventory.views.default_view_text import user_messages
 from datetime import datetime
@@ -59,14 +62,18 @@ class ManageTheme(View):
                 'style_property__selector__selector',
                 'style_property__selector__pseudo_class',
                 'style_property__style_property'):
+            form_type = StyleValueForm
+            if value.style_property.value_type == "image":
+                form_type = StyleValueImageForm
             try:
                 if request.POST:
-                    form = StyleValueForm(request.POST,
-                                          instance=value,
-                                          prefix=str(value.pk))
+                    form = form_type(request.POST,
+                                     request.FILES,
+                                     instance=value,
+                                     prefix=str(value.pk))
                 else:
-                    form = StyleValueForm(instance=value,
-                                          prefix=str(value.pk))
+                    form = form_type(instance=value,
+                                     prefix=str(value.pk))
                 forms += [(value, form)]
             except Exception as e:
                 messages.error(request, e)

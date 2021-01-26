@@ -1,4 +1,3 @@
-from .thumbnail_image_field import ThumbnailImageField
 from .basic_item_form import BasicItemForm
 from .physical_item_form import PhysicalItemForm
 from .further_detail_form import FurtherDetailForm
