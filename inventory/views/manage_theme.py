@@ -114,6 +114,11 @@ class ManageTheme(View):
                 return HttpResponseRedirect("%s?changed_id=%d" % (
                     reverse('themes_list', urlconf='inventory.urls'),
                     self.style_version.pk))
+            elif 'update' in list(request.POST.keys()):
+                return HttpResponseRedirect(reverse(
+                    'manage_theme',
+                    urlconf='inventory.urls',
+                    args=[self.style_version.pk]))
         else:
             messages.error(
                 request,
