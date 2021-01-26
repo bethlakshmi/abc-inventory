@@ -211,7 +211,8 @@ init_values = [
             'target_element': 'div',
             'usage': 'Big Table',
             'prop_val': [('background-color', 'rgba(255,255,255,1)'),
-                         ('color', 'rgba(0,0,0,1)')]},
+                         ('color', 'rgba(0,0,0,1)'),
+                         ('background-image', 'image', '')]},
     {
             'selector': 'body.with-margin',
             'pseudo_class': '',
@@ -219,7 +220,8 @@ init_values = [
             'target_element': 'div',
             'usage': 'General',
             'prop_val': [('background-color', 'rgba(255,255,255,1)'),
-                         ('color', 'rgba(0,0,0,1)')]},
+                         ('color', 'rgba(0,0,0,1)'),
+                         ('background-image', 'image', '')]},
     {
             'selector': '.inventory-table-header',
             'pseudo_class': '',
