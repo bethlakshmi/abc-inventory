@@ -21,9 +21,9 @@ from easy_thumbnails.files import get_thumbnailer
 
 class ThumbnailImageField(ModelChoiceField):
     def label_from_instance(self, obj):
-        other_links = "No Item Links"
         options = {'size': (100, 100), 'crop': False}
         thumb_url = get_thumbnailer(obj).get_thumbnail(options).url
+        other_links = "Filename: %s" % (obj.original_filename)
         return mark_safe(
             "<img src='%s' title='%s'/>" % (thumb_url, other_links))
 
@@ -63,7 +63,9 @@ class StyleValueImageForm(ModelForm):
 
     def save(self, commit=True):
         style_value = super(StyleValueImageForm, self).save(commit=False)
-        if commit and self['add_image'] and self['add_image'].value():
+        # need whether or not commit=True for clone, as it will make a new
+        # object, so want to consistently set up image.
+        if self['add_image'] and self['add_image'].value():
             superuser = User.objects.get(username='admin_img')
             folder, created = Folder.objects.get_or_create(
                 name='Backgrounds')
