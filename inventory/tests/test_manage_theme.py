@@ -74,7 +74,7 @@ class TestManageTheme(TestCase):
                             image_style.style_property.style_property)
         self.assertContains(
             response,
-            '''<input type="radio" name="%s-image" value="%s" 
+            '''<input type="radio" name="%s-image" value="%s"
             id="id_%s-image_1" checked>''' % (
                 image_style.pk,
                 image_style.image.pk,
@@ -154,7 +154,8 @@ class TestManageTheme(TestCase):
         response = self.client.post(self.url, data={
             '%s-value_0' % self.value.pk: "rgba(255,255,255,0)",
             '%s-style_property' % self.value.pk: self.value.style_property.pk,
-            '%s-style_property' % image_style.pk: image_style.style_property.pk,
+            '%s-style_property' % image_style.pk:
+                image_style.style_property.pk,
             "%s-image" % image_style.pk: other_image.pk,
             "%s-add_image" % image_style.pk: "",
             'update': "Update",
@@ -165,7 +166,7 @@ class TestManageTheme(TestCase):
                             image_style.style_property.style_property)
         self.assertContains(
             response,
-            '''<input type="radio" name="%s-image" value="%s" 
+            '''<input type="radio" name="%s-image" value="%s"
             id="id_%s-image_2" checked>''' % (
                 image_style.pk,
                 other_image.pk,
@@ -183,7 +184,8 @@ class TestManageTheme(TestCase):
         response = self.client.post(self.url, data={
             '%s-value_0' % self.value.pk: "rgba(255,255,255,0)",
             '%s-style_property' % self.value.pk: self.value.style_property.pk,
-            '%s-style_property' % image_style.pk: image_style.style_property.pk,
+            '%s-style_property' % image_style.pk:
+                image_style.style_property.pk,
             "%s-image" % image_style.pk: image_style.image.pk,
             "%s-add_image" % image_style.pk: file1,
             'update': "Update",
@@ -192,10 +194,9 @@ class TestManageTheme(TestCase):
                             image_style.style_property.selector)
         self.assertContains(response,
                             image_style.style_property.style_property)
-        print(response.content)
         self.assertContains(
             response,
-            '''<input type="radio" name="%s-image" value="%s" 
+            '''<input type="radio" name="%s-image" value="%s"
             id="id_%s-image_2" checked>''' % (
                 image_style.pk,
                 image_style.image.pk + 1,

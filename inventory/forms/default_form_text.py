@@ -27,6 +27,6 @@ style_value_help = {
     'text-shadow-3': '''The color of the shadow.''',
     'change_images': '''Selecting or Uploading images will not remove images
     from the system.  Only images uploaded through this form are shown.''',
-    'add_image': '''Uploading an image takes precedence over any selected 
+    'add_image': '''Uploading an image takes precedence over any selected
     image.''',
 }
