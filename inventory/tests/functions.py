@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from filer.models.imagemodels import Image
 from django.core.files import File
+from filer.models.foldermodels import Folder
 
 
 def login_as(user, testcase):
@@ -11,7 +12,8 @@ def login_as(user, testcase):
                           password='foo')
 
 
-def set_image(itemimage=None):
+def set_image(itemimage=None, folder_name=None):
+    folder = None
     if User.objects.filter(username='superuser_for_test').exists():
         superuser = User.objects.get(username='superuser_for_test')
     else:
@@ -19,8 +21,12 @@ def set_image(itemimage=None):
             'superuser_for_test',
             'admin@importimage.com',
             'secret')
+    if folder_name:
+        folder, created = Folder.objects.get_or_create(
+            name=folder_name)
     path = "inventory/tests/made_up_filename.png"
     current_img = Image.objects.create(
+        folder=folder,
         owner=superuser,
         original_filename="made_up_filename.png",
         file=File(open(path, 'rb')))

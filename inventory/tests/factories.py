@@ -114,3 +114,10 @@ class StyleValueFactory(DjangoModelFactory):
     style_property = SubFactory(StylePropertyFactory)
     style_version = SubFactory(StyleVersionFactory)
     value = "rgba(1,1,1,0)"
+
+class StyleValueImageFactory(DjangoModelFactory):
+    class Meta:
+        model = StyleValue
+    style_property = SubFactory(StylePropertyFactory, value_type="image")
+    style_version = SubFactory(StyleVersionFactory)
+    value = ""

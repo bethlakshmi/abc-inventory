@@ -35,7 +35,8 @@ class StyleValueImageForm(ModelForm):
                                       queryset=StyleProperty.objects.all())
     image = ThumbnailImageField(
         widget=RadioSelect(),
-        queryset=Image.objects.all(),
+        queryset=Image.objects.filter(
+            folder__name="Backgrounds").order_by('original_filename'),
         required=False,
         label="Current Image",
         empty_label="No Image",

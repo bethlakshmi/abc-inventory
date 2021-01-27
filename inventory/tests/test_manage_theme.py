@@ -3,10 +3,16 @@ from django.test import Client
 from django.urls import reverse
 from inventory.tests.factories import (
     StyleValueFactory,
+    StyleValueImageFactory,
     StyleVersionFactory,
-    UserFactory
+    UserFactory,
 )
-from inventory.tests.functions import login_as
+from filer.models.imagemodels import Image
+from inventory.tests.functions import (
+    login_as,
+    set_image
+)
+from easy_thumbnails.files import get_thumbnailer
 
 
 class TestManageTheme(TestCase):
@@ -52,6 +58,32 @@ class TestManageTheme(TestCase):
             "clone_theme",
             urlconf="inventory.urls",
             args=[self.value.style_version.pk]))
+
+    def test_get_image(self):
+        Image.objects.all().delete()
+        other_image = set_image()
+        image_style = StyleValueImageFactory(
+            style_version=self.value.style_version,
+            image=set_image(folder_name='Backgrounds'))
+
+        login_as(self.user, self)
+        response = self.client.get(self.url)
+        self.assertContains(response,
+                            image_style.style_property.selector)
+        self.assertContains(response,
+                            image_style.style_property.style_property)
+        self.assertContains(
+            response,
+            '''<input type="radio" name="%s-image" value="%s" 
+            id="id_%s-image_1" checked>''' % (
+                image_style.pk,
+                image_style.image.pk,
+                image_style.pk),
+            html=True)
+        self.assertNotContains(
+            response,
+            get_thumbnailer(other_image).get_thumbnail(
+                {'size': (100, 100), 'crop': False}).url)
 
     def test_get_empty(self):
         empty = StyleVersionFactory()
@@ -111,6 +143,64 @@ class TestManageTheme(TestCase):
         self.assertContains(response,
                             self.value.style_property.style_property)
         self.assertContains(response, self.style_url)
+
+    def test_post_update_change_image(self):
+        Image.objects.all().delete()
+        other_image = set_image(folder_name='Backgrounds')
+        image_style = StyleValueImageFactory(
+            style_version=self.value.style_version,
+            image=set_image(folder_name='Backgrounds'))
+        login_as(self.user, self)
+        response = self.client.post(self.url, data={
+            '%s-value_0' % self.value.pk: "rgba(255,255,255,0)",
+            '%s-style_property' % self.value.pk: self.value.style_property.pk,
+            '%s-style_property' % image_style.pk: image_style.style_property.pk,
+            "%s-image" % image_style.pk: other_image.pk,
+            "%s-add_image" % image_style.pk: "",
+            'update': "Update",
+            }, follow=True)
+        self.assertContains(response,
+                            image_style.style_property.selector)
+        self.assertContains(response,
+                            image_style.style_property.style_property)
+        self.assertContains(
+            response,
+            '''<input type="radio" name="%s-image" value="%s" 
+            id="id_%s-image_2" checked>''' % (
+                image_style.pk,
+                other_image.pk,
+                image_style.pk),
+            html=True)
+
+    def test_post_update_upload_image(self):
+        Image.objects.all().delete()
+        UserFactory(username='admin_img')
+        image_style = StyleValueImageFactory(
+            style_version=self.value.style_version,
+            image=set_image(folder_name='Backgrounds'))
+        file1 = open("inventory/tests/redexpo.jpg", 'rb')
+        login_as(self.user, self)
+        response = self.client.post(self.url, data={
+            '%s-value_0' % self.value.pk: "rgba(255,255,255,0)",
+            '%s-style_property' % self.value.pk: self.value.style_property.pk,
+            '%s-style_property' % image_style.pk: image_style.style_property.pk,
+            "%s-image" % image_style.pk: image_style.image.pk,
+            "%s-add_image" % image_style.pk: file1,
+            'update': "Update",
+            }, follow=True)
+        self.assertContains(response,
+                            image_style.style_property.selector)
+        self.assertContains(response,
+                            image_style.style_property.style_property)
+        print(response.content)
+        self.assertContains(
+            response,
+            '''<input type="radio" name="%s-image" value="%s" 
+            id="id_%s-image_2" checked>''' % (
+                image_style.pk,
+                image_style.image.pk + 1,
+                image_style.pk),
+            html=True)
 
     def test_cancel(self):
         login_as(self.user, self)
