@@ -327,7 +327,7 @@ def destroy_style(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('inventory', '0004_auto_20201221_1909'),
+        ('inventory', '0004_auto_20210126_1859'),
     ]
 
     operations = [
