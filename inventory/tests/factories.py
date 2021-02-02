@@ -105,6 +105,7 @@ class StylePropertyFactory(DjangoModelFactory):
         model = StyleProperty
     selector = SubFactory(StyleSelectorFactory)
     style_property = Sequence(lambda n: 'style_property_%d' % n)
+    value_type = "rgba"
 
 
 class StyleValueFactory(DjangoModelFactory):
@@ -112,4 +113,12 @@ class StyleValueFactory(DjangoModelFactory):
         model = StyleValue
     style_property = SubFactory(StylePropertyFactory)
     style_version = SubFactory(StyleVersionFactory)
-    value = "rgba(1, 1, 1, 0)"
+    value = "rgba(1,1,1,0)"
+
+
+class StyleValueImageFactory(DjangoModelFactory):
+    class Meta:
+        model = StyleValue
+    style_property = SubFactory(StylePropertyFactory, value_type="image")
+    style_version = SubFactory(StyleVersionFactory)
+    value = ""

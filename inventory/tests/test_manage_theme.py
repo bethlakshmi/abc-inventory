@@ -3,14 +3,22 @@ from django.test import Client
 from django.urls import reverse
 from inventory.tests.factories import (
     StyleValueFactory,
+    StyleValueImageFactory,
     StyleVersionFactory,
-    UserFactory
+    UserFactory,
 )
-from inventory.tests.functions import login_as
+from filer.models.imagemodels import Image
+from inventory.tests.functions import (
+    login_as,
+    set_image
+)
+from easy_thumbnails.files import get_thumbnailer
 
 
 class TestManageTheme(TestCase):
     view_name = "manage_theme"
+    px_input = ('<input type="number" name="%d-value_%d" value="%d" ' +
+                'class="pixel-input" required id="id_%d-value_%d">')
 
     def setUp(self):
         self.client = Client()
@@ -51,6 +59,32 @@ class TestManageTheme(TestCase):
             urlconf="inventory.urls",
             args=[self.value.style_version.pk]))
 
+    def test_get_image(self):
+        Image.objects.all().delete()
+        other_image = set_image()
+        image_style = StyleValueImageFactory(
+            style_version=self.value.style_version,
+            image=set_image(folder_name='Backgrounds'))
+
+        login_as(self.user, self)
+        response = self.client.get(self.url)
+        self.assertContains(response,
+                            image_style.style_property.selector)
+        self.assertContains(response,
+                            image_style.style_property.style_property)
+        self.assertContains(
+            response,
+            '''<input type="radio" name="%s-image" value="%s"
+            id="id_%s-image_1" checked>''' % (
+                image_style.pk,
+                image_style.image.pk,
+                image_style.pk),
+            html=True)
+        self.assertNotContains(
+            response,
+            get_thumbnailer(other_image).get_thumbnail(
+                {'size': (100, 100), 'crop': False}).url)
+
     def test_get_empty(self):
         empty = StyleVersionFactory()
         login_as(self.user, self)
@@ -79,7 +113,7 @@ class TestManageTheme(TestCase):
     def test_post_finish(self):
         login_as(self.user, self)
         response = self.client.post(self.url, data={
-            '%s-value' % self.value.pk: "rgba(255, 255, 255, 0)",
+            '%s-value_0' % self.value.pk: "rgba(255,255,255,0)",
             '%s-style_property' % self.value.pk: self.value.style_property.pk,
             'finish': "Finish",
             }, follow=True)
@@ -93,7 +127,7 @@ class TestManageTheme(TestCase):
     def test_post_update(self):
         login_as(self.user, self)
         response = self.client.post(self.url, data={
-            '%s-value' % self.value.pk: "rgba(255, 255, 255, 0)",
+            '%s-value_0' % self.value.pk: "rgba(255,255,255,0)",
             '%s-style_property' % self.value.pk: self.value.style_property.pk,
             'update': "Update",
             }, follow=True)
@@ -101,7 +135,7 @@ class TestManageTheme(TestCase):
         self.assertContains(
             response,
             "Updated %s" % self.value.style_version)
-        self.assertContains(response, 'rgba(255, 255, 255, 0)')
+        self.assertContains(response, 'rgba(255,255,255,0)')
         self.assertContains(response,
                             self.value.style_property.selector)
         self.assertContains(response,
@@ -109,6 +143,65 @@ class TestManageTheme(TestCase):
         self.assertContains(response,
                             self.value.style_property.style_property)
         self.assertContains(response, self.style_url)
+
+    def test_post_update_change_image(self):
+        Image.objects.all().delete()
+        other_image = set_image(folder_name='Backgrounds')
+        image_style = StyleValueImageFactory(
+            style_version=self.value.style_version,
+            image=set_image(folder_name='Backgrounds'))
+        login_as(self.user, self)
+        response = self.client.post(self.url, data={
+            '%s-value_0' % self.value.pk: "rgba(255,255,255,0)",
+            '%s-style_property' % self.value.pk: self.value.style_property.pk,
+            '%s-style_property' % image_style.pk:
+                image_style.style_property.pk,
+            "%s-image" % image_style.pk: other_image.pk,
+            "%s-add_image" % image_style.pk: "",
+            'update': "Update",
+            }, follow=True)
+        self.assertContains(response,
+                            image_style.style_property.selector)
+        self.assertContains(response,
+                            image_style.style_property.style_property)
+        self.assertContains(
+            response,
+            '''<input type="radio" name="%s-image" value="%s"
+            id="id_%s-image_2" checked>''' % (
+                image_style.pk,
+                other_image.pk,
+                image_style.pk),
+            html=True)
+
+    def test_post_update_upload_image(self):
+        Image.objects.all().delete()
+        UserFactory(username='admin_img')
+        image_style = StyleValueImageFactory(
+            style_version=self.value.style_version,
+            image=set_image(folder_name='Backgrounds'))
+        file1 = open("inventory/tests/redexpo.jpg", 'rb')
+        login_as(self.user, self)
+        response = self.client.post(self.url, data={
+            '%s-value_0' % self.value.pk: "rgba(255,255,255,0)",
+            '%s-style_property' % self.value.pk: self.value.style_property.pk,
+            '%s-style_property' % image_style.pk:
+                image_style.style_property.pk,
+            "%s-image" % image_style.pk: image_style.image.pk,
+            "%s-add_image" % image_style.pk: file1,
+            'update': "Update",
+            }, follow=True)
+        self.assertContains(response,
+                            image_style.style_property.selector)
+        self.assertContains(response,
+                            image_style.style_property.style_property)
+        self.assertContains(
+            response,
+            '''<input type="radio" name="%s-image" value="%s"
+            id="id_%s-image_2" checked>''' % (
+                image_style.pk,
+                image_style.image.pk + 1,
+                image_style.pk),
+            html=True)
 
     def test_cancel(self):
         login_as(self.user, self)
@@ -120,11 +213,128 @@ class TestManageTheme(TestCase):
         self.assertRedirects(response,
                              reverse("themes_list", urlconf="inventory.urls"))
 
-    def test_post_basics_bad_data(self):
+    def test_post_bad_data(self):
         login_as(self.user, self)
         response = self.client.post(self.url, data={
             'finish': "Finish",
             }, follow=True)
         self.assertContains(response, self.title)
-        self.assertContains(response, "There is an error on the form.")
+        self.assertContains(
+            response,
+            "Something was wrong, correct the errors below and try again.")
+        self.assertContains(response, "This field is required.")
         self.assertContains(response, self.style_url)
+
+    def test_get_complicated_property(self):
+        from inventory.forms.default_form_text import style_value_help
+        complex_value = StyleValueFactory(
+            value="5px 4px 3px rgba(10,10,10,1)",
+            style_property__style_property="text-shadow",
+            style_property__value_type="px px px rgba",
+            style_property__selector=self.value.style_property.selector,
+            style_version=self.value.style_version)
+        login_as(self.user, self)
+        response = self.client.get(self.url)
+        self.assertContains(
+            response,
+            self.px_input % (complex_value.pk, 0, 5, complex_value.pk, 0),
+            html=True)
+        self.assertContains(
+            response,
+            self.px_input % (complex_value.pk, 1, 4, complex_value.pk, 1),
+            html=True)
+        self.assertContains(
+            response,
+            self.px_input % (complex_value.pk, 2, 3, complex_value.pk, 2),
+            html=True)
+        self.assertContains(response,
+                            complex_value.style_property.selector)
+        self.assertContains(response,
+                            complex_value.style_property.style_property)
+        self.assertContains(response, reverse(
+            "clone_theme",
+            urlconf="inventory.urls",
+            args=[self.value.style_version.pk]))
+        self.assertContains(response, style_value_help["text-shadow-0"])
+        self.assertContains(response, style_value_help["text-shadow-1"])
+        self.assertContains(response, style_value_help["text-shadow-2"])
+        self.assertContains(response, style_value_help["text-shadow-3"])
+
+    def test_get_complicated_messed_up_property(self):
+        from inventory.forms.default_form_text import theme_help
+        complex_value = StyleValueFactory(
+            value="5px 4px rgba(10,10,10,1)",
+            style_property__value_type="px px px rgba",
+            style_property__selector=self.value.style_property.selector,
+            style_version=self.value.style_version)
+        login_as(self.user, self)
+        response = self.client.get(self.url)
+        self.assertContains(response, "%s, VALUES: %s" % (
+            theme_help['mismatch'],
+            "[\'5px\', \'4px\', \'rgba(10,10,10,1)\']"))
+
+    def test_post_complicated_property(self):
+        complex_value = StyleValueFactory(
+            value="5px 4px 3px rgba(10,10,10,1)",
+            style_property__value_type="px px px rgba",
+            style_property__selector=self.value.style_property.selector,
+            style_version=self.value.style_version)
+        login_as(self.user, self)
+        response = self.client.post(self.url, data={
+            '%s-value_0' % self.value.pk: "rgba(255,255,255,0)",
+            '%s-style_property' % self.value.pk: self.value.style_property.pk,
+            '%s-value_0' % complex_value.pk: "0",
+            '%s-style_property' % (
+                complex_value.pk): complex_value.style_property.pk,
+            '%s-value_1' % complex_value.pk: "10",
+            '%s-value_2' % complex_value.pk: "15",
+            '%s-value_3' % complex_value.pk: "rgba(50,50,50,0.5)",
+            'update': "Update",
+            }, follow=True)
+        self.assertContains(
+            response,
+            self.px_input % (complex_value.pk, 0, 0, complex_value.pk, 0),
+            html=True)
+        self.assertContains(
+            response,
+            self.px_input % (complex_value.pk, 1, 10, complex_value.pk, 1),
+            html=True)
+        self.assertContains(
+            response,
+            self.px_input % (complex_value.pk, 2, 15, complex_value.pk, 2),
+            html=True)
+        self.assertContains(response, "rgba(50,50,50,0.5)")
+        self.assertContains(response,
+                            complex_value.style_property.selector)
+        self.assertContains(response,
+                            complex_value.style_property.style_property)
+        self.assertContains(response, reverse(
+            "clone_theme",
+            urlconf="inventory.urls",
+            args=[self.value.style_version.pk]))
+
+    def test_post_complicated_messed_up_property(self):
+        from inventory.forms.default_form_text import theme_help
+        complex_value = StyleValueFactory(
+            value="5px 4px 3px",
+            style_property__value_type="px px px rgba",
+            style_property__selector=self.value.style_property.selector,
+            style_version=self.value.style_version)
+        login_as(self.user, self)
+        response = self.client.post(self.url, data={
+            '%s-value_0' % self.value.pk: "rgba(255,255,255,0)",
+            '%s-style_property' % self.value.pk: self.value.style_property.pk,
+            '%s-value_0' % complex_value.pk: "0",
+            '%s-style_property' % (
+                complex_value.pk): complex_value.style_property.pk,
+            '%s-value_1' % complex_value.pk: "10",
+            '%s-value_2' % complex_value.pk: "15",
+            '%s-value_3' % complex_value.pk: "rgba(50,50,50,0.5)",
+            'update': "Update",
+            }, follow=True)
+        self.assertContains(response, "%s, VALUES: %s" % (
+            theme_help['mismatch'],
+            "[\'5px\', \'4px\', \'3px\']"))
+        self.assertContains(
+            response,
+            "Something was wrong, correct the errors below and try again.")

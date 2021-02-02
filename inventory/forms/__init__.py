@@ -5,6 +5,7 @@ from .image_upload_form import ImageUploadForm
 from .item_image_form import ItemImageForm
 from .image_associate_form import ImageAssociateForm
 from .image_associate_meta_form import ImageAssociateMetaForm
-from .color_style_value_form import ColorStyleValueForm
+from .style_value_form import StyleValueForm
+from .style_value_image_form import StyleValueImageForm
 from .theme_version_form import ThemeVersionForm
 from .label_form import LabelForm

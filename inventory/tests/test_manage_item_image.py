@@ -8,7 +8,7 @@ from inventory.tests.factories import (
 )
 from inventory.tests.functions import (
     login_as,
-    set_image
+    set_image,
 )
 from inventory.models import ItemImage
 from easy_thumbnails.files import get_thumbnailer

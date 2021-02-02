@@ -6,7 +6,7 @@ from inventory.models import StyleValue
 class TestBaselineStyles(TestMigrations):
 
     migrate_from = '0005_auto_20201221_1913'
-    migrate_to = '0004_auto_20201221_1909'
+    migrate_to = '0004_auto_20210126_1859'
 
     def setUpBeforeMigration(self, apps):
         self.value = StyleValueFactory(

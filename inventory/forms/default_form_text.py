@@ -11,3 +11,22 @@ item_text_help = '''To create a new text label for this item, add text to the
  "New Text" field below.  To create many text items, add each one and click
  "Add & Keep Working" to get another field.  To delete a text item, remove the
  text from the field and it will be deleted.'''
+theme_help = {
+    'no_args': '''This form requires either an instance of a StyleValue or a
+    StyleProperty from which to create the StyleValue so that the value type
+    can be determined.''',
+    'mismatch': '''The template of the property does not match the value.
+    This suggests that something has changed since the value was last saved.'''
+}
+style_value_help = {
+    'text-shadow-0': '''The position of the horizontal shadow.
+    Negative values are allowed''',
+    'text-shadow-1': '''The position of the vertical shadow.
+    Negative values are allowed''',
+    'text-shadow-2': '''The blur radius. Default value is 0''',
+    'text-shadow-3': '''The color of the shadow.''',
+    'change_images': '''Selecting or Uploading images will not remove images
+    from the system.  Only images uploaded through this form are shown.''',
+    'add_image': '''Uploading an image takes precedence over any selected
+    image.''',
+}

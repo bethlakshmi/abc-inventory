@@ -44,13 +44,13 @@
 <div class="row">
   <div class="col-12">
       <div class="form-group col-12">
-        <h3><span class="label label-default"><label id="{{ field.name }}">
+        <h3><span class="label label-default"><label id="{{ form.new_images.name }}">
           
             <font class="{% if form.new_images.errors %}inventory-form-error{% endif %}">
             {{ form.new_images.label }}:</font>
         </label></span></h3>
-        {% if field.errors %}
-          <font class="inventory-form-error">{{ field.errors }}</font>
+        {% if form.new_images.errors %}
+          <font class="inventory-form-error">{{ form.new_images.errors }}</font>
         {% endif %}
       {{form.new_images.help_text}}
       </div>
