@@ -20,7 +20,7 @@ init_values = [
     {
             'selector': '.btn-inventory-secondary',
             'pseudo_class': 'hover',
-            'description': 'Any active, but less important button,on hover',
+            'description': 'Any active, but less important button, on hover',
             'target_element': 'button',
             'usage': 'Big Table',
             'prop_val': [('background-color', 'rgba(90,98,104,1)'),
@@ -272,7 +272,7 @@ init_values = [
 
 def initialize_style(apps, schema_editor):
     # We get the model from the versioned app registry;
-    # if we directly import it,it'll be the wrong version
+    # if we directly import it, it'll be the wrong version
     StyleVersion = apps.get_model("inventory", "StyleVersion")
     StyleSelector = apps.get_model("inventory", "StyleSelector")
     StyleProperty = apps.get_model("inventory", "StyleProperty")
