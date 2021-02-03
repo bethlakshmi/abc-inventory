@@ -2,11 +2,15 @@ from django.views.generic import View
 from django.views.decorators.cache import never_cache
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-from inventory.models import StyleVersion
+from inventory.models import (
+    StyleVersion,
+    UserMessage,
+)
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
+from inventory.views.default_view_text import user_messages
 
 
 class DeleteTheme(View):
@@ -23,8 +27,37 @@ class DeleteTheme(View):
 
     @never_cache
     def get(self, request, *args, **kwargs):
+        theme_display = "%s"
         self.groundwork(request, args, kwargs)
-        self.style_version.delete()
-        messages.success(request, "Deleted Theme %s" % str(self.style_version))
-        return HttpResponseRedirect(reverse('themes_list',
-                                            urlconf='inventory.urls'))
+        if StyleVersion.objects.all().count() == 1:
+            error_code = "LAST_THEME"
+            msg = UserMessage.objects.get_or_create(
+                view=self.__class__.__name__,
+                code=error_code,
+                defaults={
+                    'summary': user_messages[error_code]['summary'],
+                    'description': user_messages[error_code]['description']})
+            messages.error(
+                request,
+                msg[0].description + "TARGET: " + str(self.style_version))
+            theme_display = "%s?error_id=" + str(self.style_version.pk)
+        elif self.style_version.currently_live or (
+                self.style_version.currently_test):
+            error_code = "CURRENTLY_ACTIVE"
+            msg = UserMessage.objects.get_or_create(
+                view=self.__class__.__name__,
+                code=error_code,
+                defaults={
+                    'summary': user_messages[error_code]['summary'],
+                    'description': user_messages[error_code]['description']})
+            messages.error(
+                request,
+                msg[0].description + "  TARGET: " + str(self.style_version))     
+            theme_display = "%s?error_id=" + str(self.style_version.pk)
+        else:
+            self.style_version.delete()
+            messages.success(
+                request,
+                "Deleted Theme %s" % str(self.style_version))
+        return HttpResponseRedirect(theme_display % (
+            reverse('themes_list', urlconf='inventory.urls')))
