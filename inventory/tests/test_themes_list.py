@@ -82,3 +82,11 @@ class TestThemesList(TestCase):
         response = self.client.get(
             "%s?changed_id=%d" % (self.url, self.version.pk))
         self.assertContains(response, "if (row.id == %d) {" % self.version.pk)
+
+    def test_show_error(self):
+        login_as(self.user, self)
+        response = self.client.get(
+            "%s?error_id=%d" % (self.url, self.version.pk))
+        self.assertContains(
+            response,
+            "else if (row.id == %d) {" % self.version.pk)
