@@ -39,7 +39,7 @@ class DeleteTheme(View):
                     'description': user_messages[error_code]['description']})
             messages.error(
                 request,
-                msg[0].description + "TARGET: " + str(self.style_version))
+                msg[0].description + "  TARGET: " + str(self.style_version))
             theme_display = "%s?error_id=" + str(self.style_version.pk)
         elif self.style_version.currently_live or (
                 self.style_version.currently_test):
@@ -52,7 +52,7 @@ class DeleteTheme(View):
                     'description': user_messages[error_code]['description']})
             messages.error(
                 request,
-                msg[0].description + "  TARGET: " + str(self.style_version))     
+                msg[0].description + "  TARGET: " + str(self.style_version))
             theme_display = "%s?error_id=" + str(self.style_version.pk)
         else:
             self.style_version.delete()

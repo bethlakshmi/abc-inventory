@@ -34,7 +34,7 @@ user_messages = {
     "CURRENTLY_ACTIVE": {
         'summary':  "Can't Delete Active Theme",
         'description': '''This theme is currently active on live, test or both.
-        Before deleting the theme, you must activate a different theme for 
+        Before deleting the theme, you must activate a different theme for
         both environments.'''
     },
 }
