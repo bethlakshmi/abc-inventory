@@ -13,3 +13,4 @@ from .activate_theme import ActivateTheme
 from .manage_theme import ManageTheme
 from .clone_theme import CloneTheme
 from .themes_list_view import ThemesListView
+from .delete_theme import DeleteTheme

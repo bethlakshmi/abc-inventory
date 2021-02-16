@@ -189,6 +189,11 @@
         classes: "inventory-table-success"
       }
     }
+    else if (row.id == {{error_id}}) {
+      return {
+        classes: "inventory-table-error"
+      }
+    }
     return {}
   }
 </script>

@@ -238,6 +238,27 @@ init_values = [
             'usage': 'Big Table',
             'prop_val': [('background-color', 'rgba(195,230,203,1)')]},
     {
+            'selector': '.inventory-table-error',
+            'pseudo_class': '',
+            'description': 'Table row when it was just successfully updated',
+            'target_element': 'div',
+            'usage': 'Big Table',
+            'prop_val': [('background-color', 'rgba(248,215,218,1)')]},
+    {
+            'selector': 'table.table-hover tbody tr.inventory-table-success',
+            'pseudo_class': 'hover',
+            'description': 'Table row when it was just successfully updated',
+            'target_element': 'div',
+            'usage': 'Big Table',
+            'prop_val': [('background-color', 'rgba(230,199,202,1)')]},
+    {
+            'selector': 'table.table-hover tbody tr.inventory-table-error',
+            'pseudo_class': 'hover',
+            'description': 'Table row when it was just successfully updated',
+            'target_element': 'div',
+            'usage': 'Big Table',
+            'prop_val': [('background-color', 'rgba(219,191,191,1)')]},
+    {
             'selector': '.inventory-text-success',
             'pseudo_class': '',
             'description': '''Text that means to show success,like icons for

@@ -25,5 +25,16 @@ user_messages = {
         'summary':  "Step in wizard not submitted.",
         'description': '''Something has gone wrong.  If this persists, please
         contact support.  Issue - Next Step unknown'''
-    }
+    },
+    "LAST_THEME": {
+        'summary':  "Can't Delete Last Theme",
+        'description': '''This is the last theme in the system.  It cannot be
+        deleted until another theme is created.'''
+    },
+    "CURRENTLY_ACTIVE": {
+        'summary':  "Can't Delete Active Theme",
+        'description': '''This theme is currently active on live, test or both.
+        Before deleting the theme, you must activate a different theme for
+        both environments.'''
+    },
 }
