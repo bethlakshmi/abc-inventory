@@ -3,12 +3,10 @@ from django.db.models import (
     CharField,
     DateTimeField,
     DecimalField,
-    ManyToManyField,
     Model,
 )
 from django.core.validators import MinValueValidator
 from decimal import Decimal
-from django.contrib.auth.models import User
 
 
 class StyleVersion(Model):
@@ -20,7 +18,6 @@ class StyleVersion(Model):
     updated_at = DateTimeField(auto_now=True)
     currently_live = BooleanField(default=False)
     currently_test = BooleanField(default=False)
-    previewed_by = ManyToManyField(User)
 
     def __str__(self):
         return ("{} - version {:.1f}".format(self.name, self.number))

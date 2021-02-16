@@ -96,6 +96,7 @@ class StyleSelectorFactory(DjangoModelFactory):
     class Meta:
         model = StyleSelector
     selector = Sequence(lambda n: 'style_selector_%d' % n)
+    target_element_usage = "div"
     used_for = "General"
 
 
