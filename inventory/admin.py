@@ -121,13 +121,11 @@ class StyleSelectorAdmin(ImportExportActionModelAdmin):
         'pk',
         'selector',
         'pseudo_class',
-        'target_element_usage',
         'used_for',
         'description')
     list_editable = (
         'selector',
         'pseudo_class',
-        'target_element_usage',
         'used_for')
 
 
