@@ -9,7 +9,7 @@ from inventory.models import StyleVersion
 from inventory.tests.functions import login_as
 
 
-class TestActivateTheme(TestCase):
+class TestDeleteTheme(TestCase):
     view_name = "delete_theme"
     delete_link = '<a class="inventory-detail" href="%s" title="Delete">'
 
