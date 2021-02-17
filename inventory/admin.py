@@ -121,13 +121,11 @@ class StyleSelectorAdmin(ImportExportActionModelAdmin):
         'pk',
         'selector',
         'pseudo_class',
-        'target_element_usage',
         'used_for',
         'description')
     list_editable = (
         'selector',
         'pseudo_class',
-        'target_element_usage',
         'used_for')
 
 
@@ -168,6 +166,11 @@ class StyleVersionAdmin(ImportExportActionModelAdmin):
         'currently_live',
         'currently_test')
 
+class UserStylePreviewAdmin(admin.ModelAdmin):
+    list_display = (
+        'version',
+        'previewer')
+
 admin.site.register(UserMessage, MessageAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Disposition, DispositionAdmin)
@@ -180,3 +183,4 @@ admin.site.register(StyleValue, StyleValueAdmin)
 admin.site.register(StyleProperty, StylePropertyAdmin)
 admin.site.register(StyleSelector, StyleSelectorAdmin)
 admin.site.register(StyleVersion, StyleVersionAdmin)
+admin.site.register(UserStylePreview, UserStylePreviewAdmin)

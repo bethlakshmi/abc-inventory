@@ -250,7 +250,7 @@ init_values = [
             'description': 'Table row when it was just successfully updated',
             'target_element': 'div',
             'usage': 'Big Table',
-            'prop_val': [('background-color', 'rgba(230,199,202,1)')]},
+            'prop_val': [('background-color', 'rgba(156,184,162,1)')]},
     {
             'selector': 'table.table-hover tbody tr.inventory-table-error',
             'pseudo_class': 'hover',

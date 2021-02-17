@@ -24,7 +24,7 @@
         'id': '{{ theme.pk }}',
         'number': '{{ theme.number|floatformat:1 }}',
         'name': '{{ theme.name }}',
-        'action': '<a class="inventory-detail" href="{% url 'inventory:manage_theme' theme.id %}" title="Edit"><i class="fas fa-edit"></i></a>&nbsp;&nbsp;<a class="inventory-detail" href="{% url 'inventory:clone_theme' theme.id %}" title="Clone"><i class="fas fa-clone"></i></a>&nbsp;&nbsp;<a class="inventory-detail" href="{% url 'inventory:delete_theme' theme.id %}" title="Delete"><i class="far fa-trash-alt"></i></a>',
+        'action': '<a class="inventory-detail" href="{% url 'inventory:manage_theme' theme.id %}" title="Edit"><i class="fas fa-edit"></i></a>&nbsp;&nbsp;<a class="inventory-detail" href="{% url 'inventory:clone_theme' theme.id %}" title="Clone"><i class="fas fa-clone"></i></a>&nbsp;&nbsp;{% if theme == preview %}<a class="inventory-detail" href="{% url 'inventory:preview_off' %}" title="Turn off Preview"><i class="far fa-eye-slash"></i></a>{% else %}<a class="inventory-detail" href="{% url 'inventory:preview_theme' theme.id %}" title="Preview"><i class="fas fa-eye"></i></a>{% endif %}&nbsp;&nbsp;<a class="inventory-detail" href="{% url 'inventory:delete_theme' theme.id %}" title="Delete"><i class="far fa-trash-alt"></i></a>',
         'created': '{{ theme.created_at }}',
         'updated': '{{ theme.updated_at }}',
         'currently_live': '{% if theme.currently_live %}<i class="inventory-text-success fas fa-check-circle" title="This version is currently publicly visible on the live site"></i>{% else %}<a href="{% url 'inventory:activate_theme' theme.pk 'live' %}"><i class="fas fa-upload inventory-text-muted" title="Activate this version on the live site"></i></a>{% endif %}',
