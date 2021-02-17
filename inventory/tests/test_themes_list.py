@@ -3,7 +3,8 @@ from django.test import Client
 from django.urls import reverse
 from inventory.tests.factories import (
     StyleVersionFactory,
-    UserFactory
+    UserFactory,
+    UserStylePreviewFactory,
 )
 from inventory.tests.functions import login_as
 from inventory.models import StyleVersion
@@ -30,6 +31,10 @@ class TestThemesList(TestCase):
             args=[self.version.pk]))
         self.assertContains(response, reverse(
             "clone_theme",
+            urlconf="inventory.urls",
+            args=[self.version.pk]))
+        self.assertContains(response, reverse(
+            "preview_theme",
             urlconf="inventory.urls",
             args=[self.version.pk]))
         self.assertContains(
@@ -90,3 +95,16 @@ class TestThemesList(TestCase):
         self.assertContains(
             response,
             "else if (row.id == %d) {" % self.version.pk)
+
+    def test_user_has_preview(self):
+        UserStylePreviewFactory(version=self.version, previewer=self.user)
+        login_as(self.user, self)
+        response = self.client.get(self.url)
+        self.assertContains(response, self.version.name)
+        self.assertNotContains(response, reverse(
+            "preview_theme",
+            urlconf="inventory.urls",
+            args=[self.version.pk]))
+        self.assertContains(response, reverse(
+            "preview_off",
+            urlconf="inventory.urls"))
