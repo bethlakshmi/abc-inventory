@@ -13,10 +13,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RemoveField(
-            model_name='styleselector',
-            name='target_element_usage',
-        ),
         migrations.CreateModel(
             name='UserStylePreview',
             fields=[

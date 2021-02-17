@@ -310,7 +310,6 @@ def initialize_style(apps, schema_editor):
             selector=select_val['selector'],
             description=select_val['description'],
             pseudo_class=select_val['pseudo_class'],
-            target_element_usage=select_val['target_element'],
             used_for=select_val['usage'])
         selector.save()
         for prop_val in select_val['prop_val']:
