@@ -110,15 +110,15 @@ class ManageTheme(View):
             self.style_version.updated_at = datetime.now()
             self.style_version.save()
             messages.success(request, "Updated %s" % self.style_version)
-            if 'finish' in list(request.POST.keys()):
-                return HttpResponseRedirect("%s?changed_id=%d" % (
-                    reverse('themes_list', urlconf='inventory.urls'),
-                    self.style_version.pk))
-            elif 'update' in list(request.POST.keys()):
+            if 'update' in list(request.POST.keys()):
                 return HttpResponseRedirect(reverse(
                     'manage_theme',
                     urlconf='inventory.urls',
                     args=[self.style_version.pk]))
+            else:
+                return HttpResponseRedirect("%s?changed_id=%d" % (
+                    reverse('themes_list', urlconf='inventory.urls'),
+                    self.style_version.pk))
         else:
             messages.error(
                 request,
