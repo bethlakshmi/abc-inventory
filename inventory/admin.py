@@ -166,6 +166,7 @@ class StyleVersionAdmin(ImportExportActionModelAdmin):
         'currently_live',
         'currently_test')
 
+
 class UserStylePreviewAdmin(admin.ModelAdmin):
     list_display = (
         'version',

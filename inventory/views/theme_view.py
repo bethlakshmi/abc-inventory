@@ -36,7 +36,7 @@ class ThemeView(View):
             version = get_object_or_404(StyleVersion, currently_test=True)
         else:
             version = get_object_or_404(StyleVersion, currently_live=True)
- 
+
         current_values = StyleValue.objects.filter(style_version=version)
 
         for value in current_values:

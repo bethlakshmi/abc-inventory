@@ -123,6 +123,7 @@ class StyleValueImageFactory(DjangoModelFactory):
     style_version = SubFactory(StyleVersionFactory)
     value = ""
 
+
 class UserStylePreviewFactory(DjangoModelFactory):
     class Meta:
         model = UserStylePreview
