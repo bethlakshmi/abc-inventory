@@ -32,7 +32,7 @@ class PreviewTheme(View):
         changed_id = None
         if self.style_version is None:
             if hasattr(request.user, 'userstylepreview'):
-                changed_id = request.user.userstylepreview.pk
+                changed_id = request.user.userstylepreview.version.pk
                 msg = "Deactivating preview of version: " + str(
                     request.user.userstylepreview.version)
                 request.user.userstylepreview.delete()

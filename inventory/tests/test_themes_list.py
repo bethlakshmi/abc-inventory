@@ -105,6 +105,9 @@ class TestThemesList(TestCase):
             "preview_theme",
             urlconf="inventory.urls",
             args=[self.version.pk]))
-        self.assertContains(response, reverse(
-            "preview_off",
-            urlconf="inventory.urls"))
+        self.assertContains(
+            response,
+            'href="%s"' % reverse(
+                "preview_off",
+                urlconf="inventory.urls"),
+            count=1)
