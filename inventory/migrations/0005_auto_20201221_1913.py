@@ -18,7 +18,7 @@ init_values = [
             'usage': 'Navbar',
             'prop_val': [('color', 'rgba(0,0,0,1)')]},
     {
-            'selector': '.btn-inventory-secondary',
+            'selector': '.input-group-text:hover, .btn-inventory-secondary',
             'pseudo_class': 'hover',
             'description': 'Any active, but less important button, on hover',
             'target_element': 'button',
@@ -27,7 +27,7 @@ init_values = [
                          ('border-color', 'rgba(90,98,104,1)'),
                          ('color', 'rgba(255,255,255,1)')]},
     {
-            'selector': '.btn-inventory-secondary',
+            'selector': '.input-group-text, .btn-inventory-secondary',
             'pseudo_class': '',
             'description': 'Right now - the buttons above the table.',
             'target_element': 'button',
@@ -35,6 +35,15 @@ init_values = [
             'prop_val': [('background-color', 'rgba(108,117,125,1)'),
                          ('border-color', 'rgba(108,117,125,1)'),
                          ('color', 'rgba(255,255,255,1)')]},
+    {
+            'selector': '.form-control:focus, .btn.focus, .btn:focus',
+            'pseudo_class': '',
+            'description': 'Right now - the buttons above the table.',
+            'target_element': 'button',
+            'usage': 'Big Table',
+            'prop_val': [('box-shadow',
+                          'px px px px rgba',
+                          '0px 0px 0px 3px rgba(0, 123, 255, 0.25)')]},
     {
             'selector': '.detail-icon',
             'pseudo_class': '',
@@ -250,7 +259,7 @@ init_values = [
             'description': 'Table row when it was just successfully updated',
             'target_element': 'div',
             'usage': 'Big Table',
-            'prop_val': [('background-color', 'rgba(230,199,202,1)')]},
+            'prop_val': [('background-color', 'rgba(156,184,162,1)')]},
     {
             'selector': 'table.table-hover tbody tr.inventory-table-error',
             'pseudo_class': 'hover',
@@ -310,7 +319,6 @@ def initialize_style(apps, schema_editor):
             selector=select_val['selector'],
             description=select_val['description'],
             pseudo_class=select_val['pseudo_class'],
-            target_element_usage=select_val['target_element'],
             used_for=select_val['usage'])
         selector.save()
         for prop_val in select_val['prop_val']:

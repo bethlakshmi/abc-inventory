@@ -273,6 +273,20 @@ class TestManageTheme(TestCase):
             theme_help['mismatch'],
             "[\'5px\', \'4px\', \'rgba(10,10,10,1)\']"))
 
+    def test_get_bad_value_template(self):
+        from inventory.forms.default_form_text import theme_help
+        complex_value = StyleValueFactory(
+            value="5px 4px 3px rgba(10,10,10,1) bad",
+            style_property__style_property="text-shadow",
+            style_property__value_type="px px px rgba bad",
+            style_property__selector=self.value.style_property.selector,
+            style_version=self.value.style_version)
+        login_as(self.user, self)
+        response = self.client.get(self.url)
+        self.assertContains(response, "%s, VALUES: %s" % (
+            theme_help['bad_elem'],
+            "px px px rgba bad"))
+
     def test_post_complicated_property(self):
         complex_value = StyleValueFactory(
             value="5px 4px 3px rgba(10,10,10,1)",

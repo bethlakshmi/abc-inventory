@@ -5,10 +5,14 @@ from inventory.tests.factories import (
     StyleVersionFactory,
     StyleValueFactory,
     StyleValueImageFactory,
+    UserStylePreviewFactory,
 )
 from django.test.utils import override_settings
 from filer.models.imagemodels import Image
-from inventory.tests.functions import set_image
+from inventory.tests.functions import (
+    login_as,
+    set_image,
+)
 
 
 class TestTheme(TestCase):
@@ -132,6 +136,33 @@ class TestTheme(TestCase):
             "%s - %s" % (value.style_property.selector,
                          value.style_property.style_property))
 
+    def test_image_style_two_properties(self):
+        version = StyleVersionFactory()
+        version.currently_live = True
+        version.save()
+        Image.objects.all().delete()
+        value = StyleValueImageFactory(
+            style_version=version,
+            image=set_image(folder_name='Backgrounds'))
+        another_value = StyleValueImageFactory(
+            style_version=version,
+            style_property__selector=value.style_property.selector,
+            image=set_image(folder_name='Backgrounds'))
+        response = self.client.get(self.url)
+        self.assertContains(
+            response,
+            "%s {" % value.style_property.selector,
+            count=1)
+        self.assertContains(
+            response,
+            "    %s: %s" % (value.style_property.style_property,
+                            value.value))
+        self.assertContains(
+            response,
+            "    %s: %s" % (another_value.style_property.style_property,
+                            another_value.value))
+        self.assertContains(response, "url(%s)" % value.image.url)
+
     def test_image_style(self):
         version = StyleVersionFactory()
         version.currently_live = True
@@ -143,9 +174,34 @@ class TestTheme(TestCase):
         response = self.client.get(self.url)
         self.assertContains(
             response,
-            "%s {" % value.style_property.selector)
+            "%s {" % value.style_property.selector,
+            count=1)
         self.assertContains(
             response,
             "    %s: %s" % (value.style_property.style_property,
                             value.value))
         self.assertContains(response, "url(%s)" % value.image.url)
+
+    def test_preview_persistence(self):
+        version = StyleVersionFactory()
+        version.currently_live = True
+        version.save()
+        preview_setting = UserStylePreviewFactory()
+        value = StyleValueFactory(style_version=preview_setting.version)
+        live_value = StyleValueFactory(style_version=version)
+        login_as(preview_setting.previewer, self)
+        response = self.client.get(self.url)
+        self.assertContains(
+            response,
+            "%s {" % value.style_property.selector)
+        self.assertContains(
+            response,
+            "    %s: %s" % (value.style_property.style_property,
+                            value.value))
+        self.assertNotContains(
+            response,
+            "%s {" % live_value.style_property.selector)
+        self.assertNotContains(
+            response,
+            "    %s: %s" % (live_value.style_property.style_property,
+                            live_value.value))

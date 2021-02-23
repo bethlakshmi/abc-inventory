@@ -30,9 +30,7 @@ class ManageItemImage(View):
         self.item = get_object_or_404(Item, id=item_id)
 
     def make_context(self, request):
-        title = "Creating New Item"
-        if self.item:
-            title = "Manage Images for %s" % self.item.title
+        title = "Manage Images for %s" % self.item.title
         context = {
             'page_title': self.page_title,
             'title': title,

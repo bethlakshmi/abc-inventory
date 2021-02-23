@@ -28,6 +28,7 @@ from inventory.models import (
     StyleVersion,
     Subitem,
     Tag,
+    UserStylePreview,
 )
 
 
@@ -96,7 +97,6 @@ class StyleSelectorFactory(DjangoModelFactory):
     class Meta:
         model = StyleSelector
     selector = Sequence(lambda n: 'style_selector_%d' % n)
-    target_element_usage = "div"
     used_for = "General"
 
 
@@ -122,3 +122,10 @@ class StyleValueImageFactory(DjangoModelFactory):
     style_property = SubFactory(StylePropertyFactory, value_type="image")
     style_version = SubFactory(StyleVersionFactory)
     value = ""
+
+
+class UserStylePreviewFactory(DjangoModelFactory):
+    class Meta:
+        model = UserStylePreview
+    version = SubFactory(StyleVersionFactory)
+    previewer = SubFactory(UserFactory)
