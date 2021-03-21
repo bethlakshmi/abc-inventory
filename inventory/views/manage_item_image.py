@@ -11,11 +11,13 @@ from django.shortcuts import (
 from inventory.models import (
     Item,
     ItemImage,
+    UserMessage,
 )
 from filer.models import Image
 from inventory.forms import ItemImageForm
 from django.contrib import messages
 from inventory.functions import upload_and_attach
+from inventory.views.default_view_text import user_messages
 
 
 class ManageItemImage(View):
@@ -23,6 +25,7 @@ class ManageItemImage(View):
     template = 'inventory/manage_image.tmpl'
     page_title = 'Manage Images'
     item = None
+    instruction_code = "MANAGE_ITEM_IMAGE_INSTRUCT"
 
     def groundwork(self, request, args, kwargs):
         self.item = None
@@ -30,11 +33,19 @@ class ManageItemImage(View):
         self.item = get_object_or_404(Item, id=item_id)
 
     def make_context(self, request):
+        msg = UserMessage.objects.get_or_create(
+            view=self.__class__.__name__,
+            code=self.instruction_code,
+            defaults={
+                'summary': user_messages[self.instruction_code]['summary'],
+                'description': user_messages[self.instruction_code][
+                    'description']})
         title = "Manage Images for %s" % self.item.title
         context = {
             'page_title': self.page_title,
             'title': title,
             'form': self.form,
+            'instructions': msg[0].description,
         }
         return context
 
@@ -45,10 +56,18 @@ class ManageItemImage(View):
     @never_cache
     def get(self, request, *args, **kwargs):
         redirect = self.groundwork(request, args, kwargs)
-        self.form = ItemImageForm(initial={
-            'current_images':  Image.objects.filter(itemimage__item=self.item),
-            })
+        item_images = Image.objects.filter(itemimage__item=self.item)
+        self.form = ItemImageForm(initial={'current_images':  item_images})
+        self.form.fields['current_images'].queryset = item_images
         return render(request, self.template, self.make_context(request))
+
+    def link_images(self, images):
+        num_linked = 0
+        for image in images:
+            new_link = ItemImage(item=self.item, filer_image=image)
+            new_link.save()
+            num_linked = num_linked + 1
+        return num_linked
 
     @never_cache
     @method_decorator(login_required)
@@ -65,10 +84,13 @@ class ManageItemImage(View):
                 self.item.images.all().delete()
                 num_linked = 0
                 num_uploaded = 0
-                for image in self.form.cleaned_data['current_images']:
-                    new_link = ItemImage(item=self.item, filer_image=image)
-                    new_link.save()
-                    num_linked = num_linked + 1
+                num_linked = num_linked + self.link_images(
+                    self.form.cleaned_data['current_images'])
+                num_linked = num_linked + self.link_images(
+                    self.form.cleaned_data['unattached_images'])
+                num_linked = num_linked + self.link_images(
+                    self.form.cleaned_data['other_images'])
+
                 files = request.FILES.getlist('new_images')
                 if len(files) > 0:
                     filer_images = upload_and_attach(
