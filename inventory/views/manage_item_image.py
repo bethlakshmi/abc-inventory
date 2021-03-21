@@ -59,6 +59,8 @@ class ManageItemImage(View):
         item_images = Image.objects.filter(itemimage__item=self.item)
         self.form = ItemImageForm(initial={'current_images':  item_images})
         self.form.fields['current_images'].queryset = item_images
+        self.form.fields['other_images'].queryset = self.form.fields[
+        'other_images'].queryset.exclude(itemimage__item=self.item)
         return render(request, self.template, self.make_context(request))
 
     def link_images(self, images):
