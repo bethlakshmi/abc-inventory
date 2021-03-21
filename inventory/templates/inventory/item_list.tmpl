@@ -31,7 +31,7 @@
  {% endfor %}
  </ul>
  {% endif %}
-<table id="table" data-search="true" data-show-columns="true" data-show-toggle="true" data-show-fullscreen="true" data-show-columns-toggle-all="true" data-buttons="buttons" {% if not details_off %}data-detail-formatter="detailFormatter" data-detail-view="true" {% endif %}data-row-style="rowStyle" class="inventory-table" data-buttons-class="inventory-secondary" >
+<table id="table" data-search="true" data-show-columns="true" data-show-toggle="true" data-show-fullscreen="true" data-show-columns-toggle-all="true" data-buttons="buttons" {% if not details_off %}data-detail-formatter="detailFormatter" data-detail-view="true" {% endif %}data-row-style="rowStyle" class="inventory-table" data-buttons-class="inventory-secondary" data-sort-name="modified" data-sort-order="desc">
   <thead class='inventory-table-header'>
     {% block table_header %}
         <tr>
@@ -52,6 +52,7 @@
           <th data-field="tags" data-sortable="false" data-visible="false" rowspan="2">Tags</th>
           <th data-field="connections" data-sortable="false" data-visible="false" rowspan="2">Connections</th>
           <th data-field="images" data-sortable="false" data-visible="true" data-card-visible="true" rowspan="2">Images</th>
+          <th data-field="modified" data-sortable="true" data-visible="true" data-card-visible="true" rowspan="2">Last Modified</th>
           <th data-field="texts" data-sortable="false" data-visible="false" rowspan="2">Texts</th>
           <th data-field="action" rowspan="2">Action</th>
         </tr>
@@ -69,7 +70,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.js"></script>
-    <script>
+<script>
   function buttons () {
     return {
       {% block buttons %}
@@ -163,6 +164,7 @@
         'd': '{% if item.depth %}{{ item.depth.normalize }}{% endif %}',
         'year': '{% if item.year %}{{ item.year|escapejs }}{% endif %}',
         'subject': '{% if item.subject %}{{ item.subject|escapejs }}{% endif %}',
+        'modified': '<span data-datetime="{{ item.updated_at|date:"U" }}">{{ item.updated_at|date:"N j, Y, g:h A" }}</span>',
         'action': '<a class="inventory-detail" href="{% url "inventory:item_edit" item.id %}" title="Edit"><i class="fas fa-edit"></i></a>&nbsp;&nbsp;<a class="inventory-detail" href="{% url "inventory:manage_item_image" item.id %}" title="Manage Images"><i class="far fa-images"></i></a>',
         'price': '{% if item.price %}${{ item.price }}{% endif %}',
         'description': '{% if item.description %}{{ item.description.strip|escapejs }}{% endif %}',
@@ -189,11 +191,13 @@
         classes: "inventory-table-success"
       }
     }
+    {% if error_id %}
     else if (row.id == {{error_id}}) {
       return {
         classes: "inventory-table-error"
       }
     }
+    {% endif %}
     return {}
   }
 </script>

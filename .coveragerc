@@ -2,8 +2,5 @@
 omit = 
     addons/*
     wsgi.py
-    gbe/migrations/*
-    scheduler/migrations/*
-    ticketing/migrations/*
     manage.py
     settings.py
