@@ -26,6 +26,7 @@
           <th data-field="connections" data-sortable="false" data-visible="false" rowspan="2">Connections</th>
           <th data-field="images" data-sortable="false" data-visible="false" data-card-visible="true" rowspan="2">Images</th>
           <th data-field="texts" data-sortable="false" data-visible="false" rowspan="2">Texts</th>
+          <th data-field="modified" data-sortable="true" data-visible="true" data-card-visible="true" rowspan="2">Last Modified</th>
           <th data-field="action" rowspan="2">Action</th>
         </tr>
         <tr>
@@ -86,6 +87,7 @@
         'number': '{{ subitem.item.pk }}.{{ subitem.subitem_number }}',
         'title': '{{ subitem.title|escapejs }}',
         'parent_title': '{{ subitem.item.title|escapejs }} <a href="{% url 'inventory:item_edit' subitem.item.id %}" title="Edit"><i class="fas fa-edit"></i></a>',
+        'modified': '<span data-datetime="{{ subitem.updated_at|date:"U" }}">{{ subitem.updated_at|date:"N j, Y, g:h A" }}</span>',
         'category': '{% if subitem.item.category %}{{ subitem.item.category }}{% endif %}',
         'disposition': '{% if subitem.item.disposition %}{{ subitem.item.disposition }}{% endif %}',
         'w': '{% if subitem.width %}{{ subitem.width.normalize }}{% endif %}',
