@@ -101,11 +101,11 @@ class TestSubItemList(TestCase):
         self.assertContains(
             response,
             "'date_acquired': '%s'" % busy_item.date_acquired.strftime(
-                "%b. %-d, %Y"))
+                "%B %-d, %Y"))
         self.assertContains(
             response,
             "'date_deaccession': '%s'" % busy_item.date_deaccession.strftime(
-                "%b. %-d, %Y"))
+                "%B %-d, %Y"))
 
     def test_list_w_image(self):
         image = ItemImageFactory(item=self.item.item)

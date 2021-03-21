@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404
 from inventory.views import GenericWizard
+from django.urls import reverse
 from inventory.models import Item
 from inventory.forms import (
     BasicItemForm,
@@ -97,6 +98,11 @@ class MakeItemWizard(GenericWizard):
             messages.success(request, "Updated Item: %s" % self.item.title)
 
         return "%s?changed_id=%d" % (self.return_url, self.item.id)
+
+    def redirect(self, request):
+        return reverse('manage_item_image',
+                       urlconf='inventory.urls',
+                       args=[self.item.id])
 
     def setup_forms(self, form, request=None):
         i = 1
