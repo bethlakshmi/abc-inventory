@@ -1,6 +1,6 @@
 item_image_help = {
     'current_images': '''All images currently linked to this item.''',
-    'unattached_images': '''Images not linked ton any item.''',
+    'unattached_images': '''Images not linked to any item.''',
     'linked_images': '''Images linked to other items in the system.''',
     'new_images': '''Upload 1 or many images from your computer.  Select
      many images using CONTROL or SHIFT in the file browser.  Adding images

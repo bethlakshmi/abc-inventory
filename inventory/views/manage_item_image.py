@@ -100,6 +100,8 @@ class ManageItemImage(View):
                         request.user,
                         self.item)
                     num_uploaded = len(filer_images)
+                for image in self.form.cleaned_data['delete_images']:
+                    print(image)
                 messages.success(
                     request,
                     ("Updated Item: %s<br>Linked %d images. Added %d " +

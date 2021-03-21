@@ -30,6 +30,11 @@ class ItemImageForm(Form):
     required_css_class = 'required'
     error_css_class = 'error'
 
+    delete_images = ModelMultipleChoiceField(
+        widget=CheckboxSelectMultiple(),
+        queryset=Image.objects.all(),
+        required=False)
+
     current_images = MultiImageField(
         widget=CheckboxSelectMultiple(attrs={'style': "display: none;"}),
         queryset=Image.objects.all(),
