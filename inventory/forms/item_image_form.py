@@ -23,9 +23,7 @@ class MultiImageField(ModelMultipleChoiceField):
             for link in obj.itemimage_set.all():
                 other_links = "%s %s;" % (other_links, link.item.title)
         return mark_safe(
-            "<img src='%s' class='img-responsive' title='%s'/>" % (
-                thumb_url,
-                other_links))
+            "<img src='%s' title='%s'/>" % (thumb_url, other_links))
 
 
 class ItemImageForm(Form):

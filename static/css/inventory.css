@@ -1,4 +1,3 @@
-/* manage image - select and delete */
 .image_select_list input[type="checkbox"]:checked + img {
   border: 6px solid #007bff;
 }
@@ -6,11 +5,6 @@
 .image_select_list input[type="checkbox"] + img {
   border: 6px solid white;
 }
-
-.headerimage{ position:relative;}
-.headerimage:hover .btn-wrapper{ display: block; text-align:center; position:absolute; top: 30px; margin: 0 auto; width:100%;}
-.headerimage .btn-wrapper{ display: none; text-align:center; position:absolute; top: 30px; margin: 0 auto; width:100%;}
-.img-responsive{width:100% !important; border-radius:0 0 5px 5px !important;}
 
 /*used for help text*/
 span.dropt {border-bottom: background: white;}
