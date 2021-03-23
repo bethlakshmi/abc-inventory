@@ -186,6 +186,7 @@ class TestMakeItem(TestCase):
         self.assertContains(response, self.title_html % self.item.title)
         self.assertContains(response, "<< Back")
         self.assertNotContains(response, "Save & Continue >>")
+        self.assertContains(response, "Proceed to Images >>")
         self.assertContains(response, "Further Details")
         self.assertContains(response, self.item_id % self.item.pk, html=True)
         self.assertContains(
@@ -214,6 +215,7 @@ class TestMakeItem(TestCase):
         self.assertContains(response, self.title_html % self.item.title)
         self.assertContains(response, "<< Back")
         self.assertNotContains(response, "Save & Continue >>")
+        self.assertContains(response, "Proceed to Images >>")
         self.assertContains(response, "Further Details")
         self.assertContains(response, self.item_id % self.item.pk, html=True)
         self.assertContains(
@@ -370,6 +372,19 @@ class TestMakeItem(TestCase):
             further['%d-text' % label.pk]))
         self.assertNotContains(response, "<i>Text 2:</i>")
 
+    def test_post_further_redirect(self):
+        label = ItemTextFactory(item=self.item)
+        login_as(self.user, self)
+        further = self.get_further()
+        further['date_deaccession'] = date.today() - timedelta(days=1)
+        further['%d-text' % label.pk] = "edited text for pk %d" % label.pk
+        further['redirect'] = "Proceed to Images >>"
+        response = self.client.post(self.edit_url, data=further, follow=True)
+        self.assertRedirects(response, reverse(
+            "manage_item_image",
+            urlconf="inventory.urls",
+            args=[self.item.pk]))
+
     def test_post_further_back(self):
         login_as(self.user, self)
         further = self.get_further()
@@ -388,6 +403,7 @@ class TestMakeItem(TestCase):
         self.assertContains(response, "Further Details")
         self.assertContains(response, "<< Back")
         self.assertNotContains(response, "Save & Continue >>")
+        self.assertContains(response, "Proceed to Images >>")
 
     def test_cancel(self):
         login_as(self.user, self)
