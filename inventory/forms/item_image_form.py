@@ -49,7 +49,8 @@ class ItemImageForm(Form):
 
     unattached_images = MultiImageField(
         widget=CheckboxSelectMultiple(attrs={'style': "display: none;"}),
-        queryset=Image.objects.annotate(links=Count('itemimage')).filter(links=0),
+        queryset=Image.objects.annotate(
+            links=Count('itemimage')).filter(links=0),
         required=False,
         help_text=UserMessage.objects.get_or_create(
                 view="ItemImageForm",
@@ -61,7 +62,8 @@ class ItemImageForm(Form):
 
     other_images = MultiImageField(
         widget=CheckboxSelectMultiple(attrs={'style': "display: none;"}),
-        queryset=Image.objects.annotate(links=Count('itemimage')).exclude(links=0),
+        queryset=Image.objects.annotate(
+            links=Count('itemimage')).exclude(links=0),
         required=False,
         help_text=UserMessage.objects.get_or_create(
                 view="ItemImageForm",

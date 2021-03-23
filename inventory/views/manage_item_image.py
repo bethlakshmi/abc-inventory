@@ -60,7 +60,7 @@ class ManageItemImage(View):
         self.form = ItemImageForm(initial={'current_images':  item_images})
         self.form.fields['current_images'].queryset = item_images
         self.form.fields['other_images'].queryset = self.form.fields[
-        'other_images'].queryset.exclude(itemimage__item=self.item)
+            'other_images'].queryset.exclude(itemimage__item=self.item)
         return render(request, self.template, self.make_context(request))
 
     def link_images(self, images):
@@ -83,7 +83,7 @@ class ManageItemImage(View):
         self.form = ItemImageForm(request.POST, request.FILES)
         self.form.fields['current_images'].queryset = item_images
         self.form.fields['other_images'].queryset = self.form.fields[
-        'other_images'].queryset.exclude(itemimage__item=self.item)
+            'other_images'].queryset.exclude(itemimage__item=self.item)
 
         if 'finish' in list(request.POST.keys()):
             if self.form.is_valid():
@@ -110,7 +110,7 @@ class ManageItemImage(View):
                 if len(self.form.cleaned_data['delete_images']) > 0:
                     messages.success(
                         request,
-                        "Deleted % d images." % (
+                        "Deleted %d images." % (
                             len(self.form.cleaned_data['delete_images'])))
                 messages.success(
                     request,

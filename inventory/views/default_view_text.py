@@ -39,7 +39,7 @@ user_messages = {
     },
     "MANAGE_ITEM_IMAGE_INSTRUCT": {
         'summary': "Instructions for Linking Image",
-        'description': '''Images that will be linked with this item are 
+        'description': '''Images that will be linked with this item are
         highlighted in blue. To add or remove the link between the image and
         the item click the image thumbnail.  Unlinking an image from this item
         will NOT delete the image from the system.  To permanently delete an
