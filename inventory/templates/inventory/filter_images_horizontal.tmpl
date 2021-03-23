@@ -17,8 +17,8 @@
         </label></div>
         {% for delete_checkbox in form.delete_images %}
           {% if delete_checkbox.data.value == checkbox.data.value %}
-          <div class="btn-group-toggle  d-flex justify-content-center" data-toggle="buttons">
-            <label class="btn btn-danger btn-sm">
+          <div class="btn-group-toggle  d-flex justify-content-center mb-2" data-toggle="buttons">
+            <label class="btn inventory-btn-danger btn-danger btn-sm">
             {{ delete_checkbox.tag }} Delete
             </label>
           </div>
