@@ -79,8 +79,12 @@ class ManageItemImage(View):
             return HttpResponseRedirect(reverse('items_list',
                                                 urlconf='inventory.urls'))
         self.groundwork(request, args, kwargs)
-
+        item_images = Image.objects.filter(itemimage__item=self.item)
         self.form = ItemImageForm(request.POST, request.FILES)
+        self.form.fields['current_images'].queryset = item_images
+        self.form.fields['other_images'].queryset = self.form.fields[
+        'other_images'].queryset.exclude(itemimage__item=self.item)
+
         if 'finish' in list(request.POST.keys()):
             if self.form.is_valid():
                 self.item.images.all().delete()
@@ -100,8 +104,14 @@ class ManageItemImage(View):
                         request.user,
                         self.item)
                     num_uploaded = len(filer_images)
+
                 for image in self.form.cleaned_data['delete_images']:
-                    print(image)
+                    image.delete()
+                if len(self.form.cleaned_data['delete_images']) > 0:
+                    messages.success(
+                        request,
+                        "Deleted % d images." % (
+                            len(self.form.cleaned_data['delete_images'])))
                 messages.success(
                     request,
                     ("Updated Item: %s<br>Linked %d images. Added %d " +
