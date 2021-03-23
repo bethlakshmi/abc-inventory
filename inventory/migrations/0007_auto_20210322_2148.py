@@ -33,6 +33,13 @@ init_values = [
                          ('box-shadow',
                           'px px px px rgba',
                           '0px -72px 10px 38px rgba(200,35,51,.5)')]},
+    {
+            'selector': '.image_select_list input[type="checkbox"]:checked + img',
+            'pseudo_class': '',
+            'description': 'Border around pictures on image management',
+            'target_element': 'div',
+            'usage': 'Forms',
+            'prop_val': [('border-color', 'rgba(0,123,255,1)')]},
     ]
 
 
