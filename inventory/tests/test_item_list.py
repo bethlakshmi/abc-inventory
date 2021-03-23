@@ -95,11 +95,11 @@ class TestItemList(TestCase):
         self.assertContains(
             response,
             "'date_acquired': '%s'" % busy_item.date_acquired.strftime(
-                "%b. %-d, %Y"))
+                "%B %-d, %Y"))
         self.assertContains(
             response,
             "'date_deaccession': '%s'" % busy_item.date_deaccession.strftime(
-                "%b. %-d, %Y"))
+                "%B %-d, %Y"))
 
     def test_no_login(self):
         response = self.client.get(self.url)
