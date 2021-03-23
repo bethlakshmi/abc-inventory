@@ -7,7 +7,6 @@ init_values = [
             'selector': '.inventory-btn-danger',
             'pseudo_class': 'hover',
             'description': 'Hover for buttons that terminate the work',
-            'target_element': 'input',
             'usage': 'Forms',
             'prop_val': [('background-color', 'rgba(200,35,51,1)'),
                          ('border-color', 'rgba(189,33,48,1)'),
@@ -15,8 +14,7 @@ init_values = [
     {
             'selector': '.inventory-btn-danger',
             'pseudo_class': '',
-            'description': 'Buttons like cancel that interrupt work.',
-            'target_element': 'input',
+            'description': 'Buttons that terminate/destroy work.',
             'usage': 'Forms',
             'prop_val': [('background-color', 'rgba(212,46,62,1)'),
                          ('border-color', 'rgba(212,46,62,1)'),
@@ -24,8 +22,7 @@ init_values = [
     {
             'selector': '.inventory-btn-danger.active',
             'pseudo_class': '',
-            'description': 'Hover for buttons that terminate the work',
-            'target_element': 'input',
+            'description': 'Actively on buttons that terminate the work',
             'usage': 'Forms',
             'prop_val': [('background-color', 'rgba(189,33,48,1)'),
                          ('border-color', 'rgba(178,31,45,1)'),
@@ -37,7 +34,6 @@ init_values = [
             'selector': '.image_select_list input[type="checkbox"]:checked + img',
             'pseudo_class': '',
             'description': 'Border around pictures on image management',
-            'target_element': 'div',
             'usage': 'Forms',
             'prop_val': [('border-color', 'rgba(0,123,255,1)')]},
     ]
