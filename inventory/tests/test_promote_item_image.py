@@ -36,7 +36,7 @@ class TestPromoteItemImage(TestCase):
         response = self.client.get(self.url, follow=True)
         self.assertRedirects(response, "%s?changed_id=%d" % (
             self.return_url,
-            self.image.pk))
+            self.image.item.pk))
         self.assertContains(
             response,
             "Set Main Image for %s to image file %s" % (
