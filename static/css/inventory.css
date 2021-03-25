@@ -5,7 +5,7 @@
 .image_select_list input[type="checkbox"] + img {
   border: 6px solid white;
 }
-
+.align-bottom {vertical-align: bottom;}
 /*used for help text*/
 span.dropt {border-bottom: background: white;}
 span.dropt:hover {text-decoration: none; background: #ffffff; z-index: 6; }
