@@ -15,3 +15,4 @@ from .clone_theme import CloneTheme
 from .themes_list_view import ThemesListView
 from .delete_theme import DeleteTheme
 from .preview_theme import PreviewTheme
+from .promote_item_image import PromoteItemImage
