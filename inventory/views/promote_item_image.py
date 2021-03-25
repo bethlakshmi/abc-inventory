@@ -27,6 +27,7 @@ class PromoteItemImage(View):
         self.groundwork(request, args, kwargs)
         self.itemimage.main_image = True
         self.itemimage.save()
+        self.itemimage.item.save()
         messages.success(request, "Set Main Image for %s to image file %s" % (
             self.itemimage.item,
             self.itemimage.filer_image))

@@ -32,6 +32,8 @@ class TestPromoteItemImage(TestCase):
                              fetch_redirect_response=False)
 
     def test_promote(self):
+        self.image_orig_main = ItemImageFactory()
+        set_image(self.image_orig_main)
         login_as(self.user, self)
         response = self.client.get(self.url, follow=True)
         self.assertRedirects(response, "%s?changed_id=%d" % (
@@ -42,6 +44,10 @@ class TestPromoteItemImage(TestCase):
             "Set Main Image for %s to image file %s" % (
                 self.image.item,
                 self.image.filer_image))
+        self.assertContains(response, reverse(
+            self.view_name,
+            urlconf="inventory.urls",
+            args=[self.image_orig_main.pk]))
 
     def test_promote_bad_id(self):
         login_as(self.user, self)

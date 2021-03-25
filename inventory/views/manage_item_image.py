@@ -62,13 +62,25 @@ class ManageItemImage(View):
         self.form = ItemImageForm(request.POST, request.FILES)
         if 'finish' in list(request.POST.keys()):
             if self.form.is_valid():
-                self.item.images.all().delete()
                 num_linked = 0
                 num_uploaded = 0
+                num_removed = 0
+                current_image_files = []
+                for existing in self.item.images.all():
+                    if existing.filer_image not in self.form.cleaned_data[
+                            'current_images']:
+                        existing.delete()
+                        self.item.save()
+                        num_removed = num_removed + 1
+                    else:
+                        current_image_files += [existing.filer_image]
+
                 for image in self.form.cleaned_data['current_images']:
-                    new_link = ItemImage(item=self.item, filer_image=image)
-                    new_link.save()
-                    num_linked = num_linked + 1
+                    if image not in current_image_files:
+                        new_link = ItemImage(item=self.item, filer_image=image)
+                        new_link.save()
+                        num_linked = num_linked + 1
+                        self.item.save()
                 files = request.FILES.getlist('new_images')
                 if len(files) > 0:
                     filer_images = upload_and_attach(
@@ -79,10 +91,11 @@ class ManageItemImage(View):
                 messages.success(
                     request,
                     ("Updated Item: %s<br>Linked %d images. Added %d " +
-                     "images.") % (
+                     "images.  Unlinked %d images.") % (
                         self.item.title,
                         num_linked,
-                        num_uploaded))
+                        num_uploaded,
+                        num_removed))
                 return HttpResponseRedirect("%s?changed_id=%d" % (
                     reverse('items_list', urlconf='inventory.urls'),
                     self.item.id))
