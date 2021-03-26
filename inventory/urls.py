@@ -2,6 +2,7 @@ from django.conf.urls import url
 from inventory.views import (
     ActivateTheme,
     BulkImageUpload,
+    BulkItemUpload,
     CloneTheme,
     DeleteTheme,
     ItemsListView,
@@ -38,6 +39,9 @@ urlpatterns = [
     url(r'^inventory/image/upload/?',
         BulkImageUpload.as_view(),
         name='image_upload'),
+    url(r'^inventory/item/upload/?',
+        BulkItemUpload.as_view(),
+        name='item_upload'),
     url(r'^inventory/item/images/(?P<item_id>\d+)/?',
         ManageItemImage.as_view(),
         name='manage_item_image'),

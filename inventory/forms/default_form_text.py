@@ -31,3 +31,5 @@ style_value_help = {
     'add_image': '''Uploading an image takes precedence over any selected
     image.''',
 }
+item_upload_help = {
+    'has_header': '''Check if the first row of the file is a header'''}
