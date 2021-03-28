@@ -1,7 +1,9 @@
 from django.forms import (
-    FileField,
     BooleanField,
+    FileField,
     Form,
+    HiddenInput,
+    IntegerField,
 )
 from inventory.models import UserMessage
 from inventory.forms.default_form_text import item_upload_help
@@ -11,7 +13,8 @@ class ItemUploadForm(Form):
     required_css_class = 'required'
     error_css_class = 'error'
 
-    new_images = FileField(required=True)
+    step = IntegerField(widget=HiddenInput(), initial=0)
+    new_items = FileField(required=True)
     has_header = BooleanField(label=UserMessage.objects.get_or_create(
         view="ItemUploadForm",
         code="HAS_HEADER_LABEL",

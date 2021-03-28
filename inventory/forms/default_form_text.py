@@ -33,3 +33,19 @@ style_value_help = {
 }
 item_upload_help = {
     'has_header': '''Check if the first row of the file is a header'''}
+header_choices = [
+    ('', 'Do Not Upload'),
+    ('title', 'Title'),
+    ('description', 'Description'),
+    ('category', 'Category'),
+    ('disposition', 'Disposition'),
+    ('year', 'Year'),
+    ('width', 'Width'),
+    ('height', 'Height'),
+    ('depth', 'Depth'),
+    ('subject', 'Subject'),
+    ('note', 'Note'),
+    ('date_acquired', 'Date Acquired'),
+    ('date_deaccession', 'Date Deaccession'),
+    ('price', 'Price'),
+]
