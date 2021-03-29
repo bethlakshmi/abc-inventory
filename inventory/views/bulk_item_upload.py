@@ -4,6 +4,7 @@ from inventory.forms import (
     ItemUploadMapping,
     ItemUploadRow,
 )
+from inventory.models import Item
 from django.contrib import messages
 import csv, io
 
@@ -61,13 +62,23 @@ class BulkItemUpload(GenericWizard):
             # do the create
             translator = {}
             i = 0
+            new_items = []
             while i < self.forms[0].cleaned_data['num_cols']:
                 if len(self.forms[0].cleaned_data['header_%d' % i]) > 0:
-                    translator["cell_%d" % i] = self.forms[0].cleaned_data[
-                        'header_%d' % i]
+                    translator[self.forms[0].cleaned_data[
+                        'header_%d' % i]] = "cell_%d" % i
                 i = i + 1
-            raise Exception(translator)
-            pass
+            for item_form in self.forms[1:]:
+                new_items += [self.setup_item(item_form.cleaned_data,
+                                              translator)]
+            Item.objects.bulk_create(new_items)
+            self.num_rows = len(new_items)
+
+    def setup_item(self, item_data, translator):
+        item = Item(title=item_data[translator['title']])
+        if translator['description']:
+            item.description = item_data[translator['description']]
+        return item
 
     def finish(self, request):
         messages.success(
