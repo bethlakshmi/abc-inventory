@@ -11,3 +11,4 @@ from .theme_version_form import ThemeVersionForm
 from .label_form import LabelForm
 from .item_upload_form import ItemUploadForm
 from .item_upload_mapping import ItemUploadMapping
+from .item_upload_row import ItemUploadRow

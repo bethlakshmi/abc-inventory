@@ -2,6 +2,7 @@ from inventory.views import GenericWizard
 from inventory.forms import (
     ItemUploadForm,
     ItemUploadMapping,
+    ItemUploadRow,
 )
 from django.contrib import messages
 import csv, io
@@ -9,7 +10,7 @@ import csv, io
 
 class BulkItemUpload(GenericWizard):
     filer_images = []
-    template = 'inventory/generic_wizard.tmpl'
+    template = 'inventory/bulk_item_wizard.tmpl'
     page_title = 'Item Inventory Upload'
     first_title = 'Select File of Items'
     second_title = 'Map File to Image Fields'
@@ -58,6 +59,14 @@ class BulkItemUpload(GenericWizard):
         elif self.forms[0].__class__.__name__ == "ItemUploadMapping":
             # use the selection of mappings to build a bulk create
             # do the create
+            translator = {}
+            i = 0
+            while i < self.forms[0].cleaned_data['num_cols']:
+                if len(self.forms[0].cleaned_data['header_%d' % i]) > 0:
+                    translator["cell_%d" % i] = self.forms[0].cleaned_data[
+                        'header_%d' % i]
+                i = i + 1
+            raise Exception(translator)
             pass
 
     def finish(self, request):
@@ -69,7 +78,7 @@ class BulkItemUpload(GenericWizard):
 
     def make_context(self, request):
         context = super(BulkItemUpload, self).make_context(request)
-        if str(self.forms[0].__class__.__name__) == "PhysicalItemForm":
+        if str(self.forms[0].__class__.__name__) == "ItemUploadMapping":
             context['special_handling'] = True
         if self.header:
             context['header'] = self.header
@@ -81,7 +90,18 @@ class BulkItemUpload(GenericWizard):
                 return [form(request.POST, request.FILES)]
             else:
                 # set up the choice form based on number of columns.
-                return []
+                num_cols = int(request.POST['num_cols'])
+                forms = [ItemUploadMapping(request.POST,
+                                           initial={'num_cols': num_cols})]
+                if not forms[0].is_valid():
+                    return []
+                i = 0
+                while i < forms[0].cleaned_data['num_rows']:
+                    forms += [ItemUploadRow(request.POST,
+                                            num_cols=num_cols,
+                                            prefix=str(i))]
+                    i = i + 1
+                return forms
         else:
             if str(form().__class__.__name__) == "ItemUploadForm":
                 return [form()]
@@ -90,4 +110,8 @@ class BulkItemUpload(GenericWizard):
                 forms = [ItemUploadMapping(initial={
                     'num_cols': self.num_cols,
                     'num_rows': self.num_rows})]
+                i = 0
+                for row in self.csv_data:
+                    forms += [ItemUploadRow(row=row, prefix=str(i))]
+                    i = i + 1
                 return forms
