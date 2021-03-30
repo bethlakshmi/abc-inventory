@@ -87,11 +87,19 @@ class ManageItemImage(View):
 
         if 'finish' in list(request.POST.keys()):
             if self.form.is_valid():
-                self.item.images.all().delete()
                 num_linked = 0
                 num_uploaded = 0
-                num_linked = num_linked + self.link_images(
-                    self.form.cleaned_data['current_images'])
+                num_removed = 0
+                current_image_files = []
+                for existing in self.item.images.all():
+                    if existing.filer_image not in self.form.cleaned_data[
+                            'current_images']:
+                        existing.delete()
+                        self.item.save()
+                        num_removed = num_removed + 1
+                    else:
+                        current_image_files += [existing.filer_image]
+
                 num_linked = num_linked + self.link_images(
                     self.form.cleaned_data['unattached_images'])
                 num_linked = num_linked + self.link_images(
@@ -115,10 +123,11 @@ class ManageItemImage(View):
                 messages.success(
                     request,
                     ("Updated Item: %s<br>Linked %d images. Added %d " +
-                     "images.") % (
+                     "images.  Unlinked %d images.") % (
                         self.item.title,
                         num_linked,
-                        num_uploaded))
+                        num_uploaded,
+                        num_removed))
                 return HttpResponseRedirect("%s?changed_id=%d" % (
                     reverse('items_list', urlconf='inventory.urls'),
                     self.item.id))

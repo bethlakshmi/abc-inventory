@@ -107,12 +107,30 @@ class TestItemList(TestCase):
                              "/login/?next=%s" % self.url,
                              fetch_redirect_response=False)
 
-    def test_list_w_image(self):
+    def test_list_w_image_no_main(self):
         image = ItemImageFactory(item=self.item)
         set_image(image)
         login_as(self.user, self)
         response = self.client.get(self.url)
-        self.assertContains(response, image.filer_image)
+        self.assertContains(response, image.filer_image, 4)
+        self.assertContains(response, reverse(
+            "promote_item_image",
+            urlconf="inventory.urls",
+            args=[image.pk]), 2)
+
+    def test_list_w_image_w_main(self):
+        image = ItemImageFactory(item=self.item, main_image=True)
+        image2 = ItemImageFactory(item=self.item)
+        set_image(image)
+        set_image(image2)
+        login_as(self.user, self)
+        response = self.client.get(self.url)
+        self.assertContains(response, image.filer_image.url, 4)
+        self.assertContains(response, image2.filer_image.url, 2)
+        self.assertNotContains(response, reverse(
+            "promote_item_image",
+            urlconf="inventory.urls",
+            args=[image.pk]))
 
     def test_list_w_text(self):
         text = ItemTextFactory(item=self.item)
