@@ -18,11 +18,7 @@
 {% block content %}
 <h2 class="inventory-title">{{title}}</h2>
 <h3 class="inventory-subtitle">{{subtitle}}</h3>
-  {% if errors %}
-    {% for error in errors %}
-    <p class="inventory-form-error">{{error}}</p>
-    {% endfor %}
-  {% endif %}
+<p>{{ instructions | safe }}</p>
 <form action="" method="post" enctype="multipart/form-data">
 {% csrf_token %}
 
@@ -39,6 +35,16 @@
 <div class="row">
   <div class="col-12">
 {% include "inventory/filter_images_horizontal.tmpl" with field=form.current_images %}
+  </div>
+</div>
+<div class="row">
+  <div class="col-12">
+{% include "inventory/filter_images_horizontal.tmpl" with field=form.unattached_images %}
+  </div>
+</div>
+<div class="row">
+  <div class="col-12">
+{% include "inventory/filter_images_horizontal.tmpl" with field=form.other_images %}
   </div>
 </div>
 <div class="row">

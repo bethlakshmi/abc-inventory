@@ -1,6 +1,7 @@
 [run]
 omit = 
     addons/*
+    inventory/migrations/*
     wsgi.py
     manage.py
     settings.py
