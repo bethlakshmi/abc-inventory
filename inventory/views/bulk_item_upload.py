@@ -6,7 +6,8 @@ from inventory.forms import (
 )
 from inventory.models import Item
 from django.contrib import messages
-import csv, io
+import csv
+import io
 from datetime import datetime
 
 

@@ -27,4 +27,3 @@ class ItemUploadRow(Form):
             while i < num_cols:
                 self.fields['cell_%s' % i] = CharField(required=False)
                 i = i + 1
-
