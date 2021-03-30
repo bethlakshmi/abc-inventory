@@ -7,6 +7,7 @@ from inventory.forms import (
 from inventory.models import Item
 from django.contrib import messages
 import csv, io
+from datetime import datetime
 
 
 class BulkItemUpload(GenericWizard):
@@ -76,8 +77,24 @@ class BulkItemUpload(GenericWizard):
 
     def setup_item(self, item_data, translator):
         item = Item(title=item_data[translator['title']])
-        if translator['description']:
+        if 'description' in translator.keys():
             item.description = item_data[translator['description']]
+        if 'year' in translator.keys():
+            item.year = item_data[translator['year']]
+        if 'subject' in translator.keys():
+            item.subject = item_data[translator['subject']]
+        if 'note' in translator.keys():
+            item.note = item_data[translator['note']]
+        if 'price' in translator.keys():
+            item.price = float(item_data[translator['price']])
+        if 'date_acquired' in translator.keys():
+            item.date_acquired = datetime.strptime(
+                item_data[translator['date_acquired']],
+                '%m/%d/%y')
+        if 'date_deaccession' in translator.keys():
+            item.date_acquired = datetime.strptime(
+                item_data[translator['date_deaccession']],
+                '%m/%d/%y')
         return item
 
     def finish(self, request):

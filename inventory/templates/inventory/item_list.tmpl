@@ -19,6 +19,7 @@
   </div>
   <div class="col-4 text-right">
 {% block control_buttons %}
+ <a href="{% url 'inventory:item_upload' %}" role="button" class="btn inventory-btn-primary">Bulk Item Upload</a>&nbsp;
  <a href="{% url 'inventory:themes_list' %}" role="button" class="btn inventory-btn-primary">Manage Themes</a>&nbsp;
  <a href="{% url 'inventory:image_upload' %}" role="button" class="btn inventory-btn-primary">Image Upload</a>
 {% endblock %}
