@@ -1,10 +1,7 @@
 .image_select_list input[type="checkbox"]:checked + img {
-  border: 6px solid #007bff;
+  border: 6px solid;
 }
-
-.image_select_list input[type="checkbox"] + img {
-  border: 6px solid white;
-}
+.image_select_list input[type="checkbox"] + img {border: 6px solid rgba(255,255,255,0);}
 
 /*used for help text*/
 span.dropt {border-bottom: background: white;}
