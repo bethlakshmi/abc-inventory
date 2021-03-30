@@ -160,7 +160,7 @@ class TestManageItem(TestCase):
             follow=True)
         self.assertContains(
             response,
-            "Updated Item: %s<br>Linked 1 images. Added 0 images." % (
+            "Updated Item: %s<br>Linked 0 images. Added 0 images." % (
                 self.item.title))
         self.assertContains(response, "if (row.id == %d) {" % (self.item.pk))
 
@@ -194,7 +194,7 @@ class TestManageItem(TestCase):
         self.assertContains(
             response,
             ("Updated Item: %s<br>Linked 1 images. Added 0 images.  " +
-             "Unlinked 0 images.") % (self.item.title))
+             "Unlinked 1 images.") % (self.item.title))
         self.assertContains(response, "if (row.id == %d) {" % (self.item.pk))
 
     def test_post_unlink_images(self):
