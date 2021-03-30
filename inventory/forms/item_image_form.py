@@ -7,6 +7,7 @@ from django.forms import (
 from django.forms.widgets import CheckboxSelectMultiple
 from django.utils.safestring import mark_safe
 from easy_thumbnails.files import get_thumbnailer
+from django.db.models import Count
 from inventory.forms.default_form_text import item_image_help
 from filer.models import Image
 from inventory.models import UserMessage
@@ -29,6 +30,11 @@ class ItemImageForm(Form):
     required_css_class = 'required'
     error_css_class = 'error'
 
+    delete_images = ModelMultipleChoiceField(
+        widget=CheckboxSelectMultiple(),
+        queryset=Image.objects.all(),
+        required=False)
+
     current_images = MultiImageField(
         widget=CheckboxSelectMultiple(attrs={'style': "display: none;"}),
         queryset=Image.objects.all(),
@@ -39,6 +45,32 @@ class ItemImageForm(Form):
                 defaults={
                     'summary': "Current Image Help text",
                     'description': item_image_help['current_images']}
+                )[0].description)
+
+    unattached_images = MultiImageField(
+        widget=CheckboxSelectMultiple(attrs={'style': "display: none;"}),
+        queryset=Image.objects.annotate(
+            links=Count('itemimage')).filter(links=0),
+        required=False,
+        help_text=UserMessage.objects.get_or_create(
+                view="ItemImageForm",
+                code="UNATTACHED_IMAGE_INSTRUCTIONS",
+                defaults={
+                    'summary': "Current Image Help text",
+                    'description': item_image_help['unattached_images']}
+                )[0].description)
+
+    other_images = MultiImageField(
+        widget=CheckboxSelectMultiple(attrs={'style': "display: none;"}),
+        queryset=Image.objects.annotate(
+            links=Count('itemimage')).exclude(links=0),
+        required=False,
+        help_text=UserMessage.objects.get_or_create(
+                view="ItemImageForm",
+                code="LINKED_IMAGE_INSTRUCTIONS",
+                defaults={
+                    'summary': "Current Image Help text",
+                    'description': item_image_help['linked_images']}
                 )[0].description)
 
     new_images = ImageField(
