@@ -130,3 +130,8 @@ class TestItemList(TestCase):
         login_as(self.user, self)
         response = self.client.get(self.url + "?changed_id=%d" % self.item.pk)
         self.assertContains(response, "if (row.id == %d) {" % self.item.pk)
+
+    def test_show_error(self):
+        login_as(self.user, self)
+        response = self.client.get(self.url + "?error_id=%d" % self.item.pk)
+        self.assertContains(response, "if (row.id == %d) {" % self.item.pk)
