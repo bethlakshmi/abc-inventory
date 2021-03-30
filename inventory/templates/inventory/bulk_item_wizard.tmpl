@@ -1,5 +1,7 @@
 {% extends 'inventory/generic_wizard.tmpl' %}
 {% block special_handling_form %}
+<p>{{ instructions | safe }}</p>
+
     {% csrf_token %}
     {% for hidden in forms.0.hidden_fields %}
     {{ hidden }}

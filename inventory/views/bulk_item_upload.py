@@ -16,16 +16,18 @@ class BulkItemUpload(GenericWizard):
     template = 'inventory/bulk_item_wizard.tmpl'
     page_title = 'Item Inventory Upload'
     first_title = 'Select File of Items'
-    second_title = 'Map File to Image Fields'
+    second_title = 'Preview Item Upload & Select Column Mapping'
     form_sets = {
         -1: {
             'the_form':  None,
             'next_form': ItemUploadForm,
-            'next_title': first_title},
+            'next_title': first_title,
+            'instruction_key': "BULK_FILE_UPLOAD_INSTRUCTIONS"},
         0: {
             'the_form':  ItemUploadForm,
             'next_form': ItemUploadMapping,
-            'next_title': second_title},
+            'next_title': second_title,
+            'instruction_key': "SETUP_ITEM_UPLOAD_INSTRUCTIONS"},
         1: {
             'the_form':  ItemUploadMapping,
             'next_form': None,

@@ -43,6 +43,16 @@ class GenericWizard(View):
             'first': self.current_form_set['the_form'] is None,
             'last': self.form_sets[self.step+1]['next_form'] is None,
         }
+        if 'instruction_key' in self.current_form_set:
+            context['instructions'] = UserMessage.objects.get_or_create(
+                view=self.__class__.__name__,
+                code=self.current_form_set['instruction_key'],
+                defaults={
+                    'summary': user_messages[self.current_form_set[
+                        'instruction_key']]['summary'],
+                    'description': user_messages[self.current_form_set[
+                        'instruction_key']]['description']}
+                )[0].description
         return context
 
     def make_back_forms(self, request):
