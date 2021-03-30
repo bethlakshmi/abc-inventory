@@ -100,13 +100,6 @@ class ManageItemImage(View):
                     else:
                         current_image_files += [existing.filer_image]
 
-                for image in self.form.cleaned_data['current_images']:
-                    if image not in current_image_files:
-                        new_link = ItemImage(item=self.item, filer_image=image)
-                        new_link.save()
-                        num_linked = num_linked + 1
-                        self.item.save()
-
                 num_linked = num_linked + self.link_images(
                     self.form.cleaned_data['unattached_images'])
                 num_linked = num_linked + self.link_images(
