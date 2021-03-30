@@ -160,7 +160,7 @@ class TestManageItem(TestCase):
             follow=True)
         self.assertContains(
             response,
-            "Updated Item: %s<br>Linked 1 images. Added 0 images." % (
+            "Updated Item: %s<br>Linked 0 images. Added 0 images." % (
                 self.item.title))
         self.assertContains(response, "if (row.id == %d) {" % (self.item.pk))
 
@@ -193,8 +193,24 @@ class TestManageItem(TestCase):
             follow=True)
         self.assertContains(
             response,
-            "Updated Item: %s<br>Linked 1 images. Added 0 images." % (
-                self.item.title))
+            ("Updated Item: %s<br>Linked 1 images. Added 0 images.  " +
+             "Unlinked 1 images.") % (self.item.title))
+        self.assertContains(response, "if (row.id == %d) {" % (self.item.pk))
+
+    def test_post_unlink_images(self):
+        login_as(self.user, self)
+        link_me = set_image()
+
+        response = self.client.post(
+            self.url,
+            data={'current_images': [],
+                  'new_images': "",
+                  'finish': 'Save'},
+            follow=True)
+        self.assertContains(
+            response,
+            ("Updated Item: %s<br>Linked 0 images. Added 0 images.  " +
+             "Unlinked 1 images.") % (self.item.title))
         self.assertContains(response, "if (row.id == %d) {" % (self.item.pk))
 
     def test_post_bad_image_id(self):

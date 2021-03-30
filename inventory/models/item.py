@@ -70,6 +70,9 @@ class Item(Model):
     def has_image(self):
         return (self.images.count() > 0)
 
+    def main_image(self):
+        return self.images.get(main_image=True)
+
     has_label.boolean = True
     has_image.boolean = True
 

@@ -51,7 +51,7 @@
           <th data-field="updated" data-sortable="true" data-visible="false" rowspan="2">Updated</th>
           <th data-field="tags" data-sortable="false" data-visible="false" rowspan="2">Tags</th>
           <th data-field="connections" data-sortable="false" data-visible="false" rowspan="2">Connections</th>
-          <th data-field="images" data-sortable="false" data-visible="true" data-card-visible="true" rowspan="2">Images</th>
+          <th data-field="main_image" data-sortable="false" data-visible="true" data-card-visible="true" rowspan="2">Image</th>
           <th data-field="modified" data-sortable="true" data-visible="true" data-card-visible="true" rowspan="2">Last Modified</th>
           <th data-field="texts" data-sortable="false" data-visible="false" rowspan="2">Texts</th>
           <th data-field="action" rowspan="2">Action</th>
@@ -175,7 +175,8 @@
         'updated': '{{ item.updated_at|date:"F j, Y" }}',
         'tags': '{% for tag in item.tags.all %}{{ tag }}, {% endfor %}',
         'connections': '{% for connect in item.connections.all %}{{ connect|escapejs }}, {% endfor %}',
-        'images': '{% for image in item.images.all %}<a href="{{image.filer_image.url}}"><img src="{% thumbnail image.filer_image 100x150 %}"></a>&nbsp;&nbsp;{% endfor %}',
+        'images': '{% for image in item.images.all %}{% if item.main_image != image %}<a href="{% url "inventory:promote_item_image" image.pk %}" title="Click to set main image">{% endif %}<img src="{% thumbnail image.filer_image 100x150 %}">{% if item.main_image != image %}</a>{% endif %}&nbsp;<a class="inventory-detail align-bottom" href="{{image.filer_image.url}}"><i class="fas fa-expand-arrows-alt"></i></a>&nbsp;{% endfor %}',
+        'main_image': '{% if item.main_image %}<img src="{% thumbnail item.main_image.filer_image 100x150 %}">&nbsp;<a class="inventory-detail align-bottom" href="{{item.main_image.filer_image.url}}"><i class="fas fa-expand-arrows-alt"></i></a>&nbsp;{% else %}{% for image in item.images.all %}<a href="{% url "inventory:promote_item_image" image.pk %}" title="Click to set main image"><img src="{% thumbnail image.filer_image 100x150 %}"></a>&nbsp;<a class="inventory-detail align-bottom" href="{{image.filer_image.url}}"><i class="fas fa-expand-arrows-alt"></i></a>&nbsp;{% endfor %}{% endif %}',
         'texts': '{% for text in item.labels.all %}<i>Text {{forloop.counter}}:</i>&nbsp;&nbsp;{{text.text|escapejs}}<br>{% endfor %}',
       },
   {% endfor %}
