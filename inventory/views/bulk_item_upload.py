@@ -56,7 +56,9 @@ class BulkItemUpload(GenericWizard):
                 if self.num_cols == 0:
                     self.num_cols = len(row)
                 elif self.num_cols != len(row):
-                    messages.error(request, 'Irregular number of columns')
+                    messages.error(
+                        request,
+                        'Irregular number of columns, problem row: %s' % row)
                     self.csv_data = []
                     break
             self.num_rows = len(self.csv_data)
