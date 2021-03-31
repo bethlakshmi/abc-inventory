@@ -58,7 +58,10 @@ class BulkItemUpload(GenericWizard):
                 elif self.num_cols != len(row):
                     messages.error(
                         request,
-                        'Irregular number of columns, problem row: %s' % row)
+                        'Irregular number of columns, the delimiter is a ' +
+                        'comma (,) and the quote is a double quote ("), ' +
+                        'this is likely an encoding problem.  Problem ' +
+                        'row: %s' % row)
                     self.csv_data = []
                     break
             self.num_rows = len(self.csv_data)
