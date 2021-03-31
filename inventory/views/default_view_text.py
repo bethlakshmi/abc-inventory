@@ -8,10 +8,11 @@ user_messages = {
     },
     "SETUP_ITEM_UPLOAD_INSTRUCTIONS": {
         'summary':  "Instructions on preview upload page",
-        'description': '''Choose how columns are mapped to Items.  Any column 
-        can be skipped.  Data can be updated here.  Reminder - dates are
-        MM/DD/YY and prices are #.## (no $).  Error handling here is rather
-        rough, and a bad data format may result in a 500 error.'''
+        'description': '''Choose how columns are mapped to Items.  The Title
+        field is required.  Any column can be skipped.  Data can be updated
+        here.  Reminder - dates are MM/DD/YY and prices are #.## (no $).
+        Error handling here is rather rough, and a bad data format may
+        result in a 500 error.'''
     },
     "THEME_INSTRUCTIONS": {
         'summary':  "Instructions at top of theme edit page",
