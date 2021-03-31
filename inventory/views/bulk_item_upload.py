@@ -52,6 +52,7 @@ class BulkItemUpload(GenericWizard):
                 self.header = csv_reader.__next__()
                 self.num_cols = len(self.header)
             for row in csv_reader:
+                row[0] = row[0].replace(u'\ufeff', '')
                 self.csv_data += [row]
                 if self.num_cols == 0:
                     self.num_cols = len(row)
