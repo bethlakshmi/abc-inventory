@@ -47,7 +47,7 @@ class BulkItemUpload(GenericWizard):
                 messages.error(request, 'THIS IS NOT A CSV FILE')
             data_set = csv_file.read().decode('UTF-8')
             io_string = io.StringIO(data_set)
-            csv_reader = csv.reader(io_string, delimiter=',', quotechar="|")
+            csv_reader = csv.reader(io_string, delimiter=',', quotechar='"')
             if self.forms[0].cleaned_data["has_header"]:
                 self.header = csv_reader.__next__()
                 self.num_cols = len(self.header)
