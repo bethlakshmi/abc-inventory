@@ -127,13 +127,15 @@ class BulkItemUpload(GenericWizard):
                 return [form(request.POST, request.FILES)]
             else:
                 # set up the choice form based on number of columns.
+                if 'num_cols' not in request.POST.keys() or (
+                        'num_rows' not in request.POST.keys()):
+                    return []
                 num_cols = int(request.POST['num_cols'])
+                num_rows = int(request.POST['num_rows'])
                 forms = [ItemUploadMapping(request.POST,
                                            initial={'num_cols': num_cols})]
-                if not forms[0].is_valid():
-                    return []
                 i = 0
-                while i < forms[0].cleaned_data['num_rows']:
+                while i < num_rows:
                     forms += [ItemUploadRow(request.POST,
                                             num_cols=num_cols,
                                             prefix=str(i))]

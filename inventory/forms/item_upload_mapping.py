@@ -5,6 +5,7 @@ from django.forms import (
     IntegerField,
 )
 from inventory.forms.default_form_text import header_choices
+from django.core.exceptions import ValidationError
 
 
 class ItemUploadMapping(Form):
@@ -24,3 +25,14 @@ class ItemUploadMapping(Form):
             self.fields['header_%s' % i] = ChoiceField(choices=header_choices,
                                                        required=False)
             i = i + 1
+
+    def clean(self):
+        cleaned_data = super().clean()
+        found_title = False
+        for key, value in cleaned_data.items():
+            if value == "title":
+                found_title = True
+        if not found_title:
+            raise ValidationError(
+                    "One column must be labeled as the title."
+                )
