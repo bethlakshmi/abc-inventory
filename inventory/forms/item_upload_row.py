@@ -38,6 +38,7 @@ class ItemUploadRow(Form):
         if not is_valid:
             return is_valid
         item_data = {}
+        had_error = False
         for key, value in translator.items():
             try:
                 if key == "price":
@@ -50,4 +51,7 @@ class ItemUploadRow(Form):
                      item_data[key] = self.cleaned_data[value]
             except:
                 self.add_error(value, item_format_error[key])
+                had_error = True
+        if had_error:
+            return None
         return item_data
