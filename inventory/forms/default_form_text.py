@@ -47,3 +47,11 @@ header_choices = [
     ('date_deaccession', 'Date Deaccession'),
     ('price', 'Price'),
 ]
+item_format_error = {
+    'date_acquired': '''Dates must be in the format MM/DD/YY - e.g. 01/02/20
+    for January 2, 2020''',
+    'date_deaccession': '''Dates must be in the format MM/DD/YY - e.g. 01/02/20
+    for January 2, 2020''',
+    'price': '''The price must be a decimal - #.## - with no $ or other
+    letters''',
+}

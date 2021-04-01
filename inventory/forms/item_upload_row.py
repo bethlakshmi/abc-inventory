@@ -2,7 +2,12 @@ from django.forms import (
     CharField,
     Form,
 )
-from inventory.forms.default_form_text import header_choices
+from inventory.forms.default_form_text import (
+    header_choices,
+    item_format_error,
+)
+from datetime import datetime
+
 
 
 class ItemUploadRow(Form):
@@ -27,3 +32,22 @@ class ItemUploadRow(Form):
             while i < num_cols:
                 self.fields['cell_%s' % i] = CharField(required=False)
                 i = i + 1
+
+    def validate_and_format(self, translator):
+        is_valid = super(ItemUploadRow, self).is_valid()
+        if not is_valid:
+            return is_valid
+        item_data = {}
+        for key, value in translator.items():
+            try:
+                if key == "price":
+                    item_data[key] = float(self.cleaned_data[value])
+                if key in ('date_acquired', 'date_deaccession'):
+                    item_data[key] = datetime.strptime(
+                        self.cleaned_data[value],
+                        '%m/%d/%y')
+                else:
+                     item_data[key] = self.cleaned_data[value]
+            except:
+                self.add_error(value, item_format_error[key])
+        return item_data

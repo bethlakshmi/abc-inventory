@@ -81,6 +81,12 @@ class GenericWizard(View):
         messages.error(request, msg[0].description + extra_message)
         return HttpResponseRedirect(self.return_url)
 
+    def validate_forms(self):
+        all_valid = True
+        for form in self.forms:
+            all_valid = form.is_valid() and all_valid
+        return all_valid
+
     @never_cache
     @method_decorator(login_required)
     def post(self, request, *args, **kwargs):
@@ -92,7 +98,6 @@ class GenericWizard(View):
         if 'next' in list(request.POST.keys()) or 'finish' in list(
                 request.POST.keys()) or 'add' in list(request.POST.keys()
                 ) or 'redirect' in list(request.POST.keys()):
-            all_valid = True
             self.current_form_set = self.form_sets[self.step]
             if not self.current_form_set['the_form']:
                 return self.return_on_error(request, "STEP_ERROR")
@@ -101,9 +106,8 @@ class GenericWizard(View):
                 request)
             if len(self.forms) == 0:
                 return self.return_on_error(request, "NO_FORM_ERROR")
-            for form in self.forms:
-                all_valid = form.is_valid() and all_valid
-            if not all_valid:
+
+            if not self.validate_forms():
                 self.step = self.step - 1
                 self.current_form_set = self.form_sets[self.step]
                 return render(request, self.template, self.make_context(

@@ -8,7 +8,6 @@ from inventory.models import Item
 from django.contrib import messages
 import csv
 import io
-from datetime import datetime
 
 
 class BulkItemUpload(GenericWizard):
@@ -35,8 +34,31 @@ class BulkItemUpload(GenericWizard):
     }
     header = None
 
-    def finish_valid_form(self, request):
+    def validate_forms(self):
+        if self.forms[0].__class__.__name__ == "ItemUploadForm":
+            return super(BulkItemUpload, self).validate_forms()
+        elif self.forms[0].__class__.__name__ == "ItemUploadMapping":
+            all_valid = True
+            self.new_items = []
+            translator = {}
+            i = 0
+            if not self.forms[0].is_valid():
+                return False
 
+            while i < self.forms[0].cleaned_data['num_cols']:
+                if len(self.forms[0].cleaned_data['header_%d' % i]) > 0:
+                    translator[self.forms[0].cleaned_data[
+                        'header_%d' % i]] = "cell_%d" % i
+                i = i + 1
+            for item_form in self.forms[1:]:
+                formatted_data = item_form.validate_and_format(translator)
+                if formatted_data:
+                    self.new_items += [formatted_data]
+                else:
+                    all_valid = False
+            return all_valid
+
+    def finish_valid_form(self, request):
         if self.forms[0].__class__.__name__ == "ItemUploadForm":
             csv_file = request.FILES['new_items']
             self.csv_data = []
@@ -70,41 +92,8 @@ class BulkItemUpload(GenericWizard):
         elif self.forms[0].__class__.__name__ == "ItemUploadMapping":
             # use the selection of mappings to build a bulk create
             # do the create
-            translator = {}
-            i = 0
-            new_items = []
-            while i < self.forms[0].cleaned_data['num_cols']:
-                if len(self.forms[0].cleaned_data['header_%d' % i]) > 0:
-                    translator[self.forms[0].cleaned_data[
-                        'header_%d' % i]] = "cell_%d" % i
-                i = i + 1
-            for item_form in self.forms[1:]:
-                new_items += [self.setup_item(item_form.cleaned_data,
-                                              translator)]
-            Item.objects.bulk_create(new_items)
-            self.num_rows = len(new_items)
-
-    def setup_item(self, item_data, translator):
-        item = Item(title=item_data[translator['title']])
-        if 'description' in translator.keys():
-            item.description = item_data[translator['description']]
-        if 'year' in translator.keys():
-            item.year = item_data[translator['year']]
-        if 'subject' in translator.keys():
-            item.subject = item_data[translator['subject']]
-        if 'note' in translator.keys():
-            item.note = item_data[translator['note']]
-        if 'price' in translator.keys():
-            item.price = float(item_data[translator['price']])
-        if 'date_acquired' in translator.keys():
-            item.date_acquired = datetime.strptime(
-                item_data[translator['date_acquired']],
-                '%m/%d/%y')
-        if 'date_deaccession' in translator.keys():
-            item.date_acquired = datetime.strptime(
-                item_data[translator['date_deaccession']],
-                '%m/%d/%y')
-        return item
+            Item.objects.bulk_create([Item(**kv) for kv in self.new_items])
+            self.num_rows = len(self.new_items)
 
     def finish(self, request):
         messages.success(
