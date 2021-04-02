@@ -2,10 +2,7 @@ from django.forms import (
     CharField,
     Form,
 )
-from inventory.forms.default_form_text import (
-    header_choices,
-    item_format_error,
-)
+from inventory.forms.default_form_text import item_format_error
 from datetime import datetime
 
 

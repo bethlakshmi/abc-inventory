@@ -6,8 +6,6 @@ from inventory.forms import (
 )
 from inventory.models import Item
 from django.contrib import messages
-import csv
-import io
 
 
 class BulkItemUpload(GenericWizard):
@@ -35,8 +33,12 @@ class BulkItemUpload(GenericWizard):
     header = None
 
     def validate_forms(self):
-        if self.forms[0].__class__.__name__ == "ItemUploadForm":
-            return super(BulkItemUpload, self).validate_forms()
+        if self.forms[0].__class__.__name__ == "ItemUploadForm" and super(
+                BulkItemUpload, self).validate_forms():
+            self.num_cols, self.header, self.csv_data = self.forms[0].validate_and_get_data()
+            if self.num_cols > 0 and self.csv_data is not None:
+                self.num_rows = len(self.csv_data)
+                return True
         elif self.forms[0].__class__.__name__ == "ItemUploadMapping":
             all_valid = True
             self.new_items = []
@@ -57,39 +59,10 @@ class BulkItemUpload(GenericWizard):
                 else:
                     all_valid = False
             return all_valid
+        return False
 
     def finish_valid_form(self, request):
-        if self.forms[0].__class__.__name__ == "ItemUploadForm":
-            csv_file = request.FILES['new_items']
-            self.csv_data = []
-            self.num_cols = 0
-            # parse and create a data structure
-            # validate that this is a CSV and that all rows have same # columns
-            if not csv_file.name.endswith('.csv'):
-                messages.error(request, 'THIS IS NOT A CSV FILE')
-            data_set = csv_file.read().decode('UTF-8')
-            io_string = io.StringIO(data_set)
-            csv_reader = csv.reader(io_string, delimiter=',', quotechar='"')
-            if self.forms[0].cleaned_data["has_header"]:
-                self.header = csv_reader.__next__()
-                self.num_cols = len(self.header)
-            for row in csv_reader:
-                row[0] = row[0].replace(u'\ufeff', '')
-                self.csv_data += [row]
-                if self.num_cols == 0:
-                    self.num_cols = len(row)
-                elif self.num_cols != len(row):
-                    messages.error(
-                        request,
-                        'Irregular number of columns, the delimiter is a ' +
-                        'comma (,) and the quote is a double quote ("), ' +
-                        'this is likely an encoding problem.  Problem ' +
-                        'row: %s' % row)
-                    self.csv_data = []
-                    break
-            self.num_rows = len(self.csv_data)
-
-        elif self.forms[0].__class__.__name__ == "ItemUploadMapping":
+        if self.forms[0].__class__.__name__ == "ItemUploadMapping":
             # use the selection of mappings to build a bulk create
             # do the create
             Item.objects.bulk_create([Item(**kv) for kv in self.new_items])
@@ -106,6 +79,8 @@ class BulkItemUpload(GenericWizard):
         context = super(BulkItemUpload, self).make_context(request)
         if str(self.forms[0].__class__.__name__) == "ItemUploadMapping":
             context['special_handling'] = True
+        elif str(self.forms[0].__class__.__name__) == "ItemUploadForm":
+            context['show_finish'] = False
         if self.header:
             context['header'] = self.header
         return context

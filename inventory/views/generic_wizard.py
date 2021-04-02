@@ -41,6 +41,7 @@ class GenericWizard(View):
             'subtitle': self.current_form_set['next_title'],
             'forms': self.forms,
             'first': self.current_form_set['the_form'] is None,
+            'show_finish': True,
             'last': self.form_sets[self.step+1]['next_form'] is None,
         }
         if 'instruction_key' in self.current_form_set:
