@@ -16,6 +16,7 @@ from inventory.models import (
     Disposition,
     Tag,
 )
+from django_currentuser.db.models import CurrentUserField
 
 
 class Item(Model):
@@ -60,6 +61,11 @@ class Item(Model):
     updated_at = DateTimeField(auto_now=True)
     tags = ManyToManyField(Tag, related_name="items", blank=True)
     connections = ManyToManyField("self", blank=True)
+    updated_by = CurrentUserField(
+        on_update=True,
+        on_delete=SET_NULL,
+        null=True,
+        blank=True)
 
     def __str__(self):
         return self.title

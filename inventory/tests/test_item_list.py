@@ -100,6 +100,10 @@ class TestItemList(TestCase):
             response,
             "'date_deaccession': '%s'" % busy_item.date_deaccession.strftime(
                 "%B %-d, %Y"))
+        self.assertContains(
+            response,
+            "'updated': '%s by ---'" % busy_item.updated_at.strftime(
+                "%B %-d, %Y"))
 
     def test_no_login(self):
         response = self.client.get(self.url)

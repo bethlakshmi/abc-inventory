@@ -25,4 +25,5 @@ pytest
 pytest-django
 pytest-cov
 django-autocomplete-light
+django-currentuser
 packaging==20.4           # via pytest
