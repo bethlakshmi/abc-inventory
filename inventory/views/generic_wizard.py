@@ -97,8 +97,9 @@ class GenericWizard(View):
             return HttpResponseRedirect(self.return_url)
 
         if 'next' in list(request.POST.keys()) or 'finish' in list(
-                request.POST.keys()) or 'add' in list(request.POST.keys()
-                ) or 'redirect' in list(request.POST.keys()):
+                request.POST.keys()) or 'add' in list(
+                request.POST.keys()) or 'redirect' in list(
+                request.POST.keys()):
             self.current_form_set = self.form_sets[self.step]
             if not self.current_form_set['the_form']:
                 return self.return_on_error(request, "STEP_ERROR")

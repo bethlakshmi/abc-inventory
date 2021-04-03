@@ -35,7 +35,9 @@ class BulkItemUpload(GenericWizard):
     def validate_forms(self):
         if self.forms[0].__class__.__name__ == "ItemUploadForm" and super(
                 BulkItemUpload, self).validate_forms():
-            self.num_cols, self.header, self.csv_data = self.forms[0].validate_and_get_data()
+            (self.num_cols,
+             self.header,
+             self.csv_data) = self.forms[0].check_and_get_data()
             if self.num_cols > 0 and self.csv_data is not None:
                 self.num_rows = len(self.csv_data)
                 return True

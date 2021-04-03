@@ -27,10 +27,7 @@ class ItemUploadForm(Form):
             'description': item_upload_help['has_header']}
         )[0].description, required=False)
 
-    def validate_and_get_data(self):
-        is_valid = super(ItemUploadForm, self).is_valid()
-        if not is_valid:
-            return is_valid
+    def check_and_get_data(self):
         csv_file = self.cleaned_data['new_items']
         csv_data = []
         num_cols = 0
