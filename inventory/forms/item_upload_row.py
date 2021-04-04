@@ -36,18 +36,19 @@ class ItemUploadRow(Form):
         item_data = {}
         had_error = False
         for key, value in translator.items():
-            try:
-                if key == "price":
-                    item_data[key] = float(self.cleaned_data[value])
-                if key in ('date_acquired', 'date_deaccession'):
-                    item_data[key] = datetime.strptime(
-                        self.cleaned_data[value],
-                        '%m/%d/%y')
-                else:
-                    item_data[key] = self.cleaned_data[value]
-            except:
-                self.add_error(value, item_format_error[key])
-                had_error = True
+            if len(self.cleaned_data[value].strip()) > 0:
+                try:
+                    if key in ('width', 'height', 'depth', 'price'):
+                        item_data[key] = float(self.cleaned_data[value])
+                    elif key in ('date_acquired', 'date_deaccession'):
+                        item_data[key] = datetime.strptime(
+                            self.cleaned_data[value],
+                            '%m/%d/%y')
+                    else:
+                       item_data[key] = self.cleaned_data[value]
+                except:
+                    self.add_error(value, item_format_error[key])
+                    had_error = True
         if had_error:
             return None
         return item_data

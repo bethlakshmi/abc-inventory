@@ -38,9 +38,9 @@ header_choices = [
     # ('category', 'Category'),
     # ('disposition', 'Disposition'),
     ('year', 'Year'),
-    # ('width', 'Width'),
-    # ('height', 'Height'),
-    # ('depth', 'Depth'),
+    ('width', 'Width'),
+    ('height', 'Height'),
+    ('depth', 'Depth'),
     ('subject', 'Subject'),
     ('note', 'Note'),
     ('date_acquired', 'Date Acquired'),
@@ -53,5 +53,11 @@ item_format_error = {
     'date_deaccession': '''Dates must be in the format MM/DD/YY - e.g. 01/02/20
     for January 2, 2020''',
     'price': '''The price must be a decimal - #.## - with no $ or other
+    letters''',
+    'width': '''The width must be a decimal - #.## - with no $ or other
+    letters''',
+    'height': '''The height must be a decimal - #.## - with no $ or other
+    letters''',
+    'depth': '''The depth must be a decimal - #.## - with no $ or other
     letters''',
 }

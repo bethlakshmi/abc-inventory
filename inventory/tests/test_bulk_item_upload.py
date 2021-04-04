@@ -134,6 +134,33 @@ class TestBulkItemUpload(TestCase):
         self.assertContains(response, "Uploaded 2 items.")
         self.assertEqual(count + 2, Item.objects.all().count())
 
+    def test_post_map_dimensions(self):
+        count = Item.objects.all().count()
+        login_as(self.user, self)
+        response = self.client.post(
+            self.url,
+            data={'header_0': 'width',
+                  'header_1': 'title',
+                  'header_2': 'height',
+                  '0-cell_0': '1.2',
+                  '0-cell_1': "Title 1",
+                  '0-cell_2': "2.3",
+                  '0-cell_3': "4.5",
+                  '1-cell_0': '',
+                  '1-cell_1': "Title 2",
+                  '1-cell_2': "",
+                  '1-cell_3': "",
+                  'step': 1,
+                  'num_rows': 2,
+                  'num_cols': 3,
+                  'finish': 'Finish'},
+            follow=True)
+        self.assertRedirects(response,
+                             reverse('items_list', urlconf='inventory.urls'))
+        self.assertContains(response, "Uploaded 2 items.")
+        self.assertEqual(count + 2, Item.objects.all().count())
+        self.assertContains(response, "2.3", 1)
+
     def test_post_bad_meta_data(self):
         from inventory.views.default_view_text import user_messages
         login_as(self.user, self)
