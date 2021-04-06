@@ -9,7 +9,6 @@ from django.contrib import messages
 
 
 class BulkItemUpload(GenericWizard):
-    filer_images = []
     template = 'inventory/bulk_item_wizard.tmpl'
     page_title = 'Item Inventory Upload'
     first_title = 'Select File of Items'
