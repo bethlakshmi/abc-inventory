@@ -45,7 +45,7 @@ class ItemUploadRow(Form):
                             self.cleaned_data[value],
                             '%m/%d/%y')
                     else:
-                       item_data[key] = self.cleaned_data[value]
+                        item_data[key] = self.cleaned_data[value]
                 except:
                     self.add_error(value, item_format_error[key])
                     had_error = True
