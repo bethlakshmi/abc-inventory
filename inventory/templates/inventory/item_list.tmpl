@@ -173,7 +173,7 @@
         'date_acquired': '{% if item.date_acquired %}{{ item.date_acquired|date:"F j, Y" }}{% endif %}',
         'date_deaccession': '{% if item.date_deaccession %}{{ item.date_deaccession|date:"F j, Y" }}{% endif %}',
         'created': '{{ item.created_at|date:"F j, Y" }}',
-        'updated': '{{ item.updated_at|date:"F j, Y" }}',
+        'updated': '{{ item.updated_at|date:"F j, Y" }} by {{ item.updated_by|default_if_none:"---" }}',
         'tags': '{% for tag in item.tags.all %}{{ tag }}, {% endfor %}',
         'connections': '{% for connect in item.connections.all %}{{ connect|escapejs }}, {% endfor %}',
         'images': '{% for image in item.images.all %}{% if item.main_image != image %}<a href="{% url "inventory:promote_item_image" image.pk %}" title="Click to set main image">{% endif %}<img src="{% thumbnail image.filer_image 100x150 %}">{% if item.main_image != image %}</a>{% endif %}&nbsp;<a class="inventory-detail align-bottom" href="{{image.filer_image.url}}"><i class="fas fa-expand-arrows-alt"></i></a>&nbsp;{% endfor %}',

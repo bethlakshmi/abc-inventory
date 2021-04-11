@@ -16,7 +16,7 @@ INSTALLED_ADDONS = [
     # Important: Items listed inside the next block are auto-generated.
     # Manual changes will be overwritten.
 
-    # <INSTALLED_ADDONS>  # Warning: text inside the INSTALLED_ADDONS tags 
+    # <INSTALLED_ADDONS>  # Warning: text inside the INSTALLED_ADDONS tags
     # is auto-generated. Manual changes will be overwritten.
     'aldryn-addons',
     'aldryn-django',
@@ -61,6 +61,10 @@ INSTALLED_APPS.extend([
     'import_export',
     'dal',
     'dal_select2',
+])
+
+MIDDLEWARE.extend([
+    'django_currentuser.middleware.ThreadLocalUserMiddleware',
 ])
 
 # To see the settings that have been applied, use the Django diffsettings

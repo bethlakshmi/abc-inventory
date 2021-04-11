@@ -31,6 +31,7 @@ django-cache-url==3.2.3
 django-classy-tags==2.0.0  # via django-cms, django-sekizai
 django-cms==3.7.4         # via djangocms-attributes-field
 django-compressor==2.4
+django-currentuser==0.5.2
 https://divio-addons.s3-eu-central-1.amazonaws.com/django-filer/2.0.2/437dbe66-4a2c-402d-9ad9-cd104a901316/django-filer-2.0.2.tar.gz#egg=django-filer==2.0.2
 django-formtools==2.2     # via django-cms
 django-getenv==1.3.2
@@ -42,14 +43,14 @@ django-polymorphic==3.0.0
 django-ranged-response==0.2.0  # via django-simple-captcha
 django-robots==4.0
 django-sekizai==2.0.0     # via django-cms
-django-select2==7.6.2
+django-select2==7.7.0
 django-simple-captcha==0.5.14
 django-simple-sso==0.14.1
 django-sortedm2m==3.0.2
 django-storages==1.8
 django-tempus-dominus==5.1.2.13
 django-treebeard==4.5.1   # via django-cms
-django==2.2.19            # via aldryn-sites, django-appconf, django-classy-tags, django-cms, django-formtools, django-import-export, django-mptt, django-polymorphic, django-ranged-response, django-sekizai, django-select2, django-simple-captcha, django-simple-sso, django-storages, django-tempus-dominus, django-treebeard, easy-thumbnails, webservices
+django==2.2.19            # via aldryn-sites, django-appconf, django-classy-tags, django-cms, django-currentuser, django-formtools, django-import-export, django-mptt, django-polymorphic, django-ranged-response, django-sekizai, django-select2, django-simple-captcha, django-simple-sso, django-storages, django-tempus-dominus, django-treebeard, easy-thumbnails, webservices
 djangocms-admin-style==2.0.2  # via django-cms
 djangocms-attributes-field==2.0.0
 https://divio-addons.s3-eu-central-1.amazonaws.com/djangocms-file/3.0.0/3d2621db-220e-4e62-a731-f651d6c81fc6/djangocms-file-3.0.0.tar.gz#egg=djangocms-file==3.0.0
@@ -65,11 +66,11 @@ djeese-fs==0.1.21
 easy-thumbnails==2.7.1
 et-xmlfile==1.0.1         # via openpyxl
 factory-boy==3.2.0
-faker==6.6.2
+faker==7.0.1
 furl==2.1.0
 html5lib==1.1
 idna==2.10                # via requests
-importlib-metadata==3.7.3  # via pluggy, pytest
+importlib-metadata==3.10.0  # via pluggy, pytest
 iniconfig==1.0.0          # via pytest
 itsdangerous==1.1.0       # via django-simple-sso, webservices
 lxml==4.6.3
@@ -80,7 +81,7 @@ openpyxl==3.0.7           # via tablib
 orderedmultidict==1.0.1   # via furl
 packaging==20.4
 pep8==1.7.1
-pillow==8.1.2             # via django-simple-captcha, easy-thumbnails
+pillow==8.2.0             # via django-simple-captcha, easy-thumbnails
 pluggy==0.13.1            # via pytest
 psycopg2==2.7.7
 py==1.10.0                # via pytest
