@@ -206,6 +206,9 @@ class TestBulkItemUpload(TestCase):
         self.assertContains(
             response,
             'Preview Item Upload &amp; Select Column Mapping')
+        self.assertContains(
+            response,
+            "There is an error on the form.")
 
     def test_post_bad_price(self):
         from inventory.forms.default_form_text import item_format_error
@@ -230,6 +233,9 @@ class TestBulkItemUpload(TestCase):
         self.assertContains(
             response,
             'Preview Item Upload &amp; Select Column Mapping')
+        self.assertContains(
+            response,
+            "There is an error on the form.")
 
     def test_post_bad_date(self):
         from inventory.forms.default_form_text import item_format_error

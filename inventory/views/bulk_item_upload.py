@@ -80,10 +80,15 @@ class BulkItemUpload(GenericWizard):
         context = super(BulkItemUpload, self).make_context(request)
         if str(self.forms[0].__class__.__name__) == "ItemUploadMapping":
             context['special_handling'] = True
+            for form in self.forms:
+                if not form.is_valid():
+                    context['form_error'] = True
+                    break;
         elif str(self.forms[0].__class__.__name__) == "ItemUploadForm":
             context['show_finish'] = False
         if self.header:
             context['header'] = self.header
+
         return context
 
     def setup_forms(self, form, request=None):

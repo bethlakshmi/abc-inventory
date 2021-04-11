@@ -2,7 +2,7 @@
 {% block special_handling_form %}
 <p>{{ instructions | safe }}</p>
  <font class="inventory-form-error">
-  {% if forms.0.errors %}
+  {% if form_error %}
     <p class="inventory-form-error"> There is an error on the form.</p>
   {% endif %}
   {{ forms.0.non_field_errors }}</font>
