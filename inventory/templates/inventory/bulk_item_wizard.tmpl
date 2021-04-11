@@ -1,0 +1,39 @@
+{% extends 'inventory/generic_wizard.tmpl' %}
+{% block special_handling_form %}
+<p>{{ instructions | safe }}</p>
+ <font class="inventory-form-error">
+  {% if form_error %}
+    <p class="inventory-form-error"> There is an error on the form.</p>
+  {% endif %}
+  {{ forms.0.non_field_errors }}</font>
+    {% csrf_token %}
+    {% for hidden in forms.0.hidden_fields %}
+    {{ hidden }}
+    {% endfor %}
+  <table class="inventory-table">
+    <thead class="inventory-table-header">
+      <tr {% if forms.0.errors %}class="inventory-table-error"{% endif %}>
+    {% for field in forms.0.visible_fields %}
+      <th>{{ field }}</th>{% endfor %}
+      </tr>
+    {% if header %}<tr class="inventory-table-header">
+        {% for item in header %}<th>{{ item }}</th>{% endfor %}
+      </tr>{% endif %}
+    </thead>
+    {% if header %}<tfoot>
+      <tr class="inventory-table-header">
+    {% for item in header %}
+      <th>{{ item }}</th>{% endfor %}
+      </tr>
+    </tfoot>{% endif %}
+    <tbody>
+      {% for item_form in forms|slice:"1:" %}
+      <tr {% if form.errors %}class="inventory-table-error"{% endif %}>
+        {% for field in item_form %}<td>{{field}}
+          {% if field.errors %}<br><font class="inventory-form-error">{{ field.errors }}</font>
+          {% endif %}</td>{% endfor %}</tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <br>
+{% endblock %}
