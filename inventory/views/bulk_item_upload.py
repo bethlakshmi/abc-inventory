@@ -83,7 +83,7 @@ class BulkItemUpload(GenericWizard):
             for form in self.forms:
                 if not form.is_valid():
                     context['form_error'] = True
-                    break;
+                    break
         elif str(self.forms[0].__class__.__name__) == "ItemUploadForm":
             context['show_finish'] = False
         if self.header:
