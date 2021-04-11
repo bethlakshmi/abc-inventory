@@ -7,6 +7,7 @@ from .subitems_list_view import SubItemsListView
 from .generic_wizard import GenericWizard
 from .make_item_wizard import MakeItemWizard
 from .bulk_image_upload import BulkImageUpload
+from .bulk_item_upload import BulkItemUpload
 from .manage_item_image import ManageItemImage
 from .theme_view import ThemeView
 from .activate_theme import ActivateTheme

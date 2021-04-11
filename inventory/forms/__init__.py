@@ -9,3 +9,6 @@ from .style_value_form import StyleValueForm
 from .style_value_image_form import StyleValueImageForm
 from .theme_version_form import ThemeVersionForm
 from .label_form import LabelForm
+from .item_upload_form import ItemUploadForm
+from .item_upload_mapping import ItemUploadMapping
+from .item_upload_row import ItemUploadRow

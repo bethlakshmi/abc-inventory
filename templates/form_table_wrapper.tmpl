@@ -1,7 +1,7 @@
-  {{ instructions | safe }}
-  <p>
+<p>{{ instructions | safe }}</p>
+<p>
     <font class="inventory-form-required">*</font> indicates a required field
-  </p>
+</p>
     {% for form in forms %}
       {%if showheader%}
         <h4>{{form.prefix}}</h4>

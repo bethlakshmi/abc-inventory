@@ -16,7 +16,8 @@ INSTALLED_ADDONS = [
     # Important: Items listed inside the next block are auto-generated.
     # Manual changes will be overwritten.
 
-    # <INSTALLED_ADDONS>  # Warning: text inside the INSTALLED_ADDONS tags is auto-generated. Manual changes will be overwritten.
+    # <INSTALLED_ADDONS>  # Warning: text inside the INSTALLED_ADDONS tags 
+    # is auto-generated. Manual changes will be overwritten.
     'aldryn-addons',
     'aldryn-django',
     'aldryn-sso',
@@ -65,3 +66,4 @@ INSTALLED_APPS.extend([
 # To see the settings that have been applied, use the Django diffsettings
 # management command.
 # See https://docs.divio.com/en/latest/how-to/configure-settings.html#list
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 2000

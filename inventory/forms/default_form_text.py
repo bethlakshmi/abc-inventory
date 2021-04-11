@@ -29,3 +29,35 @@ style_value_help = {
     'add_image': '''Uploading an image takes precedence over any selected
     image.''',
 }
+item_upload_help = {
+    'has_header': '''Check if the first row of the file is a header'''}
+header_choices = [
+    ('', 'Do Not Upload'),
+    ('title', 'Title'),
+    ('description', 'Description'),
+    # ('category', 'Category'),
+    # ('disposition', 'Disposition'),
+    ('year', 'Year'),
+    ('width', 'Width'),
+    ('height', 'Height'),
+    ('depth', 'Depth'),
+    ('subject', 'Subject'),
+    ('note', 'Note'),
+    ('date_acquired', 'Date Acquired'),
+    ('date_deaccession', 'Date Deaccession'),
+    ('price', 'Price'),
+]
+item_format_error = {
+    'date_acquired': '''Dates must be in the format MM/DD/YY - e.g. 01/02/20
+    for January 2, 2020''',
+    'date_deaccession': '''Dates must be in the format MM/DD/YY - e.g. 01/02/20
+    for January 2, 2020''',
+    'price': '''The price must be a decimal - #.## - with no $ or other
+    letters''',
+    'width': '''The width must be a decimal - #.## - with no $ or other
+    letters''',
+    'height': '''The height must be a decimal - #.## - with no $ or other
+    letters''',
+    'depth': '''The depth must be a decimal - #.## - with no $ or other
+    letters''',
+}
