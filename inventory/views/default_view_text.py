@@ -60,5 +60,11 @@ user_messages = {
         will NOT delete the image from the system.  To permanently delete an
         image, press the delete button below the image.  Deleted images are
         shaded red.  Deletion takes precedence over image links.''',
-    }
+    },
+    "CategoryListView": {
+        'summary':  "Instructions Category List",
+        'description': '''List of all categories in the system.  Expand the
+        row to see a list of editable items associated with this category.
+        Items have exactly 1 category.'''
+    },
 }
