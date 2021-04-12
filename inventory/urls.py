@@ -15,7 +15,9 @@ from inventory.views import (
     PreviewTheme,
     PromoteItemImage,
     SubItemsListView,
+    TagCreate,
     TagListView,
+    TagUpdate,
     ThemeView,
     ThemesListView,
 )
@@ -82,4 +84,8 @@ urlpatterns = [
         name='category_create'),
     url(r'^inventory/category/update/(?P<pk>.*)/$',
         CategoryUpdate.as_view(),
-        name='category_update'),]
+        name='category_update'),
+    url(r'^inventory/tag/create/?', TagCreate.as_view(), name='tag_create'),
+    url(r'^inventory/tag/update/(?P<pk>.*)/$',
+        TagUpdate.as_view(),
+        name='tag_update'),]

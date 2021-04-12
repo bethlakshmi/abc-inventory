@@ -14,7 +14,7 @@ class CategoryCreate(LoginRequiredMixin,
                      CreateView):
     model = Category
     template_name = 'inventory/simple_form.tmpl'
-    success_url = reverse_lazy('items_list', urlconf="inventory.urls")
+    success_url = reverse_lazy('categories_list', urlconf="inventory.urls")
     page_title = 'Category'
     view_title = 'Create Category'
     valid_message = make_category_messages['create_success']
@@ -27,7 +27,7 @@ class CategoryUpdate(LoginRequiredMixin,
                      UpdateView):
     model = Category
     template_name = 'inventory/simple_form.tmpl'
-    success_url = reverse_lazy('items_list', urlconf="inventory.urls")
+    success_url = reverse_lazy('categories_list', urlconf="inventory.urls")
     page_title = 'Category'
     view_title = 'Update Category'
     valid_message = make_category_messages['edit_success']

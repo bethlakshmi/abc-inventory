@@ -9,6 +9,16 @@
         </tr>
 {% endblock %}
 {% block buttons %}
+      btnAdd: {
+        text: 'Add new row',
+        icon: 'fa-plus',
+        event: function () {
+          window.location.href = "{% url 'inventory:category_create' %}";
+        },
+        attributes: {
+          title: 'Add a new item to the inventory',
+        }
+      }
 {% endblock %}
 {% block details %}
     var html = []
@@ -26,7 +36,7 @@
         'help': '{{ category.help_text|escapejs }}',
         'count': '{{ category.num_items }}',
         'items': '{% for item in category.items.all %}<a href="{% url 'inventory:item_edit' item.id %}" title="Edit">{{ item }}&nbsp;&nbsp;<i class="fas fa-edit"></i></a>,<br>{% endfor %}',
-        'action': 'Coming soon...',
+        'action': '<a class="inventory-detail" href="{% url "inventory:category_update" category.id %}" title="Edit"><i class="fas fa-edit"></i></a>',
       },
   {% endfor %}
   {% endblock %}

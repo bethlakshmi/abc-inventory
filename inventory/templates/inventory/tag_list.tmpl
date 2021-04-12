@@ -10,6 +10,16 @@
         </tr>
 {% endblock %}
 {% block buttons %}
+      btnAdd: {
+        text: 'Add new row',
+        icon: 'fa-plus',
+        event: function () {
+          window.location.href = "{% url 'inventory:tag_create' %}";
+        },
+        attributes: {
+          title: 'Add a new item to the inventory',
+        }
+      }
 {% endblock %}
 {% block details %}
     var html = []
@@ -27,7 +37,7 @@
         'help': '{{ tag.help_text|escapejs }}',
         'count': '{{ tag.num_items }}',
         'items': '{% for item in tag.items.all %}<a href="{% url 'inventory:item_edit' item.id %}" title="Edit">{{ item }}&nbsp;&nbsp;<i class="fas fa-edit"></i></a>,<br>{% endfor %}',
-        'action': 'Coming soon...',
+        'action': '<a class="inventory-detail" href="{% url "inventory:tag_update" tag.id %}" title="Edit"><i class="fas fa-edit"></i></a>',
       },
   {% endfor %}
   {% endblock %}

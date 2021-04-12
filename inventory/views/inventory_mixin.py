@@ -14,7 +14,7 @@ class InventoryFormMixin(ModelFormMixin):
         context = super().get_context_data(**kwargs)
         context['page_title'] = self.page_title
         context['view_title'] = self.view_title
-        context['intro_text'] = msg[0].description
+        context['instructions'] = msg[0].description
         context['form'].required_css_class = 'required'
         return context
 
@@ -28,3 +28,6 @@ class InventoryFormMixin(ModelFormMixin):
                 'description': self.valid_message})
         messages.success(self.request, msg[0].description % str(self.object))
         return response
+
+    def get_success_url(self):
+        return "%s?changed_id=%s" % (self.success_url, self.object.pk)

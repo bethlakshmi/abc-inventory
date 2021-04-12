@@ -21,3 +21,4 @@ from .delete_theme import DeleteTheme
 from .preview_theme import PreviewTheme
 from .promote_item_image import PromoteItemImage
 from .make_category import (CategoryCreate, CategoryUpdate)
+from .make_tag import (TagCreate, TagUpdate)
