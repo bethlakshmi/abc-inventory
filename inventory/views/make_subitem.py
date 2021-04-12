@@ -19,6 +19,7 @@ class SubitemCreate(LoginRequiredMixin, InventoryFormMixin, CreateView):
     intro_message = make_subitem_messages['create_intro']
     fields = ['title',
               'description',
+              'subitem_number',
               'width',
               'height',
               'depth',
@@ -36,6 +37,7 @@ class SubitemUpdate(LoginRequiredMixin, InventoryFormMixin, UpdateView):
     intro_message = make_subitem_messages['edit_intro']
     fields = ['title',
               'description',
+              'subitem_number',
               'width',
               'height',
               'depth',

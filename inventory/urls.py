@@ -96,4 +96,5 @@ urlpatterns = [
         name='subitem_create'),
     url(r'^inventory/subitem/update/(?P<pk>.*)/$',
         SubitemUpdate.as_view(),
-        name='subitem_update'),]
+        name='subitem_update'),
+    ]
