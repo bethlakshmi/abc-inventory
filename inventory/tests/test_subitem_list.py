@@ -4,10 +4,10 @@ from django.urls import reverse
 from inventory.tests.factories import (
     CategoryFactory,
     DispositionFactory,
-    SubitemFactory,
     ItemFactory,
     ItemImageFactory,
     ItemTextFactory,
+    SubitemFactory,
     TagFactory,
     UserFactory
 )

@@ -44,6 +44,21 @@ class Subitem(Model):
     def __str__(self):
         return self.title
 
+    def dimensions(self):
+        if self.width or self.height or self.depth:
+            width = "0"
+            height = "0"
+            depth = "0"
+            if self.width:
+                width = (str(self.width))
+            if self.height:
+                height = (str(self.height))
+            if self.depth:
+                depth = (str(self.depth))
+            return "%s X %s X %s" % (width, height, depth)
+        else:
+            return "N/A"
+
     class Meta:
         app_label = "inventory"
         ordering = ['title', ]
