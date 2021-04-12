@@ -35,7 +35,7 @@ class TestItemList(TestCase):
         subitem = SubitemFactory()
         tag = TagFactory()
         subitem.tags.set([tag])
-        subitem_w_dim = SubitemFactory(width=1, height=2.2)
+        subitem_w_dim = SubitemFactory(width=1, height=2.2, depth=0.001)
         login_as(self.user, self)
         response = self.client.get(self.url)
         self.assertContains(
@@ -46,7 +46,7 @@ class TestItemList(TestCase):
                 tag.name))
         self.assertContains(
             response,
-            '<td>%s</td><td>%s</td><td>1.000 X 2.200 X 0</td><td></td>' % (
+            '<td>%s</td><td>%s</td><td>1.000 X 2.200 X 0.001</td><td></td>' % (
                 subitem_w_dim.title,
                 subitem_w_dim.description))
 
