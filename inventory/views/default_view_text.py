@@ -67,4 +67,10 @@ user_messages = {
         row to see a list of editable items associated with this category.
         Items have exactly 1 category.'''
     },
+    "TagListView": {
+        'summary':  "Instructions Tag List",
+        'description': '''List of all tags in the system.  Expand the
+        row to see a list of editable items associated with this tag.
+        Items can be associated with 0 or more categories.'''
+    },
 }
