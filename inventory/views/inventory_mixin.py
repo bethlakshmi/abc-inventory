@@ -16,6 +16,7 @@ class InventoryFormMixin(ModelFormMixin):
         context['view_title'] = self.view_title
         context['instructions'] = msg[0].description
         context['form'].required_css_class = 'required'
+        context['cancel_url'] = self.success_url
         return context
 
     def form_valid(self, form):

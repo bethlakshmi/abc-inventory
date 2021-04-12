@@ -14,7 +14,9 @@ from inventory.views import (
     ManageTheme,
     PreviewTheme,
     PromoteItemImage,
+    SubitemCreate,
     SubItemsListView,
+    SubitemUpdate,
     TagCreate,
     TagListView,
     TagUpdate,
@@ -88,4 +90,10 @@ urlpatterns = [
     url(r'^inventory/tag/create/?', TagCreate.as_view(), name='tag_create'),
     url(r'^inventory/tag/update/(?P<pk>.*)/$',
         TagUpdate.as_view(),
-        name='tag_update'),]
+        name='tag_update'),
+    url(r'^inventory/subitem/create/?',
+        SubitemCreate.as_view(),
+        name='subitem_create'),
+    url(r'^inventory/subitem/update/(?P<pk>.*)/$',
+        SubitemUpdate.as_view(),
+        name='subitem_update'),]

@@ -86,3 +86,9 @@ make_tag_messages = {
     'create_intro':  "Use this form to create a new tag.",
     'edit_intro':  "Use this form to update this tag.",
 }
+make_subitem_messages = {
+    'create_success':  "A new subitem has been created.  Name: %s",
+    'edit_success':  "The %s subitem has been updated.",
+    'create_intro':  "Use this form to create a new subitem.",
+    'edit_intro':  "Use this form to update this subitem.",
+}

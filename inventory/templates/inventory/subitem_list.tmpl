@@ -36,6 +36,16 @@
         </tr>
 {% endblock %}
 {% block buttons %}
+      btnAdd: {
+        text: 'Add new row',
+        icon: 'fa-plus',
+        event: function () {
+          window.location.href = "{% url 'inventory:subitem_create' %}";
+        },
+        attributes: {
+          title: 'Add a new item to the inventory',
+        }
+      }
 {% endblock %}
 {% block details %}
     var html = []
@@ -95,7 +105,7 @@
         'd': '{% if subitem.depth %}{{ subitem.depth.normalize }}{% endif %}',
         'year': '{% if subitem.item.year %}{{ subitem.item.year|escapejs }}{% endif %}',
         'subject': '{% if subitem.item.subject %}{{ subitem.item.subject|escapejs }}{% endif %}',
-        'action': 'Coming soon...',
+        'action': '<a class="inventory-detail" href="{% url "inventory:subitem_update" subitem.id %}" title="Edit"><i class="fas fa-edit"></i></a>',
         'description': '{% if subitem.description %}{{ subitem.description.strip|escapejs }}{% endif %}',
         'created': '{{ subitem.created_at }}',
         'updated': '{{ subitem.updated_at }}',
