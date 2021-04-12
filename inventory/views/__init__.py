@@ -1,3 +1,4 @@
+from .inventory_mixin import InventoryFormMixin
 from .category_autocomplete import CategoryAutocomplete
 from .connection_autocomplete import ConnectionAutocomplete
 from .disposition_autocomplete import DispositionAutocomplete
@@ -17,3 +18,4 @@ from .themes_list_view import ThemesListView
 from .delete_theme import DeleteTheme
 from .preview_theme import PreviewTheme
 from .promote_item_image import PromoteItemImage
+from .make_category import (CategoryCreate, CategoryUpdate)

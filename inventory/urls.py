@@ -3,6 +3,8 @@ from inventory.views import (
     ActivateTheme,
     BulkImageUpload,
     BulkItemUpload,
+    CategoryCreate,
+    CategoryUpdate,
     CloneTheme,
     DeleteTheme,
     ItemsListView,
@@ -66,4 +68,10 @@ urlpatterns = [
         name='delete_theme'),
     url(r'^inventory/style_clone/(?P<version_id>\d+)/?',
         CloneTheme.as_view(),
-        name='clone_theme')]
+        name='clone_theme'),
+    url(r'^inventory/category/create/?',
+        CategoryCreate.as_view(),
+        name='category_create'),
+    url(r'^inventory/category/update/(?P<pk>.*)/$',
+        CategoryUpdate.as_view(),
+        name='category_update'),]
