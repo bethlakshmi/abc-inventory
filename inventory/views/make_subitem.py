@@ -30,4 +30,3 @@ class SubitemUpdate(LoginRequiredMixin, InventoryFormMixin, UpdateView):
     valid_message = make_subitem_messages['edit_success']
     intro_message = make_subitem_messages['edit_intro']
     form_class = SubitemForm
-
