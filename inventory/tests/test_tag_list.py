@@ -72,6 +72,14 @@ class TestTagList(TestCase):
                      args=[other_item.pk]),
              other_item.title),
             2)
+        self.assertContains(
+            response,
+            reverse('tag_create', urlconf="inventory.urls"))
+        self.assertContains(
+            response,
+            reverse('tag_update',
+                    urlconf="inventory.urls",
+                    args=[self.tag.pk]))
 
     def test_list_tag_empty(self):
         from inventory.views.default_view_text import user_messages

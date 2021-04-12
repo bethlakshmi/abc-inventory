@@ -145,7 +145,7 @@
       html.push('<div class="col-12"><b>Images:<br></b>' + row.images +'</div>')
     }
     if (row.subitems) {
-      html.push('<div class="col-12"><b>Subitems:<br></b><table><tr><th>Title</th><th>Description</th><th>Dimensions</th><th>Tags</th><th>Action</th></tr>' + row.subitems +'<table></div>')
+      html.push('<div class="col-12"><b>Subitems:&nbsp;<a class="inventory-detail" href="{% url "inventory:subitem_create" %}" title="Add Subitem"><i class="fas fa-plus"></i></a><br></b><table><tr><th>Title</th><th>Description</th><th>Dimensions</th><th>Tags</th><th>Action</th></tr>' + row.subitems +'<table></div>')
     }
     html.push('</div>')
     return html.join('')
