@@ -3,6 +3,7 @@ from django.views.generic.edit import (
     UpdateView,
 )
 from inventory.models import Subitem
+from inventory.forms import SubitemForm
 from inventory.views.default_view_text import make_subitem_messages
 from inventory.views import InventoryFormMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -17,14 +18,7 @@ class SubitemCreate(LoginRequiredMixin, InventoryFormMixin, CreateView):
     view_title = 'Create Subitem'
     valid_message = make_subitem_messages['create_success']
     intro_message = make_subitem_messages['create_intro']
-    fields = ['title',
-              'description',
-              'subitem_number',
-              'width',
-              'height',
-              'depth',
-              'tags',
-              'item']
+    form_class = SubitemForm
 
 
 class SubitemUpdate(LoginRequiredMixin, InventoryFormMixin, UpdateView):
@@ -35,11 +29,5 @@ class SubitemUpdate(LoginRequiredMixin, InventoryFormMixin, UpdateView):
     view_title = 'Update Subitem'
     valid_message = make_subitem_messages['edit_success']
     intro_message = make_subitem_messages['edit_intro']
-    fields = ['title',
-              'description',
-              'subitem_number',
-              'width',
-              'height',
-              'depth',
-              'tags',
-              'item']
+    form_class = SubitemForm
+
