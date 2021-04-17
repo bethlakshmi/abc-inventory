@@ -1,0 +1,32 @@
+{% extends 'inventory/item_list.tmpl' %}
+{% block table_header %}
+        <tr>
+          <th data-field="id" data-sortable="true">ID</th>
+          <th data-field="name" data-sortable="true">Name</th>
+          <th data-field="help" data-sortable="true">Help Text</th>
+          <th data-field="count" data-sortable="true"># Items</th>
+          <th data-field="action">Action</th>
+        </tr>
+{% endblock %}
+{% block buttons %}
+{% endblock %}
+{% block details %}
+    var html = []
+    html.push('<div class="row">')
+    html.push('<div class="col-12">')
+    html.push('<b>Items:</b><br>' + row.items + '<br>')
+    html.push('</div></div>')
+    return html.join('')
+{% endblock %}
+{% block item_data %}
+  {% for tag in items %}
+      {
+        'id': '{{ tag.pk }}',
+        'name': '{{ tag.name }}',
+        'help': '{{ tag.help_text|escapejs }}',
+        'count': '{{ tag.num_items }}',
+        'items': '{% for item in tag.items.all %}<a href="{% url 'inventory:item_edit' item.id %}" title="Edit">{{ item }}&nbsp;&nbsp;<i class="fas fa-edit"></i></a>,<br>{% endfor %}',
+        'action': 'Coming soon...',
+      },
+  {% endfor %}
+  {% endblock %}
