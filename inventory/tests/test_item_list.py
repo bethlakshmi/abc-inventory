@@ -49,6 +49,14 @@ class TestItemList(TestCase):
             '<td>%s</td><td>%s</td><td>1.000 X 2.200 X 0.001</td><td></td>' % (
                 subitem_w_dim.title,
                 subitem_w_dim.description))
+        self.assertContains(
+            response,
+            reverse('subitem_update',
+                    urlconf="inventory.urls",
+                    args=[subitem_w_dim.pk]))
+        self.assertContains(
+            response,
+            reverse('subitem_create', urlconf="inventory.urls"))
 
     def test_list_items_basic(self):
         login_as(self.user, self)

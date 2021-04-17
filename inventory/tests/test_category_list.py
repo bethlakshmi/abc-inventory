@@ -58,6 +58,14 @@ class TestCategoryList(TestCase):
                      urlconf="inventory.urls",
                      args=[other_item.pk]),
              other_item.title))
+        self.assertContains(
+            response,
+            reverse('category_create', urlconf="inventory.urls"))
+        self.assertContains(
+            response,
+            reverse('category_update',
+                    urlconf="inventory.urls",
+                    args=[self.item.category.pk]))
 
     def test_list_category_empty(self):
         from inventory.views.default_view_text import user_messages

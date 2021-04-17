@@ -74,3 +74,21 @@ user_messages = {
         Items can be associated with 0 or more categories.'''
     },
 }
+make_category_messages = {
+    'create_success':  "A new category has been created.  Name: %s",
+    'edit_success':  "The %s category has been updated.",
+    'create_intro':  "Use this form to create a new category.",
+    'edit_intro':  "Use this form to update this category.",
+}
+make_tag_messages = {
+    'create_success':  "A new tag has been created.  Name: %s",
+    'edit_success':  "The %s tag has been updated.",
+    'create_intro':  "Use this form to create a new tag.",
+    'edit_intro':  "Use this form to update this tag.",
+}
+make_subitem_messages = {
+    'create_success':  "A new subitem has been created.  Name: %s",
+    'edit_success':  "The %s subitem has been updated.",
+    'create_intro':  "Use this form to create a new subitem.",
+    'edit_intro':  "Use this form to update this subitem.",
+}
