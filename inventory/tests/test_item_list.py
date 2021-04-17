@@ -7,6 +7,7 @@ from inventory.tests.factories import (
     ItemFactory,
     ItemImageFactory,
     ItemTextFactory,
+    SubitemFactory,
     TagFactory,
     UserFactory
 )
@@ -29,6 +30,33 @@ class TestItemList(TestCase):
         self.user = UserFactory()
         self.item = ItemFactory()
         self.url = reverse(self.view_name, urlconf="inventory.urls")
+
+    def test_list_with_subitems(self):
+        subitem = SubitemFactory()
+        tag = TagFactory()
+        subitem.tags.set([tag])
+        subitem_w_dim = SubitemFactory(width=1, height=2.2, depth=0.001)
+        login_as(self.user, self)
+        response = self.client.get(self.url)
+        self.assertContains(
+            response,
+            '<td>%s</td><td>%s</td><td>N/A</td><td>%s, </td>' % (
+                subitem.title,
+                subitem.description,
+                tag.name))
+        self.assertContains(
+            response,
+            '<td>%s</td><td>%s</td><td>1.000 X 2.200 X 0.001</td><td></td>' % (
+                subitem_w_dim.title,
+                subitem_w_dim.description))
+        self.assertContains(
+            response,
+            reverse('subitem_update',
+                    urlconf="inventory.urls",
+                    args=[subitem_w_dim.pk]))
+        self.assertContains(
+            response,
+            reverse('subitem_create', urlconf="inventory.urls"))
 
     def test_list_items_basic(self):
         login_as(self.user, self)

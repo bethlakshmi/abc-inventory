@@ -4,10 +4,10 @@ from django.urls import reverse
 from inventory.tests.factories import (
     CategoryFactory,
     DispositionFactory,
-    SubitemFactory,
     ItemFactory,
     ItemImageFactory,
     ItemTextFactory,
+    SubitemFactory,
     TagFactory,
     UserFactory
 )
@@ -106,6 +106,14 @@ class TestSubItemList(TestCase):
             response,
             "'date_deaccession': '%s'" % busy_item.date_deaccession.strftime(
                 "%B %-d, %Y"))
+        self.assertContains(
+            response,
+            reverse('subitem_create', urlconf="inventory.urls"))
+        self.assertContains(
+            response,
+            reverse('subitem_update',
+                    urlconf="inventory.urls",
+                    args=[self.item.pk]))
 
     def test_list_w_image(self):
         image = ItemImageFactory(item=self.item.item)

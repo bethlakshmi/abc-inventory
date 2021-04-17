@@ -31,7 +31,8 @@
   <li role="presentation" class="nav-item"><a href="{{ path }}" class="nav-link {% if request.path == path %}active{% endif %}">{{text}}</a></li>
  {% endfor %}
  </ul>
- {% endif %}
+ {% endif %}{% if instructions %}<br>
+ <p>{{ instructions | safe }}</p>{% endif %}
 <table id="table" data-search="true" data-show-columns="true" data-show-toggle="true" data-show-fullscreen="true" data-show-columns-toggle-all="true" data-buttons="buttons" {% if not details_off %}data-detail-formatter="detailFormatter" data-detail-view="true" {% endif %}data-row-style="rowStyle" class="inventory-table" data-buttons-class="inventory-secondary" data-sort-name="modified" data-sort-order="desc">
   <thead class='inventory-table-header'>
     {% block table_header %}
@@ -140,8 +141,11 @@
         html.push('<b>Connections:</b> ' + row.connections + '<br>')
     }
     html.push('</div>')
-    if (row.images.length) {
+    if (row.images.length > 0) {
       html.push('<div class="col-12"><b>Images:<br></b>' + row.images +'</div>')
+    }
+    if (row.subitems) {
+      html.push('<div class="col-12"><b>Subitems:&nbsp;<a class="inventory-detail" href="{% url "inventory:subitem_create" %}" title="Add Subitem"><i class="fas fa-plus"></i></a><br></b><table><tr><th>Title</th><th>Description</th><th>Dimensions</th><th>Tags</th><th>Action</th></tr>' + row.subitems +'<table></div>')
     }
     html.push('</div>')
     return html.join('')
@@ -179,6 +183,9 @@
         'images': '{% for image in item.images.all %}{% if item.main_image != image %}<a href="{% url "inventory:promote_item_image" image.pk %}" title="Click to set main image">{% endif %}<img src="{% thumbnail image.filer_image 100x150 %}">{% if item.main_image != image %}</a>{% endif %}&nbsp;<a class="inventory-detail align-bottom" href="{{image.filer_image.url}}"><i class="fas fa-expand-arrows-alt"></i></a>&nbsp;{% endfor %}',
         'main_image': '{% if item.main_image %}<img src="{% thumbnail item.main_image.filer_image 100x150 %}">&nbsp;<a class="inventory-detail align-bottom" href="{{item.main_image.filer_image.url}}"><i class="fas fa-expand-arrows-alt"></i></a>&nbsp;{% else %}{% for image in item.images.all %}<a href="{% url "inventory:promote_item_image" image.pk %}" title="Click to set main image"><img src="{% thumbnail image.filer_image 100x150 %}"></a>&nbsp;<a class="inventory-detail align-bottom" href="{{image.filer_image.url}}"><i class="fas fa-expand-arrows-alt"></i></a>&nbsp;{% endfor %}{% endif %}',
         'texts': '{% for text in item.labels.all %}<i>Text {{forloop.counter}}:</i>&nbsp;&nbsp;{{text.text|escapejs}}<br>{% endfor %}',
+        {% if item.subitem_set %}
+        'subitems': '{% for sub in item.subitem_set.all %}<tr><td>{{sub}}</td><td>{{sub.description}}</td><td>{{sub.dimensions}}</td><td>{% for tag in sub.tags.all %}{{tag}}, {% endfor %}</td><td><a class="inventory-detail" href="{% url "inventory:subitem_update" sub.id %}" title="Edit"><i class="fas fa-edit"></i></a></td></tr>{% endfor %}',
+        {% endif %}
       },
   {% endfor %}
   {% endblock %}

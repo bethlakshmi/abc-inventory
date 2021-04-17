@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static sekizai_tags %}
+{% block title %}
+   {{page_title}}
+{% endblock %}
+{% block head %}
+    {# Include FontAwesome; required for icon display #}
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css">
+
+    <link href="{% static 'css/inventory.css' %}" rel="stylesheet">
+
+    {# Include Bootstrap 4 and jQuery #}
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/static/tinymce/tinymce.min.js"></script>
+    <script>{% include "tiny-mce-user-settings.tmpl" %}</script>
+    <link href="{% url 'inventory:theme_style' %}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+<h2 class="inventory-title">{{view_title}}</h2>
+<p>{{ instructions | safe }}</p>
+<form action="" method="post" enctype="multipart/form-data">
+<div class="row">
+  <div class="col-12">
+    {% include "form_table.tmpl" %}
+  </div></div>
+<div class="row">
+  <div class="col-12 text-right">
+    <input type="submit" name="finish" value="Finish" class="btn inventory-btn-primary" >
+    <a href="{{cancel_url}}" class="btn inventory-btn-light" >Cancel</a>
+  </div>
+</div>
+</form>
+{% addtoblock "js" %}
+<script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+
+{{ form.media }}
+
+<script>
+(function($) {
+    $('#add-form').click(function() {
+        var index = $('#id_inline_test_models-TOTAL_FORMS').val()
+        var newTable = $('#id_inline_test_models-__prefix__-DELETE').parents('table').clone()
+        newTable.find(':input').each(function() {
+            for (attr of ['name', 'id'])
+                $(this).attr(
+                    attr,
+                    $(this).attr(attr).replace('__prefix__', index)
+                )
+        })
+        newTable.insertBefore($(this))
+        $('#id_inline_test_models-TOTAL_FORMS').val(
+            parseInt($('#id_inline_test_models-TOTAL_FORMS').val()) + 1
+        )
+        newTable.slideDown()
+    })
+})($)
+</script>
+{% endaddtoblock %}
+{% endblock %}

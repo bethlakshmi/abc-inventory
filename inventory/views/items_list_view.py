@@ -3,8 +3,12 @@ from django.views.decorators.cache import never_cache
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from inventory.models import Item
+from inventory.models import (
+    Item,
+    UserMessage,
+)
 from django.urls import reverse
+from inventory.views.default_view_text import user_messages
 
 
 class ItemsListView(View):
@@ -18,7 +22,7 @@ class ItemsListView(View):
         return super(ItemsListView, self).dispatch(*args, **kwargs)
 
     def get_context_dict(self):
-        return {
+        context = {
             'title': self.title,
             'page_title': self.title,
             'items': self.get_list(),
@@ -27,7 +31,22 @@ class ItemsListView(View):
             'path_list': [
                 ("Item List", reverse('items_list', urlconf='inventory.urls')),
                 ("SubItem List",
-                 reverse('subitems_list', urlconf='inventory.urls'))]}
+                 reverse('subitems_list', urlconf='inventory.urls')),
+                ("Categories",
+                 reverse('categories_list', urlconf='inventory.urls')),
+                ("Tags", reverse('tags_list', urlconf='inventory.urls')),
+                ]}
+        if self.__class__.__name__ in user_messages:
+            context['instructions'] = UserMessage.objects.get_or_create(
+                view=self.__class__.__name__,
+                code="%s_INSTRUCTIONS" % self.__class__.__name__.upper(),
+                defaults={
+                    'summary': user_messages[self.__class__.__name__][
+                        'summary'],
+                    'description': user_messages[self.__class__.__name__][
+                        'description']}
+                )[0].description
+        return context
 
     def get_list(self):
         return self.object_type.objects.filter().order_by(

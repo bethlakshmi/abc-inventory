@@ -60,5 +60,35 @@ user_messages = {
         will NOT delete the image from the system.  To permanently delete an
         image, press the delete button below the image.  Deleted images are
         shaded red.  Deletion takes precedence over image links.''',
-    }
+    },
+    "CategoryListView": {
+        'summary':  "Instructions Category List",
+        'description': '''List of all categories in the system.  Expand the
+        row to see a list of editable items associated with this category.
+        Items have exactly 1 category.'''
+    },
+    "TagListView": {
+        'summary':  "Instructions Tag List",
+        'description': '''List of all tags in the system.  Expand the
+        row to see a list of editable items associated with this tag.
+        Items can be associated with 0 or more categories.'''
+    },
+}
+make_category_messages = {
+    'create_success':  "A new category has been created.  Name: %s",
+    'edit_success':  "The %s category has been updated.",
+    'create_intro':  "Use this form to create a new category.",
+    'edit_intro':  "Use this form to update this category.",
+}
+make_tag_messages = {
+    'create_success':  "A new tag has been created.  Name: %s",
+    'edit_success':  "The %s tag has been updated.",
+    'create_intro':  "Use this form to create a new tag.",
+    'edit_intro':  "Use this form to update this tag.",
+}
+make_subitem_messages = {
+    'create_success':  "A new subitem has been created.  Name: %s",
+    'edit_success':  "The %s subitem has been updated.",
+    'create_intro':  "Use this form to create a new subitem.",
+    'edit_intro':  "Use this form to update this subitem.",
 }
