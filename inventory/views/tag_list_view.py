@@ -1,6 +1,7 @@
 from inventory.views import ItemsListView
 from inventory.models import Tag
 from django.db.models import Count
+from django.urls import reverse_lazy
 
 
 class TagListView(ItemsListView):
@@ -8,6 +9,7 @@ class TagListView(ItemsListView):
     template = 'inventory/tag_list.tmpl'
     order_fields = ('name', )
     title = "Tags"
+    form_url = reverse_lazy('tag_merge', urlconf='inventory.urls')
 
     def get_list(self):
         return self.object_type.objects.filter().order_by(

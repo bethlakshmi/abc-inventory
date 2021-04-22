@@ -16,6 +16,7 @@ class ItemsListView(View):
     template = 'inventory/item_list.tmpl'
     order_fields = ('disposition', 'category')
     title = "List of Items"
+    form_url = None
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -46,6 +47,8 @@ class ItemsListView(View):
                     'description': user_messages[self.__class__.__name__][
                         'description']}
                 )[0].description
+        if self.form_url:
+            context['form_url'] = self.form_url
         return context
 
     def get_list(self):
