@@ -4,10 +4,12 @@ from inventory.forms import (
     PickNameForm,
 )
 from django.contrib import messages
-from inventory.functions import upload_and_attach
-from django.utils.safestring import mark_safe
-from easy_thumbnails.files import get_thumbnailer
 from django.urls import reverse
+from inventory.models import (
+    Item,
+    Subitem,
+    Tag
+)
 
 
 class MergeTags(GenericWizard):
@@ -38,14 +40,28 @@ class MergeTags(GenericWizard):
         if self.forms[0].__class__.__name__ == "ChooseTagsForm":
             self.tags = self.forms[0].cleaned_data['tags']
         else:
-            raise Exception("merge here!")
+            self.tags = self.forms[0].cleaned_data['tags']
+            self.target_tag = self.forms[0].cleaned_data['tag']
+            items_to_merge = Item.objects.filter(
+                tags__in=self.tags.exclude(pk=self.target_tag.pk)).exclude(
+                tags__pk=self.target_tag.pk)
+            self.num_items = len(items_to_merge)
+            self.target_tag.items.add(*items_to_merge)
+            subitems_to_merge = Subitem.objects.filter(
+                tags__in=self.tags.exclude(pk=self.target_tag.pk)).exclude(
+                tags__pk=self.target_tag.pk)
+            self.num_subitems = len(subitems_to_merge)
+            self.target_tag.subitems.add(*subitems_to_merge)
+            self.tags.exclude(pk=self.target_tag.pk).delete()
 
     def finish(self, request):
         messages.success(
             request,
-            "Merged %d tags to %s." % (
+            "Merged %d tags, %d items, %d subitems to %s." % (
                 len(self.tags),
-                self.tag))
+                self.num_items,
+                self.num_subitems,
+                self.target_tag))
         return self.return_url
 
     def setup_forms(self, form, request=None):
