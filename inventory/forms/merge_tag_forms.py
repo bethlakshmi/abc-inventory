@@ -5,8 +5,10 @@ from django.forms import (
     Form,
     ModelChoiceField,
     ModelMultipleChoiceField,
+    MultipleHiddenInput,
 )
 from inventory.models import Tag
+from inventory.forms import validate_two_choices
 
 
 class ChooseTagsForm(Form):
@@ -15,7 +17,8 @@ class ChooseTagsForm(Form):
 
     tags = ModelMultipleChoiceField(queryset=Tag.objects.all(),
                                     required=True,
-                                    widget=CheckboxSelectMultiple)
+                                    widget=CheckboxSelectMultiple,
+                                    validators=[validate_two_choices])
     step = IntegerField(widget=HiddenInput(), initial=0)
 
 
@@ -27,5 +30,7 @@ class PickNameForm(Form):
                            required=True,
                            empty_label=None)
     tags = ModelMultipleChoiceField(queryset=Tag.objects.all(),
-                                    required=True)
+                                    required=True,
+                                    widget=MultipleHiddenInput(),
+                                    validators=[validate_two_choices])
     step = IntegerField(widget=HiddenInput(), initial=1)
