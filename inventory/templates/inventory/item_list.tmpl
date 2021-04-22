@@ -18,10 +18,6 @@
   <h2 class="inventory-title">{{title}}</h2>
   </div>
   <div class="col-8 text-right">
-{% if form_url %}<form action="{{form_url}}" method="post" enctype="multipart/form-data">
-  {% csrf_token %}
-  <input type="hidden" name="step" value="0" id="id_step">
-{% endif %}
 {% block control_buttons %}
  <a href="{% url 'inventory:item_upload' %}" role="button" class="btn inventory-btn-primary">Bulk Item Upload</a>&nbsp;
  <a href="{% url 'inventory:themes_list' %}" role="button" class="btn inventory-btn-primary">Manage Themes</a>&nbsp;
@@ -37,6 +33,11 @@
  </ul>
  {% endif %}{% if instructions %}<br>
  <p>{{ instructions | safe }}</p>{% endif %}
+{% if form_url %}<form action="{{form_url}}" method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <input type="hidden" name="step" value="0" id="id_step">
+  <input type="submit" name="next" value="Merge" class="btn inventory-btn-primary" >
+{% endif %}
 <table id="table" data-search="true" data-show-columns="true" data-show-toggle="true" data-show-fullscreen="true" data-show-columns-toggle-all="true" data-buttons="buttons" {% if not details_off %}data-detail-formatter="detailFormatter" data-detail-view="true" {% endif %}data-row-style="rowStyle" class="inventory-table" data-buttons-class="inventory-secondary" data-sort-name="modified" data-sort-order="desc" data-id-field="id" data-select-item-name="tags">
   <thead class='inventory-table-header'>
     {% block table_header %}
@@ -214,16 +215,6 @@
     {% endif %}
     return {}
   }
-</script>
-<script>
-  var $table = $('#table')
-
-  $(function() {
-    $('form').submit(function () {
-      alert($(this).serialize())
-      return false
-    })
-  })
 </script>
 {% endaddtoblock %}
 {% endblock %}

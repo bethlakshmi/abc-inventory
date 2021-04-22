@@ -50,7 +50,6 @@ class MergeTags(GenericWizard):
 
     def setup_forms(self, form, request=None):
         if request:
-            raise Exception(request.POST)
             return [form(request.POST)]
         else:
             if str(form().__class__.__name__) == "ChooseTagsForm":
