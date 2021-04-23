@@ -54,6 +54,8 @@ class GenericWizard(View):
                     'description': user_messages[self.current_form_set[
                         'instruction_key']]['description']}
                 )[0].description
+        if 'confirm_msg' in self.current_form_set:
+            context['confirm_msg'] = self.current_form_set['confirm_msg']
         return context
 
     def make_back_forms(self, request):
