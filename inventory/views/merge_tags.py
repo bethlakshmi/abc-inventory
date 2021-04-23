@@ -66,11 +66,17 @@ class MergeTags(GenericWizard):
 
     def setup_forms(self, form, request=None):
         if request:
-            return [form(request.POST)]
+            if str(form().__class__.__name__) == "ChooseTagsForm":
+                return [form(request.POST)]
+            else:
+                pick_form = form(request.POST)
+                pick_form.fields['tag'].queryset = Tag.objects.filter(
+                     pk__in=request.POST.getlist("tags"))
+                return [pick_form]
         else:
             if str(form().__class__.__name__) == "ChooseTagsForm":
                 return [form()]
             else:
-                pick_form = PickNameForm(initial={'tags': self.tags})
+                pick_form = form(initial={'tags': self.tags})
                 pick_form.fields['tag'].queryset = self.tags
                 return [pick_form]
