@@ -1,7 +1,7 @@
 from inventory.views import GenericWizard
 from inventory.forms import (
     ChooseTagsForm,
-    PickNameForm,
+    PickTagNameForm,
 )
 from django.contrib import messages
 from django.urls import reverse
@@ -24,10 +24,10 @@ class MergeTags(GenericWizard):
             'next_title': first_title},
         0: {
             'the_form':  ChooseTagsForm,
-            'next_form': PickNameForm,
+            'next_form': PickTagNameForm,
             'next_title': second_title},
         1: {
-            'the_form':  PickNameForm,
+            'the_form':  PickTagNameForm,
             'next_form': None,
             'next_title': None},
     }

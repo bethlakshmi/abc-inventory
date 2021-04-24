@@ -86,21 +86,6 @@ class TestMergeTags(TestCase):
             self.m_hidden % (self.tag2.pk, 1),
             html=True)
 
-    def test_post_good_merge_items(self):
-        login_as(self.user, self)
-
-        response = self.client.post(
-            self.url,
-            data={'tags': [self.tag.pk, self.tag2.pk],
-                  'tag': self.tag.pk,
-                  'step': 1,
-                  'finish': 'Finish'},
-            follow=True)
-        self.assertContains(
-            response,
-            "Merged 2 tags, re-tagged 1 items and 0 subitems to %s." % (
-                self.tag.name))
-
     def test_post_bad_tag(self):
         login_as(self.user, self)
         bad_tag = TagFactory()

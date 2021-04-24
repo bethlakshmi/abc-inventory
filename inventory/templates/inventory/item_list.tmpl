@@ -38,7 +38,7 @@
   <input type="hidden" name="step" value="0" id="id_step">
   <input type="submit" name="next" value="Merge" class="btn inventory-btn-primary" >
 {% endif %}
-<table id="table" data-search="true" data-show-columns="true" data-show-toggle="true" data-show-fullscreen="true" data-show-columns-toggle-all="true" data-buttons="buttons" {% if not details_off %}data-detail-formatter="detailFormatter" data-detail-view="true" {% endif %}data-row-style="rowStyle" class="inventory-table" data-buttons-class="inventory-secondary" data-sort-name="modified" data-sort-order="desc" data-id-field="id" data-select-item-name="tags">
+<table id="table" data-search="true" data-show-columns="true" data-show-toggle="true" data-show-fullscreen="true" data-show-columns-toggle-all="true" data-buttons="buttons" {% if not details_off %}data-detail-formatter="detailFormatter" data-detail-view="true" {% endif %}data-row-style="rowStyle" class="inventory-table" data-buttons-class="inventory-secondary" data-sort-name="modified" data-sort-order="desc" data-id-field="id" data-select-item-name="{{data_name_plural}}">
   <thead class='inventory-table-header'>
     {% block table_header %}
         <tr>

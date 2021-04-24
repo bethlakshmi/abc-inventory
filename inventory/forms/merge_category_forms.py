@@ -7,29 +7,29 @@ from django.forms import (
     ModelMultipleChoiceField,
     MultipleHiddenInput,
 )
-from inventory.models import Tag
+from inventory.models import Category
 from inventory.forms import validate_two_choices
 
 
-class ChooseTagsForm(Form):
+class ChooseCategoryForm(Form):
     required_css_class = 'required'
     error_css_class = 'error'
 
-    tags = ModelMultipleChoiceField(queryset=Tag.objects.all(),
+    categories = ModelMultipleChoiceField(queryset=Category.objects.all(),
                                     required=True,
                                     widget=CheckboxSelectMultiple,
                                     validators=[validate_two_choices])
     step = IntegerField(widget=HiddenInput(), initial=0)
 
 
-class PickTagNameForm(Form):
+class PickCategoryNameForm(Form):
     required_css_class = 'required'
     error_css_class = 'error'
 
-    tag = ModelChoiceField(queryset=Tag.objects.all(),
+    category = ModelChoiceField(queryset=Category.objects.all(),
                            required=True,
                            empty_label=None)
-    tags = ModelMultipleChoiceField(queryset=Tag.objects.all(),
+    categories = ModelMultipleChoiceField(queryset=Category.objects.all(),
                                     required=True,
                                     widget=MultipleHiddenInput(),
                                     validators=[validate_two_choices])

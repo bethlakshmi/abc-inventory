@@ -1,7 +1,11 @@
 {% extends 'inventory/item_list.tmpl' %}
+{% block control_buttons %}
+<a href="{% url 'inventory:themes_list' %}" role="button" class="btn inventory-btn-primary">Manage Themes</a>&nbsp;
+{% endblock %}
 {% block table_header %}
         <tr>
-          <th data-field="id" data-sortable="true">ID</th>
+          <th data-checkbox="true" data-width="10"></th>
+          <th data-field="id" data-sortable="true" data-width="10">ID</th>
           <th data-field="name" data-sortable="true">Name</th>
           <th data-field="help" data-sortable="true">Help Text</th>
           <th data-field="count" data-sortable="true"># Items</th>

@@ -24,3 +24,4 @@ from .make_category import (CategoryCreate, CategoryUpdate)
 from .make_tag import (TagCreate, TagUpdate)
 from .make_subitem import (SubitemCreate, SubitemUpdate)
 from .merge_tags import MergeTags
+from .merge_categories import MergeCategories
