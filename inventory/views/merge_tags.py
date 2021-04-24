@@ -39,11 +39,14 @@ class MergeTags(GenericWizard):
     def finish_valid_form(self, request):
         if self.forms[0].__class__.__name__ == "ChooseTagsForm":
             self.tags = self.forms[0].cleaned_data['tags']
+            # Confirm tag1, tag2, ... into <chosen tag selection>
             tag_list = "Confirm merge of tags: "
             for tag in self.tags:
                 tag_list = tag_list + tag.name + ', '
-            self.current_form_set['confirm_msg'] = " into ".join(
-                tag_list.rsplit(", ", 1))
+            self.current_form_set['confirm_msg'] = (
+                "'%s'+document.getElementById('id_tag').options[document." +
+                "getElementById('id_tag').selectedIndex].text+'.'") % (
+                " into ".join(tag_list.rsplit(", ", 1)))
         else:
             self.tags = self.forms[0].cleaned_data['tags']
             self.target_tag = self.forms[0].cleaned_data['tag']
@@ -62,7 +65,7 @@ class MergeTags(GenericWizard):
     def finish(self, request):
         messages.success(
             request,
-            "Merged %d tags, %d items, %d subitems into %s." % (
+            "Merged %d tags, re-tagged %d items and %d subitems to %s." % (
                 len(self.tags),
                 self.num_items,
                 self.num_subitems,

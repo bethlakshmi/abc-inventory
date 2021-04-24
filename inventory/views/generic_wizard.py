@@ -26,6 +26,14 @@ class GenericWizard(View):
     #     - finish - place to put any messaging and return a URL for how to
     #          return to a main spot
     #     - redirect (only used with add) - a place to redirect to continue
+    # Optional stuff:
+    #     - adding instruction_key to any form set will give that string as
+    #          instructions at the top of the form (unless you use a special
+    #          handling case, in which case this is your problem)
+    #     - confirm_msg = if present, the submission of the form will trigger
+    #          a confirmation window with this as the message.  This can be
+    #          Javascript - so if you want to pull from the form data, have
+    #          a blast.
     ##############
     step = -1
     max = 1
