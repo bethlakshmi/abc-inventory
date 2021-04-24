@@ -16,9 +16,9 @@ class ChooseCategoryForm(Form):
     error_css_class = 'error'
 
     categories = ModelMultipleChoiceField(queryset=Category.objects.all(),
-                                    required=True,
-                                    widget=CheckboxSelectMultiple,
-                                    validators=[validate_two_choices])
+                                          required=True,
+                                          widget=CheckboxSelectMultiple,
+                                          validators=[validate_two_choices])
     step = IntegerField(widget=HiddenInput(), initial=0)
 
 
@@ -27,10 +27,10 @@ class PickCategoryNameForm(Form):
     error_css_class = 'error'
 
     category = ModelChoiceField(queryset=Category.objects.all(),
-                           required=True,
-                           empty_label=None)
+                                required=True,
+                                empty_label=None)
     categories = ModelMultipleChoiceField(queryset=Category.objects.all(),
-                                    required=True,
-                                    widget=MultipleHiddenInput(),
-                                    validators=[validate_two_choices])
+                                          required=True,
+                                          widget=MultipleHiddenInput(),
+                                          validators=[validate_two_choices])
     step = IntegerField(widget=HiddenInput(), initial=1)

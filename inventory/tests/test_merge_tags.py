@@ -27,7 +27,6 @@ class TestMergeTags(TestCase):
         self.item.tags.set([self.tag])
         self.item2.tags.set([self.tag2])
 
-
     def test_get(self):
         login_as(self.user, self)
         response = self.client.get(self.url)

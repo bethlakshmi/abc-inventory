@@ -28,7 +28,6 @@ class TestMergeCategories(TestCase):
         self.item = ItemFactory(category=self.category)
         self.item2 = ItemFactory(category=self.category2)
 
-
     def test_get(self):
         login_as(self.user, self)
         response = self.client.get(self.url)
