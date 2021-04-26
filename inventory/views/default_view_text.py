@@ -76,21 +76,30 @@ user_messages = {
 }
 make_category_messages = {
     'create_success':  "A new category has been created.  Name: %s",
+    'delete_success':  "The %s category has been deleted.",
     'edit_success':  "The %s category has been updated.",
     'create_intro':  "Use this form to create a new category.",
+    'delete_intro':  "Are you sure you want to delete category '%s'?",
     'edit_intro':  "Use this form to update this category.",
 }
 make_tag_messages = {
     'create_success':  "A new tag has been created.  Name: %s",
-    'edit_success':  "The %s tag has been updated.",
     'delete_success':  "The %s tag has been deleted.",
+    'edit_success':  "The %s tag has been updated.",
     'create_intro':  "Use this form to create a new tag.",
-    'edit_intro':  "Use this form to update this tag.",
     'delete_intro':  "Are you sure you want to delete tag '%s'?",
+    'edit_intro':  "Use this form to update this tag.",
 }
 make_subitem_messages = {
     'create_success':  "A new subitem has been created.  Name: %s",
+    'delete_success':  "The %s subitem has been deleted.",
     'edit_success':  "The %s subitem has been updated.",
     'create_intro':  "Use this form to create a new subitem.",
+    'delete_intro':  "Are you sure you want to delete subitem '%s'?",
     'edit_intro':  "Use this form to update this subitem.",
+}
+
+delete_item_messages = {
+    'delete_success':  "The %s item has been deleted.",
+    'delete_intro':  "Are you sure you want to delete item '%s'?",
 }

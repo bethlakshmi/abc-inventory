@@ -170,7 +170,7 @@
         'year': '{% if item.year %}{{ item.year|escapejs }}{% endif %}',
         'subject': '{% if item.subject %}{{ item.subject|escapejs }}{% endif %}',
         'modified': '<span data-datetime="{{ item.updated_at|date:"U" }}">{{ item.updated_at|date:"N j, Y, g:h A" }}</span>',
-        'action': '<a class="inventory-detail" href="{% url "inventory:item_edit" item.id %}" title="Edit"><i class="fas fa-edit"></i></a>&nbsp;&nbsp;<a class="inventory-detail" href="{% url "inventory:manage_item_image" item.id %}" title="Manage Images"><i class="far fa-images"></i></a>',
+        'action': '<form onsubmit="return confirm(\'Do you want to delete the item - {{item.title|escapejs}}?\');" action="{% url "inventory:item_delete" item.id %}" method="post">{% csrf_token %}<a class="btn btn-sm inventory-detail px-1" href="{% url "inventory:item_edit" item.id %}" title="Edit"><i class="fas fa-edit"></i></a><a class="btn btn-sm inventory-detail px-1" href="{% url "inventory:manage_item_image" item.id %}" title="Manage Images"><i class="far fa-images"></i></a><button class="btn btn-sm inventory-detail px-1" type="submit"><i class="fas fa-trash-alt"></i></button></form>',
         'price': '{% if item.price %}${{ item.price }}{% endif %}',
         'description': '{% if item.description %}{{ item.description.strip|escapejs }}{% endif %}',
         'note': '{% if item.note %}{{ item.note|escapejs }}{% endif %}',
