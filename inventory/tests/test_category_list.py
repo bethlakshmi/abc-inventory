@@ -66,6 +66,11 @@ class TestCategoryList(TestCase):
             reverse('category_update',
                     urlconf="inventory.urls",
                     args=[self.item.category.pk]))
+        self.assertContains(
+            response,
+            reverse('category_delete',
+                    urlconf="inventory.urls",
+                    args=[self.item.category.pk]))
 
     def test_list_category_empty(self):
         from inventory.views.default_view_text import user_messages
