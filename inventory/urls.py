@@ -18,6 +18,7 @@ from inventory.views import (
     SubItemsListView,
     SubitemUpdate,
     TagCreate,
+    TagDelete,
     TagListView,
     TagUpdate,
     ThemeView,
@@ -42,9 +43,7 @@ urlpatterns = [
     url(r'^inventory/category/list/?',
         CategoryListView.as_view(),
         name='categories_list'),
-    url(r'^inventory/tag/list/?',
-        TagListView.as_view(),
-        name='tags_list'),
+
     url(r'^inventory/item/create/?',
         MakeItemWizard.as_view(),
         name='item_create'),
@@ -87,10 +86,20 @@ urlpatterns = [
     url(r'^inventory/category/update/(?P<pk>.*)/$',
         CategoryUpdate.as_view(),
         name='category_update'),
+
+    # Tags
+    url(r'^inventory/tag/list/?',
+        TagListView.as_view(),
+        name='tags_list'),
     url(r'^inventory/tag/create/?', TagCreate.as_view(), name='tag_create'),
+    url(r'^inventory/tag/delete/(?P<pk>.*)/$',
+        TagDelete.as_view(),
+        name='tag_delete'),
     url(r'^inventory/tag/update/(?P<pk>.*)/$',
         TagUpdate.as_view(),
         name='tag_update'),
+
+    # Subitems
     url(r'^inventory/subitem/create/?',
         SubitemCreate.as_view(),
         name='subitem_create'),

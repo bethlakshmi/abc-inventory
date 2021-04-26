@@ -83,8 +83,10 @@ make_category_messages = {
 make_tag_messages = {
     'create_success':  "A new tag has been created.  Name: %s",
     'edit_success':  "The %s tag has been updated.",
+    'delete_success':  "The %s tag has been deleted.",
     'create_intro':  "Use this form to create a new tag.",
     'edit_intro':  "Use this form to update this tag.",
+    'delete_intro':  "Are you sure you want to delete tag '%s'?",
 }
 make_subitem_messages = {
     'create_success':  "A new subitem has been created.  Name: %s",
