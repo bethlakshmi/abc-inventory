@@ -36,12 +36,14 @@ class ItemsListView(View):
         return super(ItemsListView, self).dispatch(*args, **kwargs)
 
     def get_context_dict(self):
+        verbose = self.object_type._meta.verbose_name_plural
         context = {
             'title': self.title,
             'page_title': self.title,
             'items': self.get_list(),
             'changed_id': self.changed_id,
             'error_id': self.error_id,
+            'data_name_plural': verbose.title().lower(),
             'path_list': [
                 ("Item List", reverse('items_list', urlconf='inventory.urls')),
                 ("SubItem List",
