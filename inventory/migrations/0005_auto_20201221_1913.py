@@ -43,7 +43,7 @@ init_values = [
             'usage': 'Big Table',
             'prop_val': [('box-shadow',
                           'px px px px rgba',
-                          '0px 0px 0px 3px rgba(0, 123, 255, 0.25)')]},
+                          '0px 0px 0px 3px rgba(0,123,255,0.25)')]},
     {
             'selector': '.detail-icon',
             'pseudo_class': '',
