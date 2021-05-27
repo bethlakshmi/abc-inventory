@@ -80,6 +80,11 @@ class TestTagList(TestCase):
             reverse('tag_update',
                     urlconf="inventory.urls",
                     args=[self.tag.pk]))
+        self.assertContains(
+            response,
+            reverse('tag_delete',
+                    urlconf="inventory.urls",
+                    args=[self.tag.pk]))
 
     def test_list_tag_empty(self):
         from inventory.views.default_view_text import user_messages

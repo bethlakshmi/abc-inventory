@@ -42,8 +42,8 @@
         'help': '{{ tag.help_text|escapejs }}',
         'count': '{{ tag.num_items }}',
         'items': '{% for item in tag.items.all %}<a href="{% url 'inventory:item_edit' item.id %}" title="Edit">{{ item }}&nbsp;&nbsp;<i class="fas fa-edit"></i></a>,<br>{% endfor %}',
+        'action': '<form onsubmit="return confirm(\'Do you want to delete the tag - {{tag.name}}?\');" action="{% url "inventory:tag_delete" tag.id %}" method="post">{% csrf_token %}<a class="btn btn-sm inventory-detail px-1" href="{% url "inventory:tag_update" tag.id %}" title="Edit"><i class="fas fa-edit"></i></a><button class="btn btn-sm inventory-detail px-1" type="submit"><i class="fas fa-trash-alt"></i></button></form>',
         'subitems': '{% for item in tag.subitems.all %}<a href="{% url 'inventory:subitem_update' item.id %}" title="Edit">{{ item }}&nbsp;&nbsp;<i class="fas fa-edit"></i></a>,<br>{% endfor %}',
-        'action': '<a class="inventory-detail" href="{% url "inventory:tag_update" tag.id %}" title="Edit"><i class="fas fa-edit"></i></a>',
       },
   {% endfor %}
   {% endblock %}

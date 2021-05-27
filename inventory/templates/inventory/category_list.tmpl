@@ -40,7 +40,7 @@
         'help': '{{ category.help_text|escapejs }}',
         'count': '{{ category.num_items }}',
         'items': '{% for item in category.items.all %}<a href="{% url 'inventory:item_edit' item.id %}" title="Edit">{{ item }}&nbsp;&nbsp;<i class="fas fa-edit"></i></a>,<br>{% endfor %}',
-        'action': '<a class="inventory-detail" href="{% url "inventory:category_update" category.id %}" title="Edit"><i class="fas fa-edit"></i></a>',
+        'action': '<form onsubmit="return confirm(\'Do you want to delete the category - {{category.name}}?\');" action="{% url "inventory:category_delete" category.id %}" method="post">{% csrf_token %}<a class="btn btn-sm inventory-detail px-1" href="{% url "inventory:category_update" category.id %}" title="Edit"><i class="fas fa-edit"></i></a><button class="btn btn-sm inventory-detail px-1" type="submit"><i class="fas fa-trash-alt"></i></button></form>',
       },
   {% endfor %}
   {% endblock %}
