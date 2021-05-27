@@ -33,7 +33,12 @@
  </ul>
  {% endif %}{% if instructions %}<br>
  <p>{{ instructions | safe }}</p>{% endif %}
-<table id="table" data-cookie="true" data-cookie-id-table="{{data_name_plural}}ListId" data-search="true" data-show-columns="true" data-show-toggle="true" data-show-fullscreen="true" data-show-columns-toggle-all="true" data-buttons="buttons" {% if not details_off %}data-detail-formatter="detailFormatter" data-detail-view="true" {% endif %}data-row-style="rowStyle" class="inventory-table" data-buttons-class="inventory-secondary" data-sort-name="modified" data-sort-order="desc">
+{% if form_url %}<form action="{{form_url}}" method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <input type="hidden" name="step" value="0" id="id_step">
+  <input type="submit" name="next" value="Merge" class="btn inventory-btn-primary" >
+{% endif %}
+<table id="table" data-cookie="true" data-cookie-id-table="{{data_name_plural}}ListId" data-search="true" data-show-columns="true" data-show-toggle="true" data-show-fullscreen="true" data-show-columns-toggle-all="true" data-buttons="buttons" {% if not details_off %}data-detail-formatter="detailFormatter" data-detail-view="true" {% endif %}data-row-style="rowStyle" class="inventory-table" data-buttons-class="inventory-secondary" data-sort-name="modified" data-sort-order="desc" data-id-field="id" data-select-item-name="{{data_name_plural}}" data-click-to-select="true">
   <thead class='inventory-table-header'>
     {% block table_header %}
         <tr>
@@ -66,6 +71,7 @@
     {% endblock %}
   </thead>
 </table>
+ {% if form_url %}</form>{% endif %}
 
 {% addtoblock "js" %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>

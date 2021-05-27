@@ -12,10 +12,24 @@ from inventory.views.default_view_text import user_messages
 
 
 class ItemsListView(View):
+    ##############
+    #  This is an overloaded class, it gives the logic for rendering a list
+    #  using something that extends the item_list.tmpl:
+    #     - get_list() - instantiate the item list, this will come to the
+    #          template as "items"
+    # Optional stuff:
+    #     - form_url = for a form that is a set of checkboxes and a button
+    #          called "Merge" - the checkboxes will be named for the plural
+    #          of the object_type, and have values of the "id" column in the
+    #          table
+    #     - the GET request can use changed_id or error_id to provide success
+    #          or error color coding for any changes to the list of objects
+    ##############
     object_type = Item
     template = 'inventory/item_list.tmpl'
     order_fields = ('disposition', 'category')
     title = "List of Items"
+    form_url = None
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -48,6 +62,10 @@ class ItemsListView(View):
                     'description': user_messages[self.__class__.__name__][
                         'description']}
                 )[0].description
+        if self.form_url:
+            context['form_url'] = self.form_url
+            verbose = self.object_type._meta.verbose_name_plural
+            context['data_name_plural'] = verbose.title().lower()
         return context
 
     def get_list(self):
