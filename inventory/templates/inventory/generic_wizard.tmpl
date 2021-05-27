@@ -40,7 +40,7 @@
     {% if not last %}<input type="submit" name="next" value="Save & Continue >>" class="btn inventory-btn-primary" >{% endif %}
     {% if add %}<input type="submit" name="add" value="Add Text" class="btn inventory-btn-primary" > <input type="submit" name="redirect" value="Proceed to Images >>" class="btn inventory-btn-primary" >{% endif %}
     {% if show_finish %}
-    <input type="submit" name="finish" value="Finish" class="btn inventory-btn-primary" >{% endif %}
+    <input type="submit" name="finish" value="Finish" {% if confirm_msg %}onclick="return confirm({{confirm_msg | safe}});" {% endif %}class="btn inventory-btn-primary" >{% endif %}
     <input type="submit" name="cancel" value="Cancel" class="btn inventory-btn-light" formnovalidate>
   </div>
 </div>

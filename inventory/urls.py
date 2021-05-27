@@ -14,6 +14,8 @@ from inventory.views import (
     MakeItemWizard,
     ManageItemImage,
     ManageTheme,
+    MergeCategories,
+    MergeTags,
     PreviewTheme,
     PromoteItemImage,
     SubitemCreate,
@@ -110,6 +112,7 @@ urlpatterns = [
     url(r'^inventory/tag/update/(?P<pk>.*)/$',
         TagUpdate.as_view(),
         name='tag_update'),
+    url(r'^inventory/tag/merge/?', MergeTags.as_view(), name='tag_merge'),
 
     # Subitems
     url(r'^inventory/subitem/list/?',

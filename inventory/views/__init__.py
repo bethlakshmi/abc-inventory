@@ -12,10 +12,10 @@ from .delete_item import ItemDelete
 from .category_autocomplete import CategoryAutocomplete
 from .category_list_view import CategoryListView
 from .make_category import (CategoryCreate, CategoryDelete, CategoryUpdate)
+from .merge_categories import MergeCategories
 
 from .connection_autocomplete import ConnectionAutocomplete
 from .disposition_autocomplete import DispositionAutocomplete
-
 
 from .subitems_list_view import SubItemsListView
 from .make_subitem import (SubitemCreate, SubitemDelete, SubitemUpdate)
@@ -23,6 +23,7 @@ from .make_subitem import (SubitemCreate, SubitemDelete, SubitemUpdate)
 from .tag_autocomplete import TagAutocomplete
 from .tag_list_view import TagListView
 from .make_tag import (TagCreate, TagDelete, TagUpdate)
+from .merge_tags import MergeTags
 
 from .theme_view import ThemeView
 from .activate_theme import ActivateTheme

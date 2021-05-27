@@ -1,6 +1,7 @@
 from inventory.views import ItemsListView
 from inventory.models import Category
 from django.db.models import Count
+from django.urls import reverse_lazy
 
 
 class CategoryListView(ItemsListView):
@@ -8,6 +9,7 @@ class CategoryListView(ItemsListView):
     template = 'inventory/category_list.tmpl'
     order_fields = ('name', )
     title = "Categories"
+    form_url = reverse_lazy('category_merge', urlconf='inventory.urls')
 
     def get_list(self):
         return self.object_type.objects.filter().order_by(

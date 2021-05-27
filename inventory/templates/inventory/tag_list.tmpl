@@ -1,7 +1,11 @@
 {% extends 'inventory/item_list.tmpl' %}
+{% block control_buttons %}
+<a href="{% url 'inventory:themes_list' %}" role="button" class="btn inventory-btn-primary">Manage Themes</a>&nbsp;
+{% endblock %}
 {% block table_header %}
         <tr>
-          <th data-field="id" data-sortable="true">ID</th>
+          <th data-checkbox="true" data-width="10"></th>
+          <th data-field="id" data-sortable="true" data-width="10">ID</th>
           <th data-field="name" data-sortable="true">Name</th>
           <th data-field="help" data-sortable="true">Help Text</th>
           <th data-field="count" data-sortable="true"># Items</th>
@@ -23,8 +27,10 @@
 {% block details %}
     var html = []
     html.push('<div class="row">')
-    html.push('<div class="col-12">')
+    html.push('<div class="col-6">')
     html.push('<b>Items:</b><br>' + row.items + '<br>')
+    html.push('</div><div class="col-6">')
+    html.push('<b>Subitems:</b><br>' + row.subitems + '<br>')
     html.push('</div></div>')
     return html.join('')
 {% endblock %}
@@ -37,6 +43,7 @@
         'count': '{{ tag.num_items }}',
         'items': '{% for item in tag.items.all %}<a href="{% url 'inventory:item_edit' item.id %}" title="Edit">{{ item }}&nbsp;&nbsp;<i class="fas fa-edit"></i></a>,<br>{% endfor %}',
         'action': '<form onsubmit="return confirm(\'Do you want to delete the tag - {{tag.name}}?\');" action="{% url "inventory:tag_delete" tag.id %}" method="post">{% csrf_token %}<a class="btn btn-sm inventory-detail px-1" href="{% url "inventory:tag_update" tag.id %}" title="Edit"><i class="fas fa-edit"></i></a><button class="btn btn-sm inventory-detail px-1" type="submit"><i class="fas fa-trash-alt"></i></button></form>',
+        'subitems': '{% for item in tag.subitems.all %}<a href="{% url 'inventory:subitem_update' item.id %}" title="Edit">{{ item }}&nbsp;&nbsp;<i class="fas fa-edit"></i></a>,<br>{% endfor %}',
       },
   {% endfor %}
   {% endblock %}
