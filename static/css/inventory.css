@@ -22,4 +22,4 @@ body.full-page {padding: 5px;}
   border: 1px solid grey;
 }
 .pixel-input {width: 50px;}
-ul#id_tags {list-style: none;}
+ul#id_tags, ul#id_categories {list-style: none;}
