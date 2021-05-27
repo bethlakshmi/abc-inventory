@@ -47,6 +47,9 @@ urlpatterns = [
     url(r'^inventory/category/update/(?P<pk>.*)/$',
         CategoryUpdate.as_view(),
         name='category_update'),
+    url(r'^inventory/category/merge/?',
+        MergeCategories.as_view(),
+        name='category_merge'),
 
     # Items
     url(r'^inventory/item/list/?', ItemsListView.as_view(), name='items_list'),
