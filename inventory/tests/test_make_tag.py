@@ -14,6 +14,7 @@ class TestMakeTag(TestCase):
 
     add_name = 'tag_create'
     update_name = 'tag_update'
+    delete_name = 'tag_delete'
 
     def setUp(self):
         self.client = Client()
@@ -23,6 +24,10 @@ class TestMakeTag(TestCase):
         self.edit_url = reverse(self.update_name,
                                 args=[self.object.pk],
                                 urlconf='inventory.urls')
+        self.delete_url = reverse(self.delete_name,
+                                  args=[self.object.pk],
+                                  urlconf='inventory.urls')
+
         user = UserFactory()
         login_as(user, self)
 
@@ -87,3 +92,20 @@ class TestMakeTag(TestCase):
             make_tag_messages['edit_success'] % "New Name")
         self.assertContains(response, "This field is required.")
         self.assertContains(response, make_tag_messages['edit_intro'])
+
+    def test_delete_get(self):
+        from inventory.views.default_view_text import make_tag_messages
+        response = self.client.get(self.delete_url)
+        self.assertContains(response, "Delete Tag")
+        self.assertContains(
+            response,
+            make_tag_messages['delete_intro'] % self.object)
+
+    def test_delete_post(self):
+        from inventory.views.default_view_text import make_tag_messages
+        start = Tag.objects.all().count()
+        response = self.client.post(self.delete_url, follow=True)
+        self.assertContains(
+            response,
+            make_tag_messages['delete_success'] % self.object)
+        self.assertEqual(start-1, Tag.objects.all().count())

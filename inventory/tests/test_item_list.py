@@ -67,6 +67,10 @@ class TestItemList(TestCase):
             urlconf="inventory.urls",
             args=[self.item.pk]))
         self.assertContains(response, reverse(
+            "item_delete",
+            urlconf="inventory.urls",
+            args=[self.item.pk]))
+        self.assertContains(response, reverse(
             "manage_item_image",
             urlconf="inventory.urls",
             args=[self.item.pk]))

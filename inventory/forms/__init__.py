@@ -1,3 +1,4 @@
+from .validate_two_choices import validate_two_choices
 from .basic_item_form import BasicItemForm
 from .physical_item_form import PhysicalItemForm
 from .further_detail_form import FurtherDetailForm
@@ -13,3 +14,5 @@ from .item_upload_form import ItemUploadForm
 from .item_upload_mapping import ItemUploadMapping
 from .item_upload_row import ItemUploadRow
 from .subitem_form import SubitemForm
+from .merge_tag_forms import ChooseTagsForm, PickTagNameForm
+from .merge_category_forms import ChooseCategoryForm, PickCategoryNameForm

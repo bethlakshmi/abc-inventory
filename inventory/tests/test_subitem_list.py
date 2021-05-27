@@ -114,6 +114,11 @@ class TestSubItemList(TestCase):
             reverse('subitem_update',
                     urlconf="inventory.urls",
                     args=[self.item.pk]))
+        self.assertContains(
+            response,
+            reverse('subitem_delete',
+                    urlconf="inventory.urls",
+                    args=[self.item.pk]))
 
     def test_list_w_image(self):
         image = ItemImageFactory(item=self.item.item)

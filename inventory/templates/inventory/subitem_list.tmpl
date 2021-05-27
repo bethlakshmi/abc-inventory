@@ -105,7 +105,7 @@
         'd': '{% if subitem.depth %}{{ subitem.depth.normalize }}{% endif %}',
         'year': '{% if subitem.item.year %}{{ subitem.item.year|escapejs }}{% endif %}',
         'subject': '{% if subitem.item.subject %}{{ subitem.item.subject|escapejs }}{% endif %}',
-        'action': '<a class="inventory-detail" href="{% url "inventory:subitem_update" subitem.id %}" title="Edit"><i class="fas fa-edit"></i></a>',
+        'action': '<form onsubmit="return confirm(\'Do you want to delete the subitem - {{subitem.title|escapejs}}?\');" action="{% url "inventory:subitem_delete" subitem.id %}" method="post">{% csrf_token %}<a class="btn btn-sm inventory-detail px-1" href="{% url "inventory:subitem_update" subitem.id %}" title="Edit"><i class="fas fa-edit"></i></a><button class="btn btn-sm inventory-detail px-1" type="submit"><i class="fas fa-trash-alt"></i></button></form>',
         'description': '{% if subitem.description %}{{ subitem.description.strip|escapejs }}{% endif %}',
         'created': '{{ subitem.created_at }}',
         'updated': '{{ subitem.updated_at }}',
