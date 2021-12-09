@@ -1,36 +1,24 @@
-*.py[cod]
-*$py.class
-*.egg-info
-*.log
-*.pot
+# <DEFAULT>  # Warning: text inside the DEFAULT tags is auto-generated. Manual changes will be overwritten.
+# OS generated
 .DS_Store
-.coverage/
-.eggs/
-.idea/
-.project/
-.pydevproject/
-.settings/
-.tox/
-__pycache__/
-build/
-dist/
-env/
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*~
 
-/~
-/node_modules
-.sass-cache
-*.css.map
-npm-debug.log
-package-lock.json
+# Python
+*.pyc
+*.pyo
 
-local.sqlite
-
+# Aldryn
+/.env
 .aldryn
 .divio
-data/media/*
-data.tar.gz
-.coverage
-htmlcov/*
-data/media/MANIFEST
-.coverage
-.coverage.*
+/data
+/data.tar.gz
+/static_collected
+/node_modules
+# </DEFAULT>
