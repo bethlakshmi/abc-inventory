@@ -289,7 +289,6 @@ class TestBulkItemUpload(TestCase):
                   'step': 0,
                   'next': 'Save & Continue >>'},
             follow=True)
-        print(response.content)
         self.assertContains(response, item_upload_help['has_header'])
         self.assertContains(
             response,
