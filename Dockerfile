@@ -7,6 +7,7 @@
 FROM debian:8.7
 
 # <DOCKER_FROM>
+FROM debian:8.7
 # </DOCKER_FROM>
 
 # <NPM>
