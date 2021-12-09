@@ -6,26 +6,12 @@
 
 FROM debian:8.7
 
-# <DOCKER_FROM>
-FROM debian:8.7
-# </DOCKER_FROM>
 
 # <NPM>
 # </NPM>
 
 # <BOWER>
 # </BOWER>
-
-# <PYTHON>
-ENV PIP_INDEX_URL=${PIP_INDEX_URL:-https://wheels.aldryn.net/v1/aldryn-extras+pypi/aldryn-baseproject/+simple/} \
-    WHEELSPROXY_URL=${WHEELSPROXY_URL:-https://wheels.aldryn.net/v1/aldryn-extras+pypi/aldryn-baseproject/}
-COPY requirements.* /app/
-COPY addons-dev /app/addons-dev/
-RUN pip-reqs resolve && \
-    pip install \
-        --no-index --no-deps \
-        --requirement requirements.urls
-# </PYTHON>
 
 # <SOURCE>
 COPY . /app
