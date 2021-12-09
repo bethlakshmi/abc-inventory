@@ -4,8 +4,9 @@
 # this functionality by simply removing the wrapping tags.
 # </WARNING>
 
-# <DOCKER_FROM>
 FROM debian:8.7
+
+# <DOCKER_FROM>
 # </DOCKER_FROM>
 
 # <NPM>
