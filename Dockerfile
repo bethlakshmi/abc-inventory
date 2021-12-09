@@ -7,7 +7,8 @@
 FROM divio/base:1.2-py3.8-slim-buster
 # </DOCKER_FROM>
 # <NPM>
-@@ -11,13 +15,23 @@
+# </NPM>
+# <BOWER>
 # </BOWER>
 # <PYTHON>
 ENV PIP_INDEX_URL=${PIP_INDEX_URL:-https://wheels.aldryn.net/v1/aldryn-extras+pypi/${WHEELS_PLATFORM:-aldryn-baseproject-py3}/+simple/} \
