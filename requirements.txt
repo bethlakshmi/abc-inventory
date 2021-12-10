@@ -6,8 +6,6 @@
 #
 --index-url https://wheels.aldryn.net/v1/aldryn-extras+pypi/buster-py38/+simple/
 
-aiocontextvars==0.2.2
-    # via aldryn-django
 https://divio-addons.s3-eu-central-1.amazonaws.com/aldryn-addons/2.0.1/75074b5c-4ff7-448b-acf9-412d78472b6b/aldryn-addons-2.0.1.tar.gz#egg=aldryn-addons==2.0.1
     # via
     #   -r /workspace/requirements.in
@@ -18,7 +16,7 @@ aldryn-client==2.3.5
     # via aldryn-django
 https://divio-addons.s3-eu-central-1.amazonaws.com/aldryn-django-cms/3.7.4.3/4f837109-2ac0-443d-8dba-0c76c7e86691/aldryn-django-cms-3.7.4.3.tar.gz#egg=aldryn-django-cms==3.7.4.3
     # via -r /workspace/requirements.in
-https://divio-addons.s3-eu-central-1.amazonaws.com/aldryn-django/3.2.10.0/3ccb3a51-5c2b-4b33-93ac-a8baeba3ce84/aldryn-django-3.2.10.0.tar.gz#egg=aldryn-django==3.2.10.0
+https://divio-addons.s3-eu-central-1.amazonaws.com/aldryn-django/3.0.14.0/36bfd066-908c-496a-bbb0-8f30b7ea7a2b/aldryn-django-3.0.14.0.tar.gz#egg=aldryn-django==3.0.14.0
     # via -r /workspace/requirements.in
 aldryn-sites==0.6.0
     # via aldryn-django
@@ -26,20 +24,21 @@ aldryn-snake==2.0.0
     # via aldryn-django-cms
 https://divio-addons.s3-eu-central-1.amazonaws.com/aldryn-sso/2.0.1/fc74bf76-5ef7-485e-b645-75b747d78ebf/aldryn-sso-2.0.1.tar.gz#egg=aldryn-sso==2.0.1
     # via -r /workspace/requirements.in
+argparse==1.4.0
+    # via djeese-fs
 asgiref==3.4.1
     # via django
 attrs==21.2.0
     # via pytest
-boto3==1.20.23
-    # via django-storages
-botocore==1.23.23
-    # via
-    #   boto3
-    #   s3transfer
+boto==2.49.0
+    # via aldryn-django
 certifi==2021.10.8
     # via
+    #   djeese-fs
     #   requests
     #   sentry-sdk
+chardet==4.0.0
+    # via djeese-fs
 charset-normalizer==2.0.9
     # via requests
 click==8.0.3
@@ -130,12 +129,8 @@ django-simple-sso==1.1.0
     # via aldryn-sso
 django-sortedm2m==3.1.1
     # via aldryn-django-cms
-django-storage-url==0.8.1
+django-storages==1.8
     # via aldryn-django
-django-storages[boto3]==1.12.3
-    # via
-    #   aldryn-django
-    #   django-storage-url
 django-tempus-dominus==5.1.2.16
     # via -r /workspace/requirements.in
 django-treebeard==4.4
@@ -143,7 +138,7 @@ django-treebeard==4.4
     #   -r /workspace/requirements.in
     #   aldryn-django-cms
     #   django-cms
-django==3.2.10
+django==3.0.14
     # via
     #   aldryn-addons
     #   aldryn-django
@@ -162,7 +157,6 @@ django==3.2.10
     #   django-select2
     #   django-simple-captcha
     #   django-simple-sso
-    #   django-storage-url
     #   django-storages
     #   django-tempus-dominus
     #   django-treebeard
@@ -197,6 +191,8 @@ https://divio-addons.s3-eu-central-1.amazonaws.com/djangocms-text-ckeditor/3.9.1
     # via -r /workspace/requirements.in
 https://divio-addons.s3-eu-central-1.amazonaws.com/djangocms-video/3.0.0/a36bdd84-5189-4d20-9ad9-eab9e64d9e25/djangocms-video-3.0.0.tar.gz#egg=djangocms-video==3.0.0
     # via -r /workspace/requirements.in
+djeese-fs==0.1.21
+    # via aldryn-django
 easy-thumbnails==2.8
     # via
     #   aldryn-django
@@ -211,10 +207,7 @@ faker==10.0.0
     #   -r /workspace/requirements.in
     #   factory-boy
 furl==2.1.3
-    # via
-    #   aldryn-django
-    #   aldryn-sso
-    #   django-storage-url
+    # via aldryn-sso
 html5lib==1.1
     # via djangocms-text-ckeditor
 idna==3.3
@@ -226,10 +219,6 @@ itsdangerous==0.24
     #   aldryn-sso
     #   django-simple-sso
     #   webservices
-jmespath==0.10.0
-    # via
-    #   boto3
-    #   botocore
 lxml==4.6.4
     # via
     #   aldryn-django-cms
@@ -274,9 +263,7 @@ pytest==6.2.5
     #   pytest-cov
     #   pytest-django
 python-dateutil==2.8.2
-    # via
-    #   botocore
-    #   faker
+    # via faker
 pytz==2021.3
     # via django
 pyyaml==6.0
@@ -294,8 +281,6 @@ requests==2.26.0
     #   webservices
 rjsmin==1.1.0
     # via django-compressor
-s3transfer==0.5.0
-    # via boto3
 sentry-sdk==1.5.0
     # via aldryn-django
 six==1.16.0
@@ -332,7 +317,6 @@ unidecode==1.1.2
     # via django-filer
 urllib3==1.26.7
     # via
-    #   botocore
     #   requests
     #   sentry-sdk
 uwsgi==2.0.20
@@ -350,6 +334,7 @@ xlwt==1.3.0
     # via tablib
 yurl==1.0.0
     # via
+    #   aldryn-django
     #   aldryn-django-cms
     #   aldryn-sites
 
