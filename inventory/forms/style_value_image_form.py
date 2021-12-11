@@ -9,7 +9,6 @@ from django.forms.widgets import RadioSelect
 from inventory.models import (
     StyleProperty,
     StyleValue,
-    UserMessage,
 )
 from inventory.forms.default_form_text import style_value_help
 from filer.models.imagemodels import Image

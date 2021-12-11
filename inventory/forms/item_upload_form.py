@@ -5,7 +5,6 @@ from django.forms import (
     HiddenInput,
     IntegerField,
 )
-from inventory.models import UserMessage
 from inventory.forms.default_form_text import item_upload_help
 from django.core.validators import FileExtensionValidator
 from csv import reader
@@ -19,13 +18,7 @@ class ItemUploadForm(Form):
     step = IntegerField(widget=HiddenInput(), initial=0)
     new_items = FileField(required=True,
                           validators=[FileExtensionValidator(['csv'])])
-    has_header = BooleanField(label=UserMessage.objects.get_or_create(
-        view="ItemUploadForm",
-        code="HAS_HEADER_LABEL",
-        defaults={
-            'summary': "Label for header present",
-            'description': item_upload_help['has_header']}
-        )[0].description, required=False)
+    has_header = BooleanField(label=item_upload_help['has_header'])
 
     def check_and_get_data(self):
         csv_file = self.cleaned_data['new_items']

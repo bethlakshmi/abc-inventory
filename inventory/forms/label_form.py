@@ -5,7 +5,6 @@ from django.forms import (
 )
 from inventory.models import ItemText
 from inventory.forms.default_form_text import item_text_help
-from inventory.models import UserMessage
 
 
 class LabelForm(ModelForm):

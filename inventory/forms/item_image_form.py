@@ -10,7 +10,6 @@ from easy_thumbnails.files import get_thumbnailer
 from django.db.models import Count
 from inventory.forms.default_form_text import item_image_help
 from filer.models import Image
-from inventory.models import UserMessage
 
 
 class MultiImageField(ModelMultipleChoiceField):
