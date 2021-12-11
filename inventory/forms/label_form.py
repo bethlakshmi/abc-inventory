@@ -12,13 +12,7 @@ class LabelForm(ModelForm):
     required_css_class = 'required'
     error_css_class = 'error'
     text = CharField(
-        help_text=UserMessage.objects.get_or_create(
-                view="LabelForm",
-                code="ITEM_TEXT_INSTRUCTIONS",
-                defaults={
-                    'summary': "Item Help Text",
-                    'description': item_text_help}
-                )[0].description,
+        help_text=item_text_help,
         required=False,
         widget=Textarea(attrs={'class': 'user-tiny-mce'}))
 

@@ -40,23 +40,11 @@ class StyleValueImageForm(ModelForm):
         required=False,
         label="Current Image",
         empty_label="No Image",
-        help_text=UserMessage.objects.get_or_create(
-            view="StyleValueImageForm",
-            code="PICK_IMAGE_INSTRUCTIONS",
-            defaults={
-                'summary': "Select style Image Help text",
-                'description': style_value_help['change_images']}
-            )[0].description)
+        help_text=style_value_help['change_images'])
     add_image = ImageField(
         widget=ClearableFileInput(),
         required=False,
-        help_text=UserMessage.objects.get_or_create(
-            view="StyleValueImageForm",
-            code="ADD_IMAGE_INSTRUCTIONS",
-            defaults={
-                'summary': "Add style Image Help text",
-                'description': style_value_help['add_image']}
-            )[0].description)
+        help_text=style_value_help['add_image'])
 
     class Meta:
         model = StyleValue

@@ -46,34 +46,16 @@ class ItemImageForm(Form):
         queryset=Image.objects.annotate(
             links=Count('itemimage')).filter(links=0),
         required=False,
-        help_text=UserMessage.objects.get_or_create(
-                view="ItemImageForm",
-                code="UNATTACHED_IMAGE_INSTRUCTIONS",
-                defaults={
-                    'summary': "Current Image Help text",
-                    'description': item_image_help['unattached_images']}
-                )[0].description)
+        help_text=item_image_help['unattached_images'])
 
     other_images = MultiImageField(
         widget=CheckboxSelectMultiple(attrs={'style': "display: none;"}),
         queryset=Image.objects.annotate(
             links=Count('itemimage')).exclude(links=0),
         required=False,
-        help_text=UserMessage.objects.get_or_create(
-                view="ItemImageForm",
-                code="LINKED_IMAGE_INSTRUCTIONS",
-                defaults={
-                    'summary': "Current Image Help text",
-                    'description': item_image_help['linked_images']}
-                )[0].description)
+        help_text=item_image_help['linked_images'])
 
     new_images = ImageField(
         widget=ClearableFileInput(attrs={'multiple': True}),
         required=False,
-        help_text=UserMessage.objects.get_or_create(
-                view="ItemImageForm",
-                code="NEW_IMAGE_INSTRUCTIONS",
-                defaults={
-                    'summary': "New Image Help text",
-                    'description': item_image_help['new_images']}
-                )[0].description)
+        help_text=item_image_help['new_images'])
