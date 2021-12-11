@@ -4,8 +4,9 @@
 # this functionality by simply removing the wrapping tags.
 # </WARNING>
 
-FROM debian:8.7
-
+# <DOCKER_FROM>
+FROM divio/base:1.2-py3.8-slim-buster
+# </DOCKER_FROM>
 
 # <NPM>
 # </NPM>
@@ -14,8 +15,8 @@ FROM debian:8.7
 # </BOWER>
 
 # <PYTHON>
-ENV PIP_INDEX_URL=${PIP_INDEX_URL:-https://wheels.aldryn.net/v1/aldryn-extras+pypi/aldryn-baseproject/+simple/} \
-    WHEELSPROXY_URL=${WHEELSPROXY_URL:-https://wheels.aldryn.net/v1/aldryn-extras+pypi/aldryn-baseproject/}
+ENV PIP_INDEX_URL=${PIP_INDEX_URL:-https://wheels.aldryn.net/v1/aldryn-extras+pypi/${WHEELS_PLATFORM:-aldryn-baseproject-py3}/+simple/} \
+    WHEELSPROXY_URL=${WHEELSPROXY_URL:-https://wheels.aldryn.net/v1/aldryn-extras+pypi/${WHEELS_PLATFORM:-aldryn-baseproject-py3}/}
 COPY requirements.* /app/
 COPY addons-dev /app/addons-dev/
 RUN pip-reqs resolve && \

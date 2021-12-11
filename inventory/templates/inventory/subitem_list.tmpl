@@ -114,7 +114,7 @@
         'item_description': '{% if subitem.item.description %}{{ subitem.item.description.strip|escapejs }}{% endif %}',
         'note': '{% if subitem.item.note %}{{ subitem.item.note|escapejs }}{% endif %}',
         'date_acquired': '{% if subitem.item.date_acquired %}{{ subitem.item.date_acquired|date:"F j, Y" }}{% endif %}',
-        'date_deaccession': '{% if subitem.item.date_deaccession|date:"F j, Y" %}{{ subitem.item.date_deaccession }}{% endif %}',
+        'date_deaccession': '{% if subitem.item.date_deaccession %}{{ subitem.item.date_deaccession|date:"F j, Y" }}{% endif %}',
         'item_created': '{{ subitem.item.created_at|date:"F j, Y" }}',
         'item_updated': '{{ subitem.item.updated_at|date:"F j, Y" }}',
         'item_tags': '{% for tag in subitem.item.tags.all %}{{ tag }}, {% endfor %}',

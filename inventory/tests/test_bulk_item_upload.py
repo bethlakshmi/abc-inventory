@@ -275,8 +275,7 @@ class TestBulkItemUpload(TestCase):
         self.assertContains(response, item_upload_help['has_header'])
         self.assertContains(
             response,
-            "File extension &#39;&#39; is not allowed. Allowed extensions " +
-            "are: &#39;csv&#39;.")
+            "Allowed extensions are: csv.")
 
     def test_upload_bad_rows(self):
         from inventory.forms.default_form_text import item_upload_help
@@ -289,7 +288,6 @@ class TestBulkItemUpload(TestCase):
                   'step': 0,
                   'next': 'Save & Continue >>'},
             follow=True)
-        print(response.content)
         self.assertContains(response, item_upload_help['has_header'])
         self.assertContains(
             response,
