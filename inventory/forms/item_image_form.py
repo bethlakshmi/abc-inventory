@@ -39,13 +39,7 @@ class ItemImageForm(Form):
         widget=CheckboxSelectMultiple(attrs={'style': "display: none;"}),
         queryset=Image.objects.all(),
         required=False,
-        help_text=UserMessage.objects.get_or_create(
-                view="ItemImageForm",
-                code="CURRENT_IMAGE_INSTRUCTIONS",
-                defaults={
-                    'summary': "Current Image Help text",
-                    'description': item_image_help['current_images']}
-                )[0].description)
+        help_text=item_image_help['current_images'])
 
     unattached_images = MultiImageField(
         widget=CheckboxSelectMultiple(attrs={'style': "display: none;"}),
