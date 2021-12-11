@@ -5,7 +5,6 @@ from django.forms import (
     Form,
     HiddenInput,
 )
-from inventory.models import UserMessage
 from filer.models import Image
 from inventory.forms.default_form_text import item_image_help
 
@@ -17,11 +16,5 @@ class ImageUploadForm(Form):
     new_images = ImageField(
         widget=ClearableFileInput(attrs={'multiple': True}),
         required=True,
-        help_text=UserMessage.objects.get_or_create(
-                view="ImageUploadForm",
-                code="NEW_IMAGE_INSTRUCTIONS",
-                defaults={
-                    'summary': "New Image Help text",
-                    'description': item_image_help['new_images']}
-                )[0].description)
+        help_text=item_image_help['new_images'])
     step = IntegerField(widget=HiddenInput(), initial=0)
