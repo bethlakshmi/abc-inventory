@@ -1,5 +1,4 @@
 import aldryn_addons.settings
-import os
 # This is a fairly standard Django settings file, with some special additions
 # that allow addon applications to auto-configure themselves. If it looks
 # unfamiliar, please see our documentation:
@@ -71,14 +70,3 @@ MIDDLEWARE.extend([
 # management command.
 # See https://docs.divio.com/en/latest/how-to/configure-settings.html#list
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 2000
-
-try:
-    MUSEUM_DATA = bool(os.environ["MUSEUM_DATA"])
-except:
-    MUSEUM_DATA = True
-
-try:
-    TROUPE_DATA = bool(os.environ["TROUPE_DATA"])
-except:
-    TROUPE_DATA = True
-
