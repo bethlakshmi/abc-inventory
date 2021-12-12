@@ -49,7 +49,7 @@ user_messages = {
     "CURRENTLY_ACTIVE": {
         'summary':  "Can't Delete Active Theme",
         'description': '''This theme is currently active on live, test or both.
-        Before deleting the theme, you must activate a different theme for
+        Before deleeting the theme, you must activate a different theme for
         both environments.'''
     },
     "MANAGE_ITEM_IMAGE_INSTRUCT": {
@@ -72,6 +72,20 @@ user_messages = {
         'description': '''List of all tags in the system.  Expand the
         row to see a list of editable items associated with this tag.
         Items can be associated with 0 or more categories.'''
+    },
+    "BASIC_INSTRUCTIONS": {
+        'summary':  "Basic Item Form Instructions (1st form)",
+        'description': '''To add a new category, just start typing.  One
+        category per item.'''
+    },
+    "PHYSICAL_INSTRUCTIONS": {
+        'summary':  "Physical Details Item Form Instructions (2nd form)",
+        'description': '''To add a new disposition, just start typing.'''
+    },
+    "FURTHER_INSTRUCTIONS": {
+        'summary':  "Further Item Details Instructions (3rd form)",
+        'description': '''To add more tags, just start typing.  Multiple tags
+        can be associated with an item'''
     },
 }
 make_category_messages = {

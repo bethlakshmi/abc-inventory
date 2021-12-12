@@ -28,15 +28,18 @@ class MakeItemWizard(GenericWizard):
         -1: {
             'the_form':  None,
             'next_form': BasicItemForm,
-            'next_title': first_title},
+            'next_title': first_title,
+            'instruction_key': "BASIC_INSTRUCTIONS"},
         0: {
             'the_form':  BasicItemForm,
             'next_form': PhysicalItemForm,
-            'next_title': second_title},
+            'next_title': second_title,
+            'instruction_key': "PHYSICAL_INSTRUCTIONS"},
         1: {
             'the_form':  PhysicalItemForm,
             'next_form': FurtherDetailForm,
-            'next_title': third_title},
+            'next_title': third_title,
+            'instruction_key': "FURTHER_INSTRUCTIONS"},
         2: {
             'the_form':  FurtherDetailForm,
             'next_form': None,

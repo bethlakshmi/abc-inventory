@@ -6,6 +6,7 @@ from django.db.models import (
     ForeignKey,
     ManyToManyField,
     Model,
+    PositiveIntegerField,
     SET_NULL,
     TextField,
 )
@@ -48,6 +49,9 @@ class Item(Model):
                          decimal_places=3,
                          max_digits=12,
                          validators=[MinValueValidator(Decimal('0.00'))])
+    size = CharField(max_length=128, blank=True)
+    last_used = CharField(max_length=200, blank=True)
+    quantity = PositiveIntegerField(default=1)
     subject = TextField(blank=True, null=True)
     note = TextField(blank=True, null=True)
     date_acquired = DateField(blank=True, null=True)
