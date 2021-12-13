@@ -32,6 +32,23 @@ class PhysicalItemForm(ModelForm):
             'format': "M/D/YYYY",
         }))
 
+    def clean(self):
+        # run the parent validation first
+        cleaned_data = super(PhysicalItemForm, self).clean()
+
+        # doing is_complete doesn't work, that executes the pre-existing
+        # instance, not the current data
+
+        if cleaned_data.get("date_acquired") and cleaned_data.get(
+                "date_deaccession") and cleaned_data.get(
+                "date_acquired") > cleaned_data.get("date_deaccession"):
+            error = ValidationError((
+                'The date acquired cannot be AFTER the date of deaccession' +
+                ' - check these dates and try again.'),
+                code='invalid')
+            self.add_error('date_deaccession', error)
+        return cleaned_data
+
     class Meta:
         model = Item
         fields = [
@@ -49,19 +66,23 @@ class PhysicalItemForm(ModelForm):
                    'disposition': autocomplete.ModelSelect2(
                         url='disposition-autocomplete')}
 
-    def clean(self):
-        # run the parent validation first
-        cleaned_data = super(PhysicalItemForm, self).clean()
 
-        # doing is_complete doesn't work, that executes the pre-existing
-        # instance, not the current data
-
-        if cleaned_data.get("date_acquired") and cleaned_data.get(
-                "date_deaccession") and cleaned_data.get(
-                "date_acquired") > cleaned_data.get("date_deaccession"):
-            error = ValidationError((
-                'The date acquired cannot be AFTER the date of deaccession' +
-                ' - check these dates and try again.'),
-                code='invalid')
-            self.add_error('date_deaccession', error)
-        return cleaned_data
+class TroupePhysicalItemForm(PhysicalItemForm):
+    class Meta:
+        model = Item
+        fields = [
+            'width',
+            'height',
+            'depth',
+            'size',
+            'quantity',
+            'disposition',
+            'date_acquired',
+            'date_deaccession',
+            'last_used',
+            'price']
+        widgets = {'width': NumberInput(attrs={'style': 'width: 75px'}),
+                   'height': NumberInput(attrs={'style': 'width: 75px'}),
+                   'depth': NumberInput(attrs={'style': 'width: 75px'}),
+                   'disposition': autocomplete.ModelSelect2(
+                        url='disposition-autocomplete')}

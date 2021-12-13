@@ -73,12 +73,6 @@ MIDDLEWARE.extend([
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 2000
 
 try:
-    MUSEUM_DATA = bool(os.environ["MUSEUM_DATA"])
+    INVENTORY_MODE = bool(os.environ["INVENTORY_MODE"])
 except:
-    MUSEUM_DATA = True
-
-try:
-    TROUPE_DATA = bool(os.environ["TROUPE_DATA"])
-except:
-    TROUPE_DATA = True
-
+    INVENTORY_MODE = "troupe"

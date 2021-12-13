@@ -38,9 +38,12 @@
       </div></div>
       {% endif %}
   </div><!-- end form group -->
+      {% if forms.0.size %}{% include "form_field.tmpl" with field=forms.0.size %}{% endif %}
+      {% if forms.0.quantity %}{% include "form_field.tmpl" with field=forms.0.quantity %}{% endif %}
       {% include "form_field.tmpl" with field=forms.0.disposition %}
-      {% include "form_field.tmpl" with field=forms.0.year %}
+      {% if forms.0.year %}{% include "form_field.tmpl" with field=forms.0.year %}{% endif %}
       {% include "form_field.tmpl" with field=forms.0.date_acquired field_size=2 %}
       {% include "form_field.tmpl" with field=forms.0.date_deaccession field_size=2%}
+      {% if forms.0.last_used %}{% include "form_field.tmpl" with field=forms.0.last_used %}{% endif %}
       {% include "form_field.tmpl" with field=forms.0.price %}
 {% endblock %}

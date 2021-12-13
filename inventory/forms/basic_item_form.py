@@ -27,6 +27,18 @@ class BasicItemForm(ModelForm):
             'category',
             'subject']
         widgets = {
-            'title': TextInput(attrs={'size': '87'}),
+            'title': TextInput(attrs={'size': '82'}),
+            'category': autocomplete.ModelSelect2(
+                url='category-autocomplete')}
+
+class TroupeBasicItemForm(BasicItemForm):
+    class Meta:
+        model = Item
+        fields = [
+            'title',
+            'description',
+            'category']
+        widgets = {
+            'title': TextInput(attrs={'size': '82'}),
             'category': autocomplete.ModelSelect2(
                 url='category-autocomplete')}
