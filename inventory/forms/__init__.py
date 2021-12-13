@@ -19,6 +19,9 @@ from .label_form import LabelForm
 from .item_upload_form import ItemUploadForm
 from .item_upload_mapping import ItemUploadMapping
 from .item_upload_row import ItemUploadRow
-from .subitem_form import SubitemForm
+from .subitem_form import (
+	SubitemForm,
+	TroupeSubitemForm,
+)
 from .merge_tag_forms import ChooseTagsForm, PickTagNameForm
 from .merge_category_forms import ChooseCategoryForm, PickCategoryNameForm

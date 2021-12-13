@@ -77,9 +77,10 @@ class MakeItemWizard(GenericWizard):
         context['title'] = title
         if "PhysicalItemForm" in str(self.forms[0].__class__.__name__):
             context['special_handling'] = True
-        if str(self.forms[0].__class__.__name__) == "FurtherDetailForm" and (
-                INVENTORY_MODE == "museum"):
-            context['add'] = True
+        if str(self.forms[0].__class__.__name__) == "FurtherDetailForm":
+            if INVENTORY_MODE == "museum":
+                context['add'] = True
+            context['images'] = True
         return context
 
     def finish_valid_form(self, request):

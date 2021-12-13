@@ -4,7 +4,10 @@ from django.views.generic.edit import (
     UpdateView,
 )
 from inventory.models import Subitem
-from inventory.forms import SubitemForm
+from inventory.forms import (
+    SubitemForm,
+    TroupeSubitemForm,
+)
 from inventory.views.default_view_text import make_subitem_messages
 from inventory.views import (
     InventoryDeleteMixin,
@@ -12,6 +15,7 @@ from inventory.views import (
 )
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
+from settings import INVENTORY_MODE
 
 
 class SubitemCreate(LoginRequiredMixin, InventoryFormMixin, CreateView):
@@ -24,6 +28,12 @@ class SubitemCreate(LoginRequiredMixin, InventoryFormMixin, CreateView):
     intro_message = make_subitem_messages['create_intro']
     form_class = SubitemForm
 
+    def get_form_class(self):
+        form = super().get_form_class()
+        if INVENTORY_MODE == "troupe":
+            form = TroupeSubitemForm
+        return form
+
 
 class SubitemUpdate(LoginRequiredMixin, InventoryFormMixin, UpdateView):
     model = Subitem
@@ -34,6 +44,12 @@ class SubitemUpdate(LoginRequiredMixin, InventoryFormMixin, UpdateView):
     valid_message = make_subitem_messages['edit_success']
     intro_message = make_subitem_messages['edit_intro']
     form_class = SubitemForm
+
+    def get_form_class(self):
+        form = super().get_form_class()
+        if INVENTORY_MODE == "troupe":
+            form = TroupeSubitemForm
+        return form
 
 
 class SubitemDelete(LoginRequiredMixin, InventoryDeleteMixin, DeleteView):
