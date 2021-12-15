@@ -1,7 +1,13 @@
 from .user_message import UserMessage
+from .tag import Tag
+
+# Performance stuff
+from .performer import Performer
+from .act import Act
+from .show import Show
+
 from .category import Category
 from .disposition import Disposition
-from .tag import Tag
 from .item import Item
 from .item_text import ItemText
 from .item_image import ItemImage
@@ -13,3 +19,5 @@ from .style_selector import StyleSelector
 from .style_property import StyleProperty
 from .style_value import StyleValue
 from .user_style_preview import UserStylePreview
+
+

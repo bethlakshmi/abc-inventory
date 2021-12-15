@@ -13,8 +13,10 @@ from django.db.models import (
 from django.core.validators import MinValueValidator
 from decimal import Decimal
 from inventory.models import (
+    Act,
     Category,
     Disposition,
+    Performer,
     Tag,
 )
 from django_currentuser.db.models import CurrentUserField
@@ -70,6 +72,8 @@ class Item(Model):
         on_delete=SET_NULL,
         null=True,
         blank=True)
+    acts = ManyToManyField(Act, max_length=128)
+    performers = ManyToManyField(Performer, max_length=128)
 
     def __str__(self):
         return self.title
