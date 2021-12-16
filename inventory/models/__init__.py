@@ -3,8 +3,8 @@ from .tag import Tag
 
 # Performance stuff
 from .performer import Performer
-from .act import Act
 from .show import Show
+from .act import Act
 
 from .category import Category
 from .disposition import Disposition

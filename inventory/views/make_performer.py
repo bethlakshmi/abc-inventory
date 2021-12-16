@@ -33,7 +33,7 @@ class PerformerUpdate(LoginRequiredMixin,
                       InventoryFormMixin,
                       UpdateView):
     model = Performer
-    template_name = 'inventory/simple_form.tmpl'
+    template_name = 'inventory/modal_make_form.tmpl'
     success_url = reverse_lazy('items_list', urlconf="inventory.urls")
     page_title = 'Performer'
     view_title = 'Update Performer'

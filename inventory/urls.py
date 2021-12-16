@@ -1,5 +1,8 @@
 from django.conf.urls import url
 from inventory.views import (
+    ActCreate,
+    ActDelete,
+    ActUpdate,
     ActivateTheme,
     BulkImageUpload,
     BulkItemUpload,
@@ -21,6 +24,9 @@ from inventory.views import (
     PerformerUpdate,
     PreviewTheme,
     PromoteItemImage,
+    ShowCreate,
+    ShowDelete,
+    ShowUpdate,
     SubitemCreate,
     SubitemDelete,
     SubItemsListView,
@@ -37,6 +43,17 @@ from inventory.views import (
 app_name = "inventory"
 
 urlpatterns = [
+    # Acts
+    url(r'^inventory/act/create/?',
+        ActCreate.as_view(),
+        name='act_create'),
+    url(r'^inventory/act/delete/(?P<pk>.*)/$',
+        ActDelete.as_view(),
+        name='act_delete'),
+    url(r'^inventory/act/update/(?P<pk>.*)/$',
+        ActUpdate.as_view(),
+        name='act_update'),
+
     # Categories
     url(r'^inventory/category/list/?',
         CategoryListView.as_view(),
@@ -90,6 +107,17 @@ urlpatterns = [
     url(r'^inventory/performer/update/(?P<pk>.*)/$',
         PerformerUpdate.as_view(),
         name='performer_update'),
+
+    # Show
+    url(r'^inventory/show/create/?',
+        ShowCreate.as_view(),
+        name='show_create'),
+    url(r'^inventory/show/delete/(?P<pk>.*)/$',
+        ShowDelete.as_view(),
+        name='show_delete'),
+    url(r'^inventory/show/update/(?P<pk>.*)/$',
+        ShowUpdate.as_view(),
+        name='show_update'),
 
     # Themes
     url(r'^inventory/(?P<version_id>\d+)/style.css',

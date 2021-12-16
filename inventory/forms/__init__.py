@@ -25,3 +25,4 @@ from .subitem_form import (
 )
 from .merge_tag_forms import ChooseTagsForm, PickTagNameForm
 from .merge_category_forms import ChooseCategoryForm, PickCategoryNameForm
+from .act_form import ActForm

@@ -8,6 +8,8 @@ from django.forms import (
 )
 from inventory.models import Item
 from dal import autocomplete
+from django_addanother.widgets import AddAnotherEditSelectedWidgetWrapper
+from django.urls import reverse_lazy
 
 
 class BasicItemForm(ModelForm):
@@ -36,9 +38,17 @@ class TroupeBasicItemForm(BasicItemForm):
         model = Item
         fields = [
             'title',
+            'acts',
             'description',
             'category']
         widgets = {
+            'acts': AddAnotherEditSelectedWidgetWrapper(
+                autocomplete.ModelSelect2Multiple(
+                    url='act-autocomplete'),
+                reverse_lazy('act_create', urlconf='inventory.urls'),
+                reverse_lazy('act_update',
+                             urlconf='inventory.urls',
+                             args=['__fk__'])),
             'title': TextInput(attrs={'size': '82'}),
             'category': autocomplete.ModelSelect2(
                 url='category-autocomplete')}
