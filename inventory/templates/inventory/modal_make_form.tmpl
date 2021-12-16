@@ -6,9 +6,10 @@
 {% block head %}
     <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css">
     <link href="{% static 'css/inventory.css' %}" rel="stylesheet">
+    <link href="{% url 'inventory:theme_style' %}" rel="stylesheet">
     {{ form.media.css }}
     <script type="text/javascript" src="/static/tinymce/tinymce.min.js"></script>
-    <script>{% include "tiny-mce-admin-settings.tmpl" %}</script>
+    <script>{% include "tiny-mce-user-settings.tmpl" %}</script>
 {% endblock %}
 {% block content %}
 <div class="inventory-tab-area">
@@ -16,7 +17,7 @@
   {% if intro_text != "&nbsp;" %}<p>{{intro_text | safe}}</p>{% endif %}
   <form action="" method="post" enctype="multipart/form-data">
    <p><font class="inventory-form-error">*</font> indicates a required field</p>
-    {% include "shastra_compedium/form_table.tmpl" %}
+    {% include "form_table.tmpl" %}
   {% if view.is_popup %}<input type="submit" name="cancel" value="Cancel" class="btn inventory-btn-light" onclick="window.open('','_self').close();">{% else %}<a href="{{return_url}}" class="btn inventory-btn-light">Cancel</a>{% endif %}
   <input type="submit" name="submit" value="Save" class="btn inventory-btn-primary" >
   </form>

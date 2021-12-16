@@ -43,7 +43,7 @@ class Subitem(Model):
     updated_at = DateTimeField(auto_now=True)
     tags = ManyToManyField(Tag, related_name="subitems", blank=True)
     item = ForeignKey(Item, on_delete=CASCADE)
-    performers = ManyToManyField(Performer, max_length=128)
+    performers = ManyToManyField(Performer, max_length=128, blank=True)
 
     def __str__(self):
         return self.title

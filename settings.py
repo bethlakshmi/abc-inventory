@@ -35,6 +35,8 @@ INSTALLED_ADDONS = [
     # </INSTALLED_ADDONS>
 ]
 
+CMS_TOOLBAR_HIDE = True
+
 # Now we will load auto-configured settings for addons. See:
 #
 #   http://docs.divio.com/en/latest/reference/configuration-aldryn-config.html
@@ -74,6 +76,6 @@ MIDDLEWARE.extend([
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 2000
 
 try:
-    INVENTORY_MODE = bool(os.environ["INVENTORY_MODE"])
+    INVENTORY_MODE = os.environ["INVENTORY_MODE"]
 except:
-    INVENTORY_MODE = "troupe"
+    INVENTORY_MODE = "museum"

@@ -17,7 +17,7 @@ urlpatterns = [
     # add your own patterns here
     url(
         r'^act-autocomplete/$',
-        ActAutocomplete.as_view(create_field='title'),
+        ActAutocomplete.as_view(),
         name='act-autocomplete',
     ),
     url(
@@ -37,12 +37,12 @@ urlpatterns = [
     ),
     url(
         r'^performer-autocomplete/$',
-        PerformerAutocomplete.as_view(create_field='name'),
+        PerformerAutocomplete.as_view(),
         name='performer-autocomplete',
     ),
     url(
         r'^show-autocomplete/$',
-        ShowAutocomplete.as_view(create_field='title'),
+        ShowAutocomplete.as_view(),
         name='show-autocomplete',
     ),
     url(

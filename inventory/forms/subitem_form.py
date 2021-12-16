@@ -41,7 +41,7 @@ class TroupeSubitemForm(SubitemForm):
                   'item']
         widgets = {
             'performers': AddAnotherEditSelectedWidgetWrapper(
-                autocomplete.ModelSelect2(
+                autocomplete.ModelSelect2Multiple(
                     url='performer-autocomplete'),
                 reverse_lazy('performer_create', urlconf='inventory.urls'),
                 reverse_lazy('performer_update',

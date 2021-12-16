@@ -9,6 +9,8 @@ from inventory.models import Item
 from django.core.exceptions import ValidationError
 from tempus_dominus.widgets import DatePicker
 from dal import autocomplete
+from django_addanother.widgets import AddAnotherEditSelectedWidgetWrapper
+from django.urls import reverse_lazy
 
 
 class PhysicalItemForm(ModelForm):
@@ -75,14 +77,23 @@ class TroupePhysicalItemForm(PhysicalItemForm):
             'height',
             'depth',
             'size',
+            'performers',
             'quantity',
             'disposition',
             'date_acquired',
             'date_deaccession',
             'last_used',
             'price']
-        widgets = {'width': NumberInput(attrs={'style': 'width: 75px'}),
-                   'height': NumberInput(attrs={'style': 'width: 75px'}),
-                   'depth': NumberInput(attrs={'style': 'width: 75px'}),
-                   'disposition': autocomplete.ModelSelect2(
-                        url='disposition-autocomplete')}
+        widgets = {
+            'width': NumberInput(attrs={'style': 'width: 75px'}),
+            'height': NumberInput(attrs={'style': 'width: 75px'}),
+            'depth': NumberInput(attrs={'style': 'width: 75px'}),
+            'disposition': autocomplete.ModelSelect2(
+                url='disposition-autocomplete'),
+            'performers': AddAnotherEditSelectedWidgetWrapper(
+                autocomplete.ModelSelect2Multiple(
+                    url='performer-autocomplete'),
+                    reverse_lazy('performer_create', urlconf='inventory.urls'),
+                    reverse_lazy('performer_update',
+                                 urlconf='inventory.urls',
+                                 args=['__fk__'])),}

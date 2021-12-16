@@ -72,8 +72,8 @@ class Item(Model):
         on_delete=SET_NULL,
         null=True,
         blank=True)
-    acts = ManyToManyField(Act, max_length=128)
-    performers = ManyToManyField(Performer, max_length=128)
+    acts = ManyToManyField(Act, max_length=128, blank=True)
+    performers = ManyToManyField(Performer, max_length=128, blank=True)
 
     def __str__(self):
         return self.title

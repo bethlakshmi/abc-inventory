@@ -18,8 +18,10 @@
   </head>
   <body class="with-margin">
     {% cms_toolbar %}
-
+  {% if not view.is_popup %}
 {% include "menu_bar.tmpl" %}
+  {% endif %}
+
 {% for message in messages %}
     {% if message.tags == "error" %}<div class="alert inventory-alert-danger">{% else %}<div class="alert inventory-alert-{{message.tags}}">{% endif %}
           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
