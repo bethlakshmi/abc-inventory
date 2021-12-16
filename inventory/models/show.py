@@ -15,9 +15,10 @@ class Show(Model):
     title = CharField(max_length=128)
     description = TextField(blank=True)
     acts = ManyToManyField(Act, max_length=128)
-    created_on = DateField(blank=True, null=True)
+    first_performed = DateField(blank=True, null=True)
     last_performed = DateField(blank=True, null=True)
-    tags = ManyToManyField(Tag, related_name="shows", blank=True)
+    venue_name = CharField(max_length=128, blank=True, null=True)
+    city = CharField(max_length=128, blank=True, null=True)
 
     def __str__(self):
         return self.title
