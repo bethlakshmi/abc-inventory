@@ -3,15 +3,23 @@ from django.conf.urls import url, include
 from aldryn_django.utils import i18n_patterns
 import aldryn_addons.urls
 from inventory.views import (
+    ActAutocomplete,
     CategoryAutocomplete,
     ConnectionAutocomplete,
     DispositionAutocomplete,
+    PerformerAutocomplete,
+    ShowAutocomplete,
     TagAutocomplete,
 )
 
 
 urlpatterns = [
     # add your own patterns here
+    url(
+        r'^act-autocomplete/$',
+        ActAutocomplete.as_view(create_field='title'),
+        name='act-autocomplete',
+    ),
     url(
         r'^category-autocomplete/$',
         CategoryAutocomplete.as_view(create_field='name'),
@@ -26,6 +34,16 @@ urlpatterns = [
         r'^disposition-autocomplete/$',
         DispositionAutocomplete.as_view(create_field='state'),
         name='disposition-autocomplete',
+    ),
+    url(
+        r'^performer-autocomplete/$',
+        PerformerAutocomplete.as_view(create_field='name'),
+        name='performer-autocomplete',
+    ),
+    url(
+        r'^show-autocomplete/$',
+        ShowAutocomplete.as_view(create_field='title'),
+        name='show-autocomplete',
     ),
     url(
         r'^tag-autocomplete/$',

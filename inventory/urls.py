@@ -16,6 +16,9 @@ from inventory.views import (
     ManageTheme,
     MergeCategories,
     MergeTags,
+    PerformerCreate,
+    PerformerDelete,
+    PerformerUpdate,
     PreviewTheme,
     PromoteItemImage,
     SubitemCreate,
@@ -76,6 +79,17 @@ urlpatterns = [
     url(r'^inventory/item/images/(?P<item_id>\d+)/?',
         ManageItemImage.as_view(),
         name='manage_item_image'),
+
+    # Performers
+    url(r'^inventory/performer/create/?',
+        PerformerCreate.as_view(),
+        name='performer_create'),
+    url(r'^inventory/performer/delete/(?P<pk>.*)/$',
+        PerformerDelete.as_view(),
+        name='performer_delete'),
+    url(r'^inventory/performer/update/(?P<pk>.*)/$',
+        PerformerUpdate.as_view(),
+        name='performer_update'),
 
     # Themes
     url(r'^inventory/(?P<version_id>\d+)/style.css',

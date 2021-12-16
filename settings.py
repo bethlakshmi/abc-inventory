@@ -61,6 +61,7 @@ INSTALLED_APPS.extend([
     'import_export',
     'dal',
     'dal_select2',
+    'django_addanother',
 ])
 
 MIDDLEWARE.extend([

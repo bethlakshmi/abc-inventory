@@ -9,6 +9,12 @@ from .manage_item_image import ManageItemImage
 from .promote_item_image import PromoteItemImage
 from .delete_item import ItemDelete
 
+from .act_autocomplete import ActAutocomplete
+from .performer_autocomplete import PerformerAutocomplete
+from .make_performer import (PerformerCreate, PerformerDelete, PerformerUpdate)
+
+from .show_autocomplete import ShowAutocomplete
+
 from .category_autocomplete import CategoryAutocomplete
 from .category_list_view import CategoryListView
 from .make_category import (CategoryCreate, CategoryDelete, CategoryUpdate)
