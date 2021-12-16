@@ -16,9 +16,9 @@ from inventory.forms import ActForm
 
 
 class ActCreate(LoginRequiredMixin,
-                 CreatePopupMixin,
-                 InventoryFormMixin,
-                 CreateView):
+                CreatePopupMixin,
+                InventoryFormMixin,
+                CreateView):
     model = Act
     template_name = 'inventory/modal_make_form.tmpl'
     success_url = reverse_lazy('items_list', urlconf="inventory.urls")
@@ -30,9 +30,9 @@ class ActCreate(LoginRequiredMixin,
 
 
 class ActUpdate(LoginRequiredMixin,
-                 UpdatePopupMixin,
-                 InventoryFormMixin,
-                 UpdateView):
+                UpdatePopupMixin,
+                InventoryFormMixin,
+                UpdateView):
     model = Act
     template_name = 'inventory/modal_make_form.tmpl'
     success_url = reverse_lazy('items_list', urlconf="inventory.urls")

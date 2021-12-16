@@ -93,7 +93,7 @@ class TroupePhysicalItemForm(PhysicalItemForm):
             'performers': AddAnotherEditSelectedWidgetWrapper(
                 autocomplete.ModelSelect2Multiple(
                     url='performer-autocomplete'),
-                    reverse_lazy('performer_create', urlconf='inventory.urls'),
-                    reverse_lazy('performer_update',
-                                 urlconf='inventory.urls',
-                                 args=['__fk__'])),}
+                reverse_lazy('performer_create', urlconf='inventory.urls'),
+                reverse_lazy('performer_update',
+                             urlconf='inventory.urls',
+                             args=['__fk__'])), }

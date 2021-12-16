@@ -13,7 +13,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Performer',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True,
+                                        serialize=False,
+                                        verbose_name='ID')),
                 ('name', models.CharField(max_length=128)),
                 ('size_info', models.TextField(blank=True)),
                 ('description', models.TextField(blank=True)),
@@ -25,13 +28,20 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Show',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True,
+                                        serialize=False,
+                                        verbose_name='ID')),
                 ('title', models.CharField(max_length=128)),
                 ('description', models.TextField(blank=True)),
                 ('first_performed', models.DateField(blank=True, null=True)),
                 ('last_performed', models.DateField(blank=True, null=True)),
-                ('venue_name', models.CharField(blank=True, max_length=128, null=True)),
-                ('city', models.CharField(blank=True, max_length=128, null=True)),
+                ('venue_name', models.CharField(blank=True,
+                                                max_length=128,
+                                                null=True)),
+                ('city', models.CharField(blank=True,
+                                          max_length=128,
+                                          null=True)),
             ],
             options={
                 'ordering': ['title'],
@@ -65,15 +75,22 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Act',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True,
+                                        serialize=False,
+                                        verbose_name='ID')),
                 ('title', models.CharField(max_length=128)),
                 ('notes', models.TextField(blank=True)),
                 ('first_performed', models.DateField(blank=True, null=True)),
                 ('last_performed', models.DateField(blank=True, null=True)),
                 ('song', models.CharField(blank=True, max_length=128)),
                 ('song_artist', models.CharField(blank=True, max_length=128)),
-                ('performers', models.ManyToManyField(max_length=128, to='inventory.Performer')),
-                ('shows', models.ManyToManyField(max_length=128, to='inventory.Show')),
+                ('performers', models.ManyToManyField(
+                    max_length=128,
+                    to='inventory.Performer')),
+                ('shows', models.ManyToManyField(
+                    max_length=128,
+                    to='inventory.Show')),
             ],
             options={
                 'ordering': ['title'],
@@ -82,16 +99,22 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='item',
             name='acts',
-            field=models.ManyToManyField(blank=True, max_length=128, to='inventory.Act'),
+            field=models.ManyToManyField(blank=True,
+                                         max_length=128,
+                                         to='inventory.Act'),
         ),
         migrations.AddField(
             model_name='item',
             name='performers',
-            field=models.ManyToManyField(blank=True, max_length=128, to='inventory.Performer'),
+            field=models.ManyToManyField(blank=True,
+                                         max_length=128,
+                                         to='inventory.Performer'),
         ),
         migrations.AddField(
             model_name='subitem',
             name='performers',
-            field=models.ManyToManyField(blank=True, max_length=128, to='inventory.Performer'),
+            field=models.ManyToManyField(blank=True,
+                                         max_length=128,
+                                         to='inventory.Performer'),
         ),
     ]

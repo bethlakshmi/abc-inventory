@@ -33,6 +33,7 @@ class BasicItemForm(ModelForm):
             'category': autocomplete.ModelSelect2(
                 url='category-autocomplete')}
 
+
 class TroupeBasicItemForm(BasicItemForm):
     class Meta:
         model = Item

@@ -4,6 +4,7 @@ from dal import autocomplete
 from django_addanother.widgets import AddAnotherEditSelectedWidgetWrapper
 from django.urls import reverse_lazy
 
+
 class SubitemForm(ModelForm):
     required_css_class = 'required'
     error_css_class = 'error'

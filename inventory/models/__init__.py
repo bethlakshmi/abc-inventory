@@ -19,5 +19,3 @@ from .style_selector import StyleSelector
 from .style_property import StyleProperty
 from .style_value import StyleValue
 from .user_style_preview import UserStylePreview
-
-
