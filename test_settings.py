@@ -75,6 +75,7 @@ INSTALLED_APPS = [
     'import_export',
     'dal',
     'dal_select2',
+    'django_addanother',
 ]
 
 PASSWORD_HASHERS = (
@@ -185,3 +186,8 @@ AUTHENTICATION_BACKENDS = [
 ]
 ADMINS = [('Admin',
            'admin@email.com'), ]
+
+try:
+    INVENTORY_MODE = os.environ["INVENTORY_MODE"]
+except:
+    INVENTORY_MODE = "museum"

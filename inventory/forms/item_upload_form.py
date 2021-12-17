@@ -18,7 +18,8 @@ class ItemUploadForm(Form):
     step = IntegerField(widget=HiddenInput(), initial=0)
     new_items = FileField(required=True,
                           validators=[FileExtensionValidator(['csv'])])
-    has_header = BooleanField(label=item_upload_help['has_header'])
+    has_header = BooleanField(label=item_upload_help['has_header'],
+                              required=False)
 
     def check_and_get_data(self):
         csv_file = self.cleaned_data['new_items']
