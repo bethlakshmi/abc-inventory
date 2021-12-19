@@ -13,7 +13,7 @@ from datetime import (
     date,
     timedelta,
 )
-from inventory.forms.default_form_text import out_of_order_error
+from inventory.models.default_model_text import out_of_order_error
 
 
 class TestMakeAct(TestCase):

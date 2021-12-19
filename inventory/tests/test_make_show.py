@@ -12,6 +12,7 @@ from datetime import (
     date,
     timedelta,
 )
+from inventory.models.default_model_text import out_of_order_error
 
 
 class TestMakeShow(TestCase):
@@ -96,12 +97,12 @@ class TestMakeShow(TestCase):
     def test_edit_bad_data(self):
         from inventory.views.default_view_text import make_show_messages
         data = self.data()
-        data['title'] = ""
+        data['last_performed'] = date.today() - timedelta(days=2)
         response = self.client.post(self.edit_url, data=data, follow=True)
         self.assertNotContains(
             response,
             make_show_messages['edit_success'] % "New Name")
-        self.assertContains(response, "This field is required.")
+        self.assertContains(response, out_of_order_error)
         self.assertContains(response, make_show_messages['edit_intro'])
 
     def test_delete_get(self):
