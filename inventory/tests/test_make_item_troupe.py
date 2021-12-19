@@ -7,8 +7,6 @@ from inventory.tests.factories import (
     CategoryFactory,
     DispositionFactory,
     ItemFactory,
-    ItemTextFactory,
-    TagFactory,
     UserFactory
 )
 from inventory.tests.functions import (
@@ -19,10 +17,7 @@ from datetime import (
     date,
     timedelta,
 )
-from inventory.models import (
-    Item,
-    ItemText,
-)
+from inventory.models import Item
 from django.test.utils import override_settings
 
 
@@ -31,18 +26,6 @@ class TestMakeItemTroupe(TestCase):
     edit_name = "item_edit"
     item_id = '<input type="hidden" name="item_id" value="%d" id="id_item_id">'
     title_html = '<h2 class="inventory-title">%s</h2>'
-
-    def get_further(self):
-        new_tag = TagFactory()
-        other_new_tag = TagFactory()
-        return {
-            'step': 2,
-            'item_id':  self.item.pk,
-            'notes': "new notes",
-            'tags': (new_tag.pk, other_new_tag.pk),
-            'connections': (self.item.pk, ),
-            'text': "",
-        }
 
     def get_physical(self):
         return {
@@ -82,6 +65,7 @@ class TestMakeItemTroupe(TestCase):
             note="Note",
             date_acquired=date.today() - timedelta(days=1),
             date_deaccession=date.today(),
+            last_used=date.today(),
             price=12.50)
         self.url = reverse(self.view_name, urlconf="inventory.urls")
         self.edit_url = reverse(self.edit_name,
