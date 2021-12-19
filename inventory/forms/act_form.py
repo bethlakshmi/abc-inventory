@@ -7,6 +7,8 @@ from dal import autocomplete
 from django_addanother.widgets import AddAnotherEditSelectedWidgetWrapper
 from django.urls import reverse_lazy
 from tempus_dominus.widgets import DatePicker
+from inventory.forms.default_form_text import out_of_order_error
+from django.core.exceptions import ValidationError
 
 
 class ActForm(ModelForm):
@@ -40,10 +42,7 @@ class ActForm(ModelForm):
         if cleaned_data.get("first_performed") and cleaned_data.get(
                 "last_performed") and cleaned_data.get(
                 "first_performed") > cleaned_data.get("last_performed"):
-            error = ValidationError((
-                'The first performace cannot be AFTER the last performance' +
-                ' - check these dates and try again.'),
-                code='invalid')
+            error = ValidationError(out_of_order_error, code='invalid')
             self.add_error('last_performed', error)
         return cleaned_data
 

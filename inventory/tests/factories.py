@@ -139,10 +139,12 @@ class ActFactory(DjangoModelFactory):
         model = Act
     title = Sequence(lambda n: 'Act Title %d' % n)
 
+
 class ShowFactory(DjangoModelFactory):
     class Meta:
         model = Show
     title = Sequence(lambda n: 'Show Title %d' % n)
+
 
 class PerformerFactory(DjangoModelFactory):
     class Meta:

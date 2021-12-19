@@ -265,8 +265,7 @@ class TestMakeItem(TestCase):
         physical = self.get_physical()
         physical['date_deaccession'] = date.today() - timedelta(days=1)
         physical['finish'] = "Finish"
-        with self.settings(INVENTORY_MODE='museum'):
-            response = self.client.post(self.edit_url, data=physical, follow=True)
+        response = self.client.post(self.edit_url, data=physical, follow=True)
         self.assertContains(
             response,
             "Updated Item: %s" % self.item.title)

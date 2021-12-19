@@ -66,3 +66,5 @@ item_format_error = {
     'depth': '''The depth must be a decimal - #.## - with no $ or other
     letters''',
 }
+out_of_order_error = ('The first performace cannot be AFTER the last ' +
+                      'performance - check these dates and try again.')
