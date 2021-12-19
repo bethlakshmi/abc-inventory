@@ -187,7 +187,4 @@ AUTHENTICATION_BACKENDS = [
 ADMINS = [('Admin',
            'admin@email.com'), ]
 
-try:
-    INVENTORY_MODE = os.environ["INVENTORY_MODE"]
-except:
-    INVENTORY_MODE = "museum"
+INVENTORY_MODE = "museum"

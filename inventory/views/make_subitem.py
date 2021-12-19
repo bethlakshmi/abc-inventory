@@ -15,7 +15,7 @@ from inventory.views import (
 )
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from settings import INVENTORY_MODE
+from django.conf import settings
 
 
 class SubitemCreate(LoginRequiredMixin, InventoryFormMixin, CreateView):
@@ -30,7 +30,7 @@ class SubitemCreate(LoginRequiredMixin, InventoryFormMixin, CreateView):
 
     def get_form_class(self):
         form = super().get_form_class()
-        if INVENTORY_MODE == "troupe":
+        if settings.INVENTORY_MODE == "troupe":
             form = TroupeSubitemForm
         return form
 
@@ -47,7 +47,7 @@ class SubitemUpdate(LoginRequiredMixin, InventoryFormMixin, UpdateView):
 
     def get_form_class(self):
         form = super().get_form_class()
-        if INVENTORY_MODE == "troupe":
+        if settings.INVENTORY_MODE == "troupe":
             form = TroupeSubitemForm
         return form
 

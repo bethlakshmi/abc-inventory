@@ -17,11 +17,14 @@ from datetime import (
 )
 from pytz import utc
 from inventory.models import (
+    Act,
     Category,
     Disposition,
     Item,
     ItemImage,
     ItemText,
+    Performer,
+    Show,
     StyleProperty,
     StyleSelector,
     StyleValue,
@@ -129,3 +132,19 @@ class UserStylePreviewFactory(DjangoModelFactory):
         model = UserStylePreview
     version = SubFactory(StyleVersionFactory)
     previewer = SubFactory(UserFactory)
+
+
+class ActFactory(DjangoModelFactory):
+    class Meta:
+        model = Act
+    title = Sequence(lambda n: 'Act Title %d' % n)
+
+class ShowFactory(DjangoModelFactory):
+    class Meta:
+        model = Show
+    title = Sequence(lambda n: 'Show Title %d' % n)
+
+class PerformerFactory(DjangoModelFactory):
+    class Meta:
+        model = Performer
+    name = Sequence(lambda n: 'Name %d' % n)

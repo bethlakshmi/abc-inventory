@@ -15,7 +15,7 @@ from django.forms import (
     IntegerField,
     HiddenInput,
 )
-from settings import INVENTORY_MODE
+from django.conf import settings
 
 
 class MakeItemWizard(GenericWizard):
@@ -50,7 +50,7 @@ class MakeItemWizard(GenericWizard):
     }
 
     def groundwork(self, request, args, kwargs):
-        if INVENTORY_MODE == "troupe":
+        if settings.INVENTORY_MODE == "troupe":
             self.form_sets[-1]['next_form'] = TroupeBasicItemForm
             self.form_sets[0]['the_form'] = TroupeBasicItemForm
             self.form_sets[0]['next_form'] = TroupePhysicalItemForm
@@ -78,7 +78,7 @@ class MakeItemWizard(GenericWizard):
         if "PhysicalItemForm" in str(self.forms[0].__class__.__name__):
             context['special_handling'] = True
         if str(self.forms[0].__class__.__name__) == "FurtherDetailForm":
-            if INVENTORY_MODE == "museum":
+            if settings.INVENTORY_MODE == "museum":
                 context['add'] = True
             context['images'] = True
         return context
@@ -86,7 +86,7 @@ class MakeItemWizard(GenericWizard):
     def finish_valid_form(self, request):
         self.item = self.forms[0].save()
         if self.forms[0].__class__.__name__ == "FurtherDetailForm" and (
-                INVENTORY_MODE == "museum"):
+                settings.INVENTORY_MODE == "museum"):
             for form in self.forms[1:-1]:
                 if len(form.cleaned_data["text"]) == 0:
                     label = form.save(commit=False)
@@ -125,7 +125,7 @@ class MakeItemWizard(GenericWizard):
             if self.item:
                 form_set = [form(request.POST, instance=self.item)]
                 if form_set[0].__class__.__name__ == "FurtherDetailForm" and (
-                        INVENTORY_MODE == "museum"):
+                        settings.INVENTORY_MODE == "museum"):
                     for label in self.item.labels.all():
                         form = LabelForm(request.POST,
                                          instance=label,
@@ -144,7 +144,7 @@ class MakeItemWizard(GenericWizard):
                                                        initial=self.item.id)
             form_set = [edit_form]
             if form_set[0].__class__.__name__ == "FurtherDetailForm" and (
-                    INVENTORY_MODE == "museum"):
+                    settings.INVENTORY_MODE == "museum"):
                 for label in self.item.labels.all():
                     form = LabelForm(instance=label,
                                      prefix=str(label.pk))

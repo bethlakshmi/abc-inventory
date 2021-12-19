@@ -8,6 +8,7 @@ from inventory.tests.factories import (
 )
 from inventory.tests.functions import login_as
 from inventory.models import Subitem
+from django.test.utils import override_settings
 
 
 class TestMakeSubitem(TestCase):
@@ -36,11 +37,22 @@ class TestMakeSubitem(TestCase):
                 'subitem_number': 1,
                 'item': ItemFactory().pk}
 
+    @override_settings(INVENTORY_MODE='museum')
     def test_create_get(self):
         from inventory.views.default_view_text import make_subitem_messages
         response = self.client.get(self.create_url, follow=True)
         self.assertContains(response, "Create Subitem")
         self.assertContains(response, make_subitem_messages['create_intro'])
+        self.assertNotContains(response, "Performers")
+        self.assertContains(response, "Title")
+
+    @override_settings(INVENTORY_MODE='troupe')
+    def test_create_get_troupe_mode(self):
+        from inventory.views.default_view_text import make_subitem_messages
+        response = self.client.get(self.create_url, follow=True)
+        self.assertContains(response, "Create Subitem")
+        self.assertContains(response, make_subitem_messages['create_intro'])
+        self.assertContains(response, "Performers")
         self.assertContains(response, "Title")
 
     def test_create_post(self):
@@ -68,12 +80,22 @@ class TestMakeSubitem(TestCase):
         self.assertContains(response, "This field is required.")
         self.assertContains(response, make_subitem_messages['create_intro'])
 
+    @override_settings(INVENTORY_MODE='museum')
     def test_edit_get(self):
         from inventory.views.default_view_text import make_subitem_messages
         response = self.client.get(self.edit_url)
         self.assertContains(response, "Update Subitem")
         self.assertContains(response, make_subitem_messages['edit_intro'])
         self.assertContains(response, "Title")
+        self.assertNotContains(response, "Performers")
+
+    @override_settings(INVENTORY_MODE='troupe')
+    def test_edit_get_troupe(self):
+        from inventory.views.default_view_text import make_subitem_messages
+        response = self.client.get(self.edit_url)
+        self.assertContains(response, "Update Subitem")
+        self.assertContains(response, make_subitem_messages['edit_intro'])
+        self.assertContains(response, "Performers")
 
     def test_edit_post(self):
         from inventory.views.default_view_text import make_subitem_messages
