@@ -7,6 +7,7 @@ from inventory.tests.factories import (
     CategoryFactory,
     DispositionFactory,
     ItemFactory,
+    ShowFactory,
     UserFactory
 )
 from inventory.tests.functions import (
@@ -42,12 +43,14 @@ class TestMakeItemTroupe(TestCase):
 
     def get_basics(self):
         new_category = CategoryFactory()
+        show = ShowFactory()
         return {
             'step': 0,
             'title':  "New Title",
             'description': "New Description",
             'subject': "New Subject",
             'category': new_category.pk,
+            'shows': [show.pk],
         }
 
     def setUp(self):
@@ -57,11 +60,10 @@ class TestMakeItemTroupe(TestCase):
             description="description",
             category=CategoryFactory(),
             disposition=DispositionFactory(),
-            year="2020",
             width=2,
             height=2,
             depth=2,
-            subject="Subject",
+            size="all sizes",
             note="Note",
             date_acquired=date.today() - timedelta(days=1),
             date_deaccession=date.today(),

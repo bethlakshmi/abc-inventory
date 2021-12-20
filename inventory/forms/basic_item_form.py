@@ -39,10 +39,18 @@ class TroupeBasicItemForm(BasicItemForm):
         model = Item
         fields = [
             'title',
+            'shows',
             'acts',
             'description',
             'category']
         widgets = {
+            'shows': AddAnotherEditSelectedWidgetWrapper(
+                autocomplete.ModelSelect2Multiple(
+                    url='show-autocomplete'),
+                reverse_lazy('show_create', urlconf='inventory.urls'),
+                reverse_lazy('show_update',
+                             urlconf='inventory.urls',
+                             args=['__fk__'])),
             'acts': AddAnotherEditSelectedWidgetWrapper(
                 autocomplete.ModelSelect2Multiple(
                     url='act-autocomplete'),

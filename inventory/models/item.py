@@ -17,6 +17,7 @@ from inventory.models import (
     Category,
     Disposition,
     Performer,
+    Show,
     Tag,
 )
 from django_currentuser.db.models import CurrentUserField
@@ -72,6 +73,7 @@ class Item(Model):
         on_delete=SET_NULL,
         null=True,
         blank=True)
+    shows = ManyToManyField(Show, max_length=128, blank=True)
     acts = ManyToManyField(Act, max_length=128, blank=True)
     performers = ManyToManyField(Performer, max_length=128, blank=True)
 
