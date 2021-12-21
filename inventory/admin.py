@@ -178,6 +178,7 @@ class UserStylePreviewAdmin(admin.ModelAdmin):
 
 admin.site.register(UserMessage, MessageAdmin)
 admin.site.register(Category, CategoryAdmin)
+admin.site.register(Color)
 admin.site.register(Disposition, DispositionAdmin)
 admin.site.register(Item, ItemAdmin)
 admin.site.register(Subitem, SubItemAdmin)

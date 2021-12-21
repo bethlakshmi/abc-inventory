@@ -18,6 +18,8 @@ from .make_performer import (PerformerCreate, PerformerDelete, PerformerUpdate)
 from .show_autocomplete import ShowAutocomplete
 from .make_show import (ShowCreate, ShowDelete, ShowUpdate)
 
+from .color_autocomplete import ColorAutocomplete
+
 from .category_autocomplete import CategoryAutocomplete
 from .category_list_view import CategoryListView
 from .make_category import (CategoryCreate, CategoryDelete, CategoryUpdate)

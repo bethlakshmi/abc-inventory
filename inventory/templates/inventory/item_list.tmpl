@@ -47,8 +47,18 @@
           <th data-field="category" data-sortable="true" rowspan="2">Category</th>
           <th data-field="disposition" data-sortable="true" rowspan="2">Disposition</th>
           <th data-sortable="true" colspan="3">Dimensions(")</th>
+          {% if museum_on %}
           <th data-field="year" data-sortable="true" rowspan="2">Year</th>
           <th data-field="subject" data-sortable="true" rowspan="2">Subject</th>
+          {% else %}
+          <th data-field="sizeperformers" data-sortable="true" rowspan="2">Size/Performers</th>
+          <th data-field="showsacts" data-sortable="true" rowspan="2">Shows/Acts</th>
+          <th data-field="quantity" data-sortable="true" rowspan="2">#</th>
+          <th data-field="shows" data-sortable="true" data-visible="false" rowspan="2">Show</th>
+          <th data-field="acts" data-sortable="true" data-visible="false" rowspan="2">Acts</th>
+          <th data-field="size" data-sortable="true" data-visible="false" rowspan="2">Size</th>
+          <th data-field="last_used" data-sortable="true" data-visible="false" rowspan="2">Last Used</th>
+          {% endif %}
           <th data-field="price" data-sortable="true" data-visible="false" rowspan="2">Price</th>
           <th data-field="description" data-sortable="false" data-visible="false" rowspan="2">Description</th>
           <th data-field="note" data-sortable="false" data-visible="false" rowspan="2">Note</th>
@@ -129,12 +139,16 @@
     if (row.note.length > 0) {
         html.push('<b>Notes:</b><br>' + row.note + '<br><br>')
     }
+    {% if museum_on %}
     if (row.texts.length > 0) {
         html.push('<b>Texts:</b><br>' + row.texts + '<br>')
     }
     if (row.tags.length > 0) {
         html.push('<b>Tags:</b> ' + row.tags + '<br>')
-    }
+    }{% else %}
+    html.push('<b>Shows:</b>  ' + row.shows + '<br>')
+    html.push('<b>Acts:</b>  ' + row.acts + '<br>')
+    {% endif %}
     html.push('</div><div class="col-6">')
     html.push('<b>Date Acquired:</b>  ' + row.date_acquired + '<br>')
     if (row.date_deaccession.length > 0) {
@@ -142,6 +156,11 @@
     }
     html.push('<b>Created:</b>  ' + row.created + '<br>')
     html.push('<b>Last Update:</b>  ' + row.updated + '<br>')
+    {% if not museum_on %}
+    html.push('<b>Last Used:</b>  ' + row.last_used + '<br><br>')
+    html.push('<b>Size:</b>  ' + row.size + '<br>')
+    html.push('<b>Performers:</b>  ' + row.performers + '<br>')
+    {% endif %}
     if (row.price.length > 0) {
         html.push('<br><b>Price:</b> ' + row.price + '<br>')
     }    if (row.connections.length > 0) {
@@ -174,8 +193,16 @@
         'w': '{% if item.width %}{{ item.width.normalize }}{% endif %}',
         'h': '{% if item.height %}{{ item.height.normalize }}{% endif %}',
         'd': '{% if item.depth %}{{ item.depth.normalize }}{% endif %}',
-        'year': '{% if item.year %}{{ item.year|escapejs }}{% endif %}',
-        'subject': '{% if item.subject %}{{ item.subject|escapejs }}{% endif %}',
+        {% if museum_on %}'year': '{% if item.year %}{{ item.year|escapejs }}{% endif %}',
+        'subject': '{% if item.subject %}{{ item.subject|escapejs }}{% endif %}',{% else %}
+        'sizeperformers': '{% if item.size %}{{ item.size }}{% endif %}<br>{% for performer in item.performers.all %}{{ performer }}, {% endfor %}',
+        'showsacts': '{% for show in item.shows.all %}{{ show }}, {% endfor %}{% for act in item.acts.all %}{{ act }}, {% endfor %}',
+        'quantity': '{% if item.quantity %}{{ item.quantity }}{% endif %}',
+        'size': '{% if item.size %}{{ item.size }}{% endif %}',
+        'performers': '{% for performer in item.performers.all %}{{ performer }}, {% endfor %}',
+        'acts': '{% for act in item.acts.all %}{{ act }}, {% endfor %}',
+        'shows': '{% for show in item.shows.all %}{{ show }}, {% endfor %}',
+        'last_used': '{% if item.last_used %}{{ item.last_used|date:"F j, Y" }}{% endif %}',{% endif %}
         'modified': '<span data-datetime="{{ item.updated_at|date:"U" }}">{{ item.updated_at|date:"N j, Y, g:h A" }}</span>',
         'action': '<form onsubmit="return confirm(\'Do you want to delete the item - {{item.title|escapejs}}?\');" action="{% url "inventory:item_delete" item.id %}" method="post">{% csrf_token %}<a class="btn btn-sm inventory-detail px-1" href="{% url "inventory:item_edit" item.id %}" title="Edit"><i class="fas fa-edit"></i></a><a class="btn btn-sm inventory-detail px-1" href="{% url "inventory:manage_item_image" item.id %}" title="Manage Images"><i class="far fa-images"></i></a><button class="btn btn-sm inventory-detail px-1" type="submit"><i class="fas fa-trash-alt"></i></button></form>',
         'price': '{% if item.price %}${{ item.price }}{% endif %}',

@@ -41,9 +41,12 @@ class TroupeBasicItemForm(BasicItemForm):
             'title',
             'shows',
             'acts',
+            'colors',
             'description',
             'category']
         widgets = {
+            'colors': autocomplete.ModelSelect2Multiple(
+                url='color-autocomplete'),
             'shows': AddAnotherEditSelectedWidgetWrapper(
                 autocomplete.ModelSelect2Multiple(
                     url='show-autocomplete'),

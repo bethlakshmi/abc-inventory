@@ -7,6 +7,7 @@ from .show import Show
 from .act import Act
 
 from .category import Category
+from .color import Color
 from .disposition import Disposition
 from .item import Item
 from .item_text import ItemText

@@ -5,6 +5,7 @@ import aldryn_addons.urls
 from inventory.views import (
     ActAutocomplete,
     CategoryAutocomplete,
+    ColorAutocomplete,
     ConnectionAutocomplete,
     DispositionAutocomplete,
     PerformerAutocomplete,
@@ -24,6 +25,11 @@ urlpatterns = [
         r'^category-autocomplete/$',
         CategoryAutocomplete.as_view(create_field='name'),
         name='category-autocomplete',
+    ),
+    url(
+        r'^color-autocomplete/$',
+        ColorAutocomplete.as_view(create_field='name'),
+        name='color-autocomplete',
     ),
     url(
         r'^connection-autocomplete/$',

@@ -17,7 +17,7 @@ class Act(Model):
     title = CharField(max_length=128)
     notes = TextField(blank=True)
     performers = ManyToManyField(Performer, max_length=128)
-    shows = ManyToManyField(Show, max_length=128)
+    shows = ManyToManyField(Show, max_length=128, blank=True)
     first_performed = DateField(blank=True, null=True)
     last_performed = DateField(blank=True, null=True)
     song = CharField(max_length=128, blank=True)

@@ -9,6 +9,7 @@ from inventory.models import (
 )
 from django.urls import reverse
 from inventory.views.default_view_text import user_messages
+from django.conf import settings
 
 
 class ItemsListView(View):
@@ -35,9 +36,10 @@ class ItemsListView(View):
     def dispatch(self, *args, **kwargs):
         return super(ItemsListView, self).dispatch(*args, **kwargs)
 
-    def get_context_dict(self):
+    def get_context_dict(self, museum_on):
         verbose = self.object_type._meta.verbose_name_plural
         context = {
+            'museum_on': museum_on,
             'title': self.title,
             'page_title': self.title,
             'items': self.get_list(),
@@ -74,6 +76,9 @@ class ItemsListView(View):
 
     @never_cache
     def get(self, request, *args, **kwargs):
+        museum_on = True
+        if settings.INVENTORY_MODE == "troupe":
+            museum_on = False
         self.changed_id = int(request.GET.get('changed_id', default=-1))
         self.error_id = int(request.GET.get('error_id', default=-1))
-        return render(request, self.template, self.get_context_dict())
+        return render(request, self.template, self.get_context_dict(museum_on))

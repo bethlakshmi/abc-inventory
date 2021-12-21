@@ -15,6 +15,7 @@ from decimal import Decimal
 from inventory.models import (
     Act,
     Category,
+    Color,
     Disposition,
     Performer,
     Show,
@@ -31,6 +32,7 @@ class Item(Model):
                           related_name='items',
                           blank=True,
                           null=True)
+    colors = ManyToManyField(Color, max_length=128, blank=True)
     disposition = ForeignKey(Disposition,
                              on_delete=SET_NULL,
                              related_name='items',
