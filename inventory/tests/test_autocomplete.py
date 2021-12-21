@@ -4,6 +4,7 @@ from django.urls import reverse
 from inventory.tests.factories import (
     ActFactory,
     CategoryFactory,
+    ColorFactory,
     DispositionFactory,
     ItemFactory,
     PerformerFactory,
@@ -187,3 +188,27 @@ class TestAutoComplete(TestCase):
         self.assertContains(response, show.title)
         self.assertContains(response, show.pk)
         self.assertNotContains(response, show2.title)
+
+    def test_list_colors(self):
+        obj = ColorFactory()
+        login_as(self.user, self)
+        response = self.client.get(reverse('color-autocomplete'))
+        self.assertContains(response, obj.name)
+        self.assertContains(response, obj.pk)
+
+    def test_no_access_colors(self):
+        obj = ColorFactory()
+        response = self.client.get(reverse('color-autocomplete'))
+        self.assertNotContains(response, obj.name)
+        self.assertNotContains(response, obj.pk)
+
+    def test_list_colors_w_search_critieria(self):
+        obj = ColorFactory()
+        obj2 = ColorFactory()
+        login_as(self.user, self)
+        response = self.client.get("%s?q=%s" % (
+            reverse('color-autocomplete'),
+            obj.name))
+        self.assertContains(response, obj.name)
+        self.assertContains(response, obj.pk)
+        self.assertNotContains(response, obj2.name)

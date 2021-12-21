@@ -5,6 +5,7 @@ from inventory.tests.factories import (
     ActFactory,
     PerformerFactory,
     CategoryFactory,
+    ColorFactory,
     DispositionFactory,
     ItemFactory,
     ShowFactory,
@@ -43,6 +44,7 @@ class TestMakeItemTroupe(TestCase):
 
     def get_basics(self):
         new_category = CategoryFactory()
+        new_color = ColorFactory()
         show = ShowFactory()
         return {
             'step': 0,
@@ -50,6 +52,7 @@ class TestMakeItemTroupe(TestCase):
             'description': "New Description",
             'subject': "New Subject",
             'category': new_category.pk,
+            'color': [new_color.pk],
             'shows': [show.pk],
         }
 

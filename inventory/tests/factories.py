@@ -19,6 +19,7 @@ from pytz import utc
 from inventory.models import (
     Act,
     Category,
+    Color,
     Disposition,
     Item,
     ItemImage,
@@ -149,4 +150,9 @@ class ShowFactory(DjangoModelFactory):
 class PerformerFactory(DjangoModelFactory):
     class Meta:
         model = Performer
+    name = Sequence(lambda n: 'Name %d' % n)
+
+class ColorFactory(DjangoModelFactory):
+    class Meta:
+        model = Color
     name = Sequence(lambda n: 'Name %d' % n)

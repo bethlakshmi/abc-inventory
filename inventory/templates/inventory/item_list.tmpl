@@ -46,8 +46,8 @@
           <th data-field="title" data-sortable="true" rowspan="2">Title</th>
           <th data-field="category" data-sortable="true" rowspan="2">Category</th>
           <th data-field="disposition" data-sortable="true" rowspan="2">Disposition</th>
-          <th data-sortable="true" colspan="3">Dimensions(")</th>
           {% if museum_on %}
+          <th data-sortable="true" colspan="3">Dimensions(")</th>
           <th data-field="year" data-sortable="true" rowspan="2">Year</th>
           <th data-field="subject" data-sortable="true" rowspan="2">Subject</th>
           {% else %}
@@ -74,9 +74,11 @@
           <th data-field="action" rowspan="2">Action</th>
         </tr>
         <tr>
+          {% if museum_on %}
           <th data-field="w" data-sortable="true">W</th>
           <th data-field="h" data-sortable="true">H</th>
           <th data-field="d" data-sortable="true">D</th>
+          {% endif %}
         </tr>
     {% endblock %}
   </thead>
