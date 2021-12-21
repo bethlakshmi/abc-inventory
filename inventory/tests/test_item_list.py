@@ -24,7 +24,6 @@ from datetime import (
     timedelta,
 )
 from inventory.models import Item
-from django.test.utils import override_settings
 
 
 class TestItemList(TestCase):
