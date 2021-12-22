@@ -71,7 +71,7 @@ class TestSubItemList(TestCase):
         busy_item.connections.set([busy_item])
         login_as(self.user, self)
         with self.settings(INVENTORY_MODE='museum'):
-          response = self.client.get(self.url)
+            response = self.client.get(self.url)
         self.assertContains(response, "'id': '%d'" % self.item.pk)
         self.assertContains(response, "'title': '%s'" % self.item.title)
         self.assertContains(response,
@@ -146,7 +146,7 @@ class TestSubItemList(TestCase):
         self.item.performers.set([PerformerFactory()])
         login_as(self.user, self)
         with self.settings(INVENTORY_MODE='troupe'):
-          response = self.client.get(self.url)
+            response = self.client.get(self.url)
         self.assertNotContains(response, "'subject': '%s'" % busy_item.subject)
         self.assertContains(response, "'quantity': '%s'" % self.item.quantity)
         self.assertContains(

@@ -152,6 +152,7 @@ class PerformerFactory(DjangoModelFactory):
         model = Performer
     name = Sequence(lambda n: 'Name %d' % n)
 
+
 class ColorFactory(DjangoModelFactory):
     class Meta:
         model = Color
