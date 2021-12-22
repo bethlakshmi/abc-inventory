@@ -52,8 +52,6 @@ class ItemAdmin(ImportExportActionModelAdmin):
                     'width',
                     'height',
                     'depth',
-                    'size',
-                    'quantity',
                     'subject',
                     'date_acquired',
                     'price',
@@ -93,9 +91,7 @@ class SubItemAdmin(ImportExportActionModelAdmin):
                     'item',
                     'width',
                     'height',
-                    'depth',
-                    'size',
-                    'quantity')
+                    'depth')
     list_filter = ['item__category__name',
                    'item__disposition__state',
                    'item__subject']

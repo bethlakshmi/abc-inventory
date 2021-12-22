@@ -37,8 +37,6 @@ class Subitem(Model):
                          decimal_places=3,
                          max_digits=12,
                          validators=[MinValueValidator(Decimal('0.00'))])
-    size = CharField(max_length=128, blank=True)
-    quantity = PositiveIntegerField(default=1)
     created_at = DateTimeField(auto_now_add=True)
     updated_at = DateTimeField(auto_now=True)
     tags = ManyToManyField(Tag, related_name="subitems", blank=True)
