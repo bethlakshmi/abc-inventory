@@ -1,4 +1,5 @@
 import aldryn_addons.settings
+import os
 # This is a fairly standard Django settings file, with some special additions
 # that allow addon applications to auto-configure themselves. If it looks
 # unfamiliar, please see our documentation:
