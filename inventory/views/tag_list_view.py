@@ -1,10 +1,10 @@
-from inventory.views import ItemsListView
+from inventory.views import GenericListView
 from inventory.models import Tag
 from django.db.models import Count
 from django.urls import reverse_lazy
 
 
-class TagListView(ItemsListView):
+class TagListView(GenericListView):
     object_type = Tag
     template = 'inventory/tag_list.tmpl'
     order_fields = ('name', )
