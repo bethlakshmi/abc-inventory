@@ -6,14 +6,19 @@ from django.db.models import (
     ForeignKey,
     ManyToManyField,
     Model,
+    PositiveIntegerField,
     SET_NULL,
     TextField,
 )
 from django.core.validators import MinValueValidator
 from decimal import Decimal
 from inventory.models import (
+    Act,
     Category,
+    Color,
     Disposition,
+    Performer,
+    Show,
     Tag,
 )
 from django_currentuser.db.models import CurrentUserField
@@ -27,6 +32,7 @@ class Item(Model):
                           related_name='items',
                           blank=True,
                           null=True)
+    colors = ManyToManyField(Color, max_length=128, blank=True)
     disposition = ForeignKey(Disposition,
                              on_delete=SET_NULL,
                              related_name='items',
@@ -48,6 +54,9 @@ class Item(Model):
                          decimal_places=3,
                          max_digits=12,
                          validators=[MinValueValidator(Decimal('0.00'))])
+    size = CharField(max_length=128, blank=True)
+    last_used = CharField(max_length=200, blank=True)
+    quantity = PositiveIntegerField(default=1)
     subject = TextField(blank=True, null=True)
     note = TextField(blank=True, null=True)
     date_acquired = DateField(blank=True, null=True)
@@ -66,6 +75,9 @@ class Item(Model):
         on_delete=SET_NULL,
         null=True,
         blank=True)
+    shows = ManyToManyField(Show, max_length=128, blank=True)
+    acts = ManyToManyField(Act, max_length=128, blank=True)
+    performers = ManyToManyField(Performer, max_length=128, blank=True)
 
     def __str__(self):
         return self.title

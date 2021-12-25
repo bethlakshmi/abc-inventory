@@ -4,8 +4,13 @@ from django.forms import (
     HiddenInput,
     IntegerField,
 )
-from inventory.forms.default_form_text import header_choices
+from inventory.forms.default_form_text import (
+    header_choices,
+    museum_header_choices,
+    troupe_header_choices,
+)
 from django.core.exceptions import ValidationError
+from django.conf import settings
 
 
 class ItemUploadMapping(Form):
@@ -21,9 +26,15 @@ class ItemUploadMapping(Form):
             num_cols = kwargs.get('initial')['num_cols']
         super(ItemUploadMapping, self).__init__(*args, **kwargs)
         i = 0
+        full_header_choices = header_choices
+        if settings.INVENTORY_MODE == "troupe":
+            full_header_choices = header_choices + troupe_header_choices
+        elif settings.INVENTORY_MODE == "museum":
+            full_header_choices = header_choices + museum_header_choices
         while i < num_cols:
-            self.fields['header_%s' % i] = ChoiceField(choices=header_choices,
-                                                       required=False)
+            self.fields['header_%s' % i] = ChoiceField(
+                choices=full_header_choices,
+                required=False)
             i = i + 1
 
     def clean(self):

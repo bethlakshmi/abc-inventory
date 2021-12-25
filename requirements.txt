@@ -61,12 +61,14 @@ dj-email-url==1.0.2
     # via aldryn-django
 dj-redis-url==0.1.4
     # via aldryn-django
+django-addanother==2.0.2
+    # via -r /workspace/requirements.in
 django-appconf==1.0.5
     # via
     #   aldryn-sites
     #   django-compressor
     #   django-select2
-django-autocomplete-light==3.8.2
+django-autocomplete-light==3.9.0rc1
     # via -r /workspace/requirements.in
 django-cache-url==3.2.3
     # via aldryn-django
@@ -87,7 +89,7 @@ django-cms==3.7.4
     #   djangocms-style
     #   djangocms-text-ckeditor
     #   djangocms-video
-django-compressor==2.4.1
+django-compressor==3.0
     # via aldryn-django-cms
 django-currentuser==0.5.3
     # via -r /workspace/requirements.in
@@ -219,7 +221,7 @@ itsdangerous==0.24
     #   aldryn-sso
     #   django-simple-sso
     #   webservices
-lxml==4.6.4
+lxml==4.7.1
     # via
     #   aldryn-django-cms
     #   svglib
@@ -268,7 +270,7 @@ pytz==2021.3
     # via django
 pyyaml==6.0
     # via tablib
-rcssmin==1.0.6
+rcssmin==1.1.0
     # via django-compressor
 reportlab==3.6.3
     # via
@@ -279,16 +281,15 @@ requests==2.26.0
     #   aldryn-client
     #   aldryn-django-cms
     #   webservices
-rjsmin==1.1.0
+rjsmin==1.2.0
     # via django-compressor
-sentry-sdk==1.5.0
+sentry-sdk==1.5.1
     # via aldryn-django
 six==1.16.0
     # via
     #   aldryn-client
     #   django-autocomplete-light
     #   django-cms
-    #   django-compressor
     #   django-simple-captcha
     #   furl
     #   html5lib
@@ -311,7 +312,7 @@ tinycss2==1.1.1
     #   svglib
 toml==0.10.2
     # via pytest
-tomli==1.2.2
+tomli==2.0.0
     # via coverage
 unidecode==1.1.2
     # via django-filer

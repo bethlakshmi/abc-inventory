@@ -8,9 +8,15 @@
           <th data-field="parent_title" data-sortable="true" rowspan="2">Parent Title</th>
           <th data-field="category" data-sortable="true" rowspan="2">Category</th>
           <th data-field="disposition" data-sortable="true" rowspan="2">Disposition</th>
+          {% if museum_on %}
           <th data-sortable="true" colspan="3">Dimensions(")</th>
           <th data-field="year" data-sortable="true" rowspan="2">Year</th>
           <th data-field="subject" data-sortable="true" rowspan="2">Subject</th>
+          {% else %}
+          <th data-field="quantity" data-sortable="true" rowspan="2">#</th>
+          <th data-field="size" data-sortable="true" rowspan="2">Size</th>
+          <th data-field="performers" data-sortable="true" rowspan="2">Performers</th>
+          {% endif %}
           <th data-field="price" data-sortable="true" data-visible="false" rowspan="2">Price</th>
           <th data-field="description" data-sortable="false" data-visible="false" rowspan="2">Description</th>
           <th data-field="item_description" data-sortable="false" data-visible="false" rowspan="2">Item Description</th>
@@ -29,10 +35,10 @@
           <th data-field="modified" data-sortable="true" data-visible="true" data-card-visible="true" rowspan="2">Last Modified</th>
           <th data-field="action" rowspan="2">Action</th>
         </tr>
-        <tr>
+        <tr>{% if museum_on %}
           <th data-field="w" data-sortable="true">W</th>
           <th data-field="h" data-sortable="true">H</th>
-          <th data-field="d" data-sortable="true">D</th>
+          <th data-field="d" data-sortable="true">D</th>{% endif %}
         </tr>
 {% endblock %}
 {% block buttons %}
@@ -58,9 +64,10 @@
     if (row.note.length > 0) {
         html.push('<b>Notes:</b><br>' + row.note + '<br><br>')
     }
+    {% if museum_on %}
     if (row.texts.length > 0) {
         html.push('<b>Texts:</b><br>' + row.texts + '<br>')
-    }
+    }{% endif %}
     if (row.tags.length > 0) {
         html.push('<b>Tags:</b> ' + row.tags + '<br>')
     }
@@ -80,9 +87,21 @@
     html.push('<b>Last Update:</b>  ' + row.item_updated + '<br>')
     if (row.price.length > 0) {
         html.push('<br><b>Price:</b> ' + row.price + '<br>')
-    }    if (row.connections.length > 0) {
+    }
+    if (row.connections.length > 0) {
         html.push('<b>Connections:</b> ' + row.connections + '<br>')
     }
+    {% if not museum_on %}
+    if (row.w.length > 0) {
+      html.push('<b>Dimensions:</b> ' + row.w)
+      if (row.h.length > 0) {
+        html.push(' x ' + row.h)
+        if (row.d.length > 0) {
+          html.push(' x ' + row.d)
+        }
+      }
+      html.push('<br>')
+    }{% endif %}
     html.push('</div>')
     if (row.images.length) {
       html.push('<div class="col-12"><b>Images:<br></b>' + row.images +'</div>')
@@ -103,8 +122,11 @@
         'w': '{% if subitem.width %}{{ subitem.width.normalize }}{% endif %}',
         'h': '{% if subitem.height %}{{ subitem.height.normalize }}{% endif %}',
         'd': '{% if subitem.depth %}{{ subitem.depth.normalize }}{% endif %}',
-        'year': '{% if subitem.item.year %}{{ subitem.item.year|escapejs }}{% endif %}',
-        'subject': '{% if subitem.item.subject %}{{ subitem.item.subject|escapejs }}{% endif %}',
+        {% if museum_on %}'year': '{% if subitem.item.year %}{{ subitem.item.year|escapejs }}{% endif %}',
+        'subject': '{% if subitem.item.subject %}{{ subitem.item.subject|escapejs }}{% endif %}',{% else %}
+        'quantity': '{% if subitem.quantity %}{{ subitem.quantity }}{% endif %}',
+        'size': '{% if subitem.size %}{{ subitem.size }}{% endif %}',
+        'performers': '{% for performer in subitem.performers.all %}{{ performer }}, {% endfor %}',{% endif %}
         'action': '<form onsubmit="return confirm(\'Do you want to delete the subitem - {{subitem.title|escapejs}}?\');" action="{% url "inventory:subitem_delete" subitem.id %}" method="post">{% csrf_token %}<a class="btn btn-sm inventory-detail px-1" href="{% url "inventory:subitem_update" subitem.id %}" title="Edit"><i class="fas fa-edit"></i></a><button class="btn btn-sm inventory-detail px-1" type="submit"><i class="fas fa-trash-alt"></i></button></form>',
         'description': '{% if subitem.description %}{{ subitem.description.strip|escapejs }}{% endif %}',
         'created': '{{ subitem.created_at }}',

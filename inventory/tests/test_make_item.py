@@ -21,6 +21,7 @@ from inventory.models import (
     Item,
     ItemText,
 )
+from django.test.utils import override_settings
 
 
 class TestMakeItem(TestCase):
@@ -99,13 +100,15 @@ class TestMakeItem(TestCase):
         self.assertNotContains(response, "<< Back")
         self.assertContains(response, "Save & Continue >>")
 
-    def test_get_edit(self):
+    @override_settings(INVENTORY_MODE='museum')
+    def test_get_edit_museum(self):
         login_as(self.user, self)
         response = self.client.get(self.edit_url)
         self.assertContains(response, self.title_html % self.item.title)
         self.assertContains(response, "The Basics")
         self.assertContains(response, self.item.description)
         self.assertContains(response, self.item.subject)
+        self.assertContains(response, "Subject")
         assert_option_state(response,
                             self.item.category.pk,
                             self.item.category.name,
@@ -121,6 +124,7 @@ class TestMakeItem(TestCase):
         response = self.client.get(self.edit_url)
         self.assertEqual(404, response.status_code)
 
+    @override_settings(INVENTORY_MODE='museum')
     def test_post_basics_create_save_and_continue(self):
         login_as(self.user, self)
         basics = self.get_basics()
@@ -135,6 +139,7 @@ class TestMakeItem(TestCase):
             self.item_id % (self.item.pk + 1),
             html=True)
 
+    @override_settings(INVENTORY_MODE='museum')
     def test_post_basics_create_finish(self):
         login_as(self.user, self)
         basics = self.get_basics()
@@ -145,6 +150,7 @@ class TestMakeItem(TestCase):
             "Created new Item: %s" % basics['title'])
         self.assertContains(response, "if (row.id == %d) {" % (self.item.pk+1))
 
+    @override_settings(INVENTORY_MODE='museum')
     def test_post_basics_edit_save_and_continue(self):
         login_as(self.user, self)
         basics = self.get_basics()
@@ -156,6 +162,7 @@ class TestMakeItem(TestCase):
         self.assertContains(response, "Save & Continue >>")
         self.assertContains(response, self.item_id % self.item.pk, html=True)
 
+    @override_settings(INVENTORY_MODE='museum')
     def test_post_basics_edit_finish(self):
         login_as(self.user, self)
         basics = self.get_basics()
@@ -166,6 +173,7 @@ class TestMakeItem(TestCase):
             "Updated Item: %s" % basics['title'])
         self.assertContains(response, "if (row.id == %d) {" % self.item.pk)
 
+    @override_settings(INVENTORY_MODE='museum')
     def test_post_basics_bad_data(self):
         login_as(self.user, self)
         basics = self.get_basics()
@@ -178,6 +186,7 @@ class TestMakeItem(TestCase):
         self.assertNotContains(response, "<< Back")
         self.assertContains(response, "Save & Continue >>")
 
+    @override_settings(INVENTORY_MODE='museum')
     def test_post_physical_create_save_and_continue(self):
         login_as(self.user, self)
         physical = self.get_physical()
@@ -195,6 +204,7 @@ class TestMakeItem(TestCase):
             'id="id_text">\n</textarea>',
             html=True)
 
+    @override_settings(INVENTORY_MODE='museum')
     def test_post_physical_create_finish(self):
         login_as(self.user, self)
         physical = self.get_physical()
@@ -205,6 +215,7 @@ class TestMakeItem(TestCase):
             "Created new Item: %s" % self.item.title)
         self.assertContains(response, "if (row.id == %d) {" % (self.item.pk))
 
+    @override_settings(INVENTORY_MODE='museum')
     def test_post_physical_edit_save_and_continue(self):
         label = ItemTextFactory(item=self.item)
         login_as(self.user, self)
@@ -212,6 +223,7 @@ class TestMakeItem(TestCase):
         physical['date_acquired'] = date.today()
         physical['next'] = "Save & Continue >>"
         response = self.client.post(self.edit_url, data=physical)
+        print(response.content)
         self.assertContains(response, self.title_html % self.item.title)
         self.assertContains(response, "<< Back")
         self.assertNotContains(response, "Save & Continue >>")
@@ -231,6 +243,11 @@ class TestMakeItem(TestCase):
                 label.pk,
                 label.text),
             html=True)
+        self.assertContains(
+            response,
+            '<input type="submit" name="add" value="Add Text" class="btn ' +
+            'inventory-btn-primary" >',
+            html=True)
 
     def test_post_physical_back(self):
         login_as(self.user, self)
@@ -242,6 +259,7 @@ class TestMakeItem(TestCase):
         self.assertContains(response, "Save & Continue >>")
         self.assertContains(response, "The Basics")
 
+    @override_settings(INVENTORY_MODE='museum')
     def test_post_physical_edit_finish(self):
         login_as(self.user, self)
         physical = self.get_physical()
@@ -433,7 +451,7 @@ class TestMakeItem(TestCase):
         login_as(self.user, self)
         further = self.get_further()
         further["text"] = "New text for %d" % self.item.pk
-        further['add'] = "Add & Keep Working"
+        further['add'] = "Add Text"
         response = self.client.post(self.url, data=further, follow=True)
         label = ItemText.objects.get(text=further["text"])
         self.assertContains(response, "Further Details")
@@ -459,7 +477,7 @@ class TestMakeItem(TestCase):
         login_as(self.user, self)
         further = self.get_further()
         further['%d-text' % label.pk] = ""
-        further['add'] = "Add & Keep Working"
+        further['add'] = "Add Text"
         response = self.client.post(self.url, data=further, follow=True)
         self.assertContains(response, "Further Details")
         self.assertContains(

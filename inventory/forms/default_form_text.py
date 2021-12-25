@@ -37,7 +37,6 @@ header_choices = [
     ('description', 'Description'),
     # ('category', 'Category'),
     # ('disposition', 'Disposition'),
-    ('year', 'Year'),
     ('width', 'Width'),
     ('height', 'Height'),
     ('depth', 'Depth'),
@@ -45,8 +44,14 @@ header_choices = [
     ('note', 'Note'),
     ('date_acquired', 'Date Acquired'),
     ('date_deaccession', 'Date Deaccession'),
-    ('price', 'Price'),
-]
+    ('price', 'Price')]
+troupe_header_choices = [
+    ('last_used', "Last Used"),
+    ('size', 'Size'),
+    ('quantity', 'Quantity')]
+museum_header_choices = [
+    ('year', 'Year'),
+    ('subject', 'Subject')]
 item_format_error = {
     'date_acquired': '''Dates must be in the format MM/DD/YY - e.g. 01/02/20
     for January 2, 2020''',

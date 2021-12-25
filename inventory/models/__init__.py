@@ -1,7 +1,14 @@
 from .user_message import UserMessage
-from .category import Category
-from .disposition import Disposition
 from .tag import Tag
+
+# Performance stuff
+from .performer import Performer
+from .show import Show
+from .act import Act
+
+from .category import Category
+from .color import Color
+from .disposition import Disposition
 from .item import Item
 from .item_text import ItemText
 from .item_image import ItemImage

@@ -3,11 +3,23 @@ from .generic_wizard import GenericWizard
 from .bulk_image_upload import BulkImageUpload
 from .bulk_item_upload import BulkItemUpload
 
+from .generic_list_view import GenericListView
 from .items_list_view import ItemsListView
 from .make_item_wizard import MakeItemWizard
 from .manage_item_image import ManageItemImage
 from .promote_item_image import PromoteItemImage
 from .delete_item import ItemDelete
+
+from .act_autocomplete import ActAutocomplete
+from .make_act import (ActCreate, ActDelete, ActUpdate)
+
+from .performer_autocomplete import PerformerAutocomplete
+from .make_performer import (PerformerCreate, PerformerDelete, PerformerUpdate)
+
+from .show_autocomplete import ShowAutocomplete
+from .make_show import (ShowCreate, ShowDelete, ShowUpdate)
+
+from .color_autocomplete import ColorAutocomplete
 
 from .category_autocomplete import CategoryAutocomplete
 from .category_list_view import CategoryListView

@@ -2,11 +2,15 @@ from django.test import TestCase
 from django.test import Client
 from django.urls import reverse
 from inventory.tests.factories import (
+    ActFactory,
     CategoryFactory,
+    ColorFactory,
     DispositionFactory,
     ItemFactory,
     ItemImageFactory,
     ItemTextFactory,
+    PerformerFactory,
+    ShowFactory,
     SubitemFactory,
     TagFactory,
     UserFactory
@@ -32,12 +36,13 @@ class TestItemList(TestCase):
         self.url = reverse(self.view_name, urlconf="inventory.urls")
 
     def test_list_with_subitems(self):
-        subitem = SubitemFactory()
+        subitem = SubitemFactory(size="38B")
         tag = TagFactory()
         subitem.tags.set([tag])
         subitem_w_dim = SubitemFactory(width=1, height=2.2, depth=0.001)
         login_as(self.user, self)
-        response = self.client.get(self.url)
+        with self.settings(INVENTORY_MODE='museum'):
+            response = self.client.get(self.url)
         self.assertContains(
             response,
             '<td>%s</td><td>%s</td><td>N/A</td><td>%s, </td>' % (
@@ -57,6 +62,25 @@ class TestItemList(TestCase):
         self.assertContains(
             response,
             reverse('subitem_create', urlconf="inventory.urls"))
+        self.assertNotContains(response, subitem.size)
+        self.assertContains(response, "<td>%s, </td>" % tag.name)
+
+    def test_list_with_subitems_troupe(self):
+        subitem = SubitemFactory(size="38B")
+        subitem.performers.set([PerformerFactory()])
+        subitem_w_dim = SubitemFactory(width=1, height=2.2, depth=0.001)
+        login_as(self.user, self)
+        with self.settings(INVENTORY_MODE='troupe'):
+            response = self.client.get(self.url)
+        self.assertNotContains(
+            response,
+            '<td>1.000 X 2.200 X 0.001</td>')
+        self.assertContains(
+            response,
+            '<td>%s</td>' % subitem.size)
+        self.assertContains(
+            response,
+            "<td>%s, </td>" % subitem.performers.all()[0].name)
 
     def test_list_items_basic(self):
         login_as(self.user, self)
@@ -86,6 +110,7 @@ class TestItemList(TestCase):
             category=CategoryFactory(),
             disposition=DispositionFactory(),
             year="2020",
+            size="38D",
             width=2,
             height=2,
             depth=2,
@@ -97,7 +122,8 @@ class TestItemList(TestCase):
         busy_item.tags.set([TagFactory()])
         busy_item.connections.set([self.item])
         login_as(self.user, self)
-        response = self.client.get(self.url)
+        with self.settings(INVENTORY_MODE='museum'):
+            response = self.client.get(self.url)
         self.assertContains(response, reverse(
             "item_edit",
             urlconf="inventory.urls",
@@ -136,6 +162,46 @@ class TestItemList(TestCase):
             response,
             "'updated': '%s by ---'" % busy_item.updated_at.strftime(
                 "%B %-d, %Y"))
+        self.assertNotContains(response, "'size': '%s'" % busy_item.size)
+
+    def test_list_items_troupe_things(self):
+        busy_item = ItemFactory(
+            year="2020",
+            description="description",
+            size="38D",
+            quantity=3,
+            date_acquired=date.today() - timedelta(days=1),
+            last_used="yesterday")
+        busy_item.performers.set([PerformerFactory()])
+        busy_item.colors.set([ColorFactory()])
+        busy_item.acts.set([ActFactory()])
+        busy_item.shows.set([ShowFactory()])
+        login_as(self.user, self)
+        with self.settings(INVENTORY_MODE='troupe'):
+            response = self.client.get(self.url)
+        self.assertContains(response, reverse(
+            "item_edit",
+            urlconf="inventory.urls",
+            args=[busy_item.pk]))
+        self.assertContains(response, "'size': '%s'" % busy_item.size)
+        self.assertContains(response,
+                            "'quantity': '%s'" % busy_item.quantity)
+        self.assertContains(
+            response,
+            "'colors': '%s, '" % busy_item.colors.all()[0].name)
+        self.assertContains(
+            response,
+            "'acts': '%s, '" % busy_item.acts.all()[0].title)
+        self.assertContains(
+            response,
+            "'performers': '%s, '" % busy_item.performers.all()[0].name)
+        self.assertContains(
+            response,
+            "'shows': '%s, '" % busy_item.shows.all()[0].title)
+        self.assertContains(
+            response,
+            "'last_used': '%s'" % busy_item.last_used)
+        self.assertNotContains(response, "'year': '%s'" % busy_item.year)
 
     def test_no_login(self):
         response = self.client.get(self.url)

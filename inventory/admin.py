@@ -52,6 +52,8 @@ class ItemAdmin(ImportExportActionModelAdmin):
                     'width',
                     'height',
                     'depth',
+                    'size',
+                    'quantity',
                     'subject',
                     'date_acquired',
                     'price',
@@ -91,7 +93,9 @@ class SubItemAdmin(ImportExportActionModelAdmin):
                     'item',
                     'width',
                     'height',
-                    'depth')
+                    'depth',
+                    'size',
+                    'quantity')
     list_filter = ['item__category__name',
                    'item__disposition__state',
                    'item__subject']
@@ -174,6 +178,7 @@ class UserStylePreviewAdmin(admin.ModelAdmin):
 
 admin.site.register(UserMessage, MessageAdmin)
 admin.site.register(Category, CategoryAdmin)
+admin.site.register(Color)
 admin.site.register(Disposition, DispositionAdmin)
 admin.site.register(Item, ItemAdmin)
 admin.site.register(Subitem, SubItemAdmin)
@@ -185,3 +190,6 @@ admin.site.register(StyleProperty, StylePropertyAdmin)
 admin.site.register(StyleSelector, StyleSelectorAdmin)
 admin.site.register(StyleVersion, StyleVersionAdmin)
 admin.site.register(UserStylePreview, UserStylePreviewAdmin)
+admin.site.register(Show)
+admin.site.register(Act)
+admin.site.register(Performer)

@@ -8,6 +8,8 @@ from django.forms import (
 )
 from inventory.models import Item
 from dal import autocomplete
+from django_addanother.widgets import AddAnotherEditSelectedWidgetWrapper
+from django.urls import reverse_lazy
 
 
 class BasicItemForm(ModelForm):
@@ -27,6 +29,38 @@ class BasicItemForm(ModelForm):
             'category',
             'subject']
         widgets = {
-            'title': TextInput(attrs={'size': '87'}),
+            'title': TextInput(attrs={'size': '82'}),
+            'category': autocomplete.ModelSelect2(
+                url='category-autocomplete')}
+
+
+class TroupeBasicItemForm(BasicItemForm):
+    class Meta:
+        model = Item
+        fields = [
+            'title',
+            'shows',
+            'acts',
+            'colors',
+            'description',
+            'category']
+        widgets = {
+            'colors': autocomplete.ModelSelect2Multiple(
+                url='color-autocomplete'),
+            'shows': AddAnotherEditSelectedWidgetWrapper(
+                autocomplete.ModelSelect2Multiple(
+                    url='show-autocomplete'),
+                reverse_lazy('show_create', urlconf='inventory.urls'),
+                reverse_lazy('show_update',
+                             urlconf='inventory.urls',
+                             args=['__fk__'])),
+            'acts': AddAnotherEditSelectedWidgetWrapper(
+                autocomplete.ModelSelect2Multiple(
+                    url='act-autocomplete'),
+                reverse_lazy('act_create', urlconf='inventory.urls'),
+                reverse_lazy('act_update',
+                             urlconf='inventory.urls',
+                             args=['__fk__'])),
+            'title': TextInput(attrs={'size': '82'}),
             'category': autocomplete.ModelSelect2(
                 url='category-autocomplete')}

@@ -2,9 +2,13 @@ from django.test import TestCase
 from django.test import Client
 from django.urls import reverse
 from inventory.tests.factories import (
+    ActFactory,
     CategoryFactory,
+    ColorFactory,
     DispositionFactory,
     ItemFactory,
+    PerformerFactory,
+    ShowFactory,
     TagFactory,
     UserFactory
 )
@@ -112,3 +116,99 @@ class TestAutoComplete(TestCase):
         self.assertContains(response, item.title)
         self.assertContains(response, item.pk)
         self.assertNotContains(response, item2.title)
+
+    def test_list_performers(self):
+        performer = PerformerFactory()
+        login_as(self.user, self)
+        response = self.client.get(reverse('performer-autocomplete'))
+        self.assertContains(response, performer.name)
+        self.assertContains(response, performer.pk)
+
+    def test_no_access_performers(self):
+        performer = PerformerFactory()
+        response = self.client.get(reverse('performer-autocomplete'))
+        self.assertNotContains(response, performer.name)
+        self.assertNotContains(response, performer.pk)
+
+    def test_list_performers_w_search_critieria(self):
+        performer = PerformerFactory()
+        performer2 = PerformerFactory()
+        login_as(self.user, self)
+        response = self.client.get("%s?q=%s" % (
+            reverse('performer-autocomplete'),
+            performer.name))
+        self.assertContains(response, performer.name)
+        self.assertContains(response, performer.pk)
+        self.assertNotContains(response, performer2.name)
+
+    def test_list_acts(self):
+        act = ActFactory()
+        login_as(self.user, self)
+        response = self.client.get(reverse('act-autocomplete'))
+        self.assertContains(response, act.title)
+        self.assertContains(response, act.pk)
+
+    def test_no_access_acts(self):
+        act = ActFactory()
+        response = self.client.get(reverse('act-autocomplete'))
+        self.assertNotContains(response, act.title)
+        self.assertNotContains(response, act.pk)
+
+    def test_list_acts_w_search_critieria(self):
+        act = ActFactory()
+        act2 = ActFactory()
+        login_as(self.user, self)
+        response = self.client.get("%s?q=%s" % (
+            reverse('act-autocomplete'),
+            act.title))
+        self.assertContains(response, act.title)
+        self.assertContains(response, act.pk)
+        self.assertNotContains(response, act2.title)
+
+    def test_list_shows(self):
+        show = ShowFactory()
+        login_as(self.user, self)
+        response = self.client.get(reverse('show-autocomplete'))
+        self.assertContains(response, show.title)
+        self.assertContains(response, show.pk)
+
+    def test_no_access_shows(self):
+        show = ShowFactory()
+        response = self.client.get(reverse('show-autocomplete'))
+        self.assertNotContains(response, show.title)
+        self.assertNotContains(response, show.pk)
+
+    def test_list_shows_w_search_critieria(self):
+        show = ShowFactory()
+        show2 = ShowFactory()
+        login_as(self.user, self)
+        response = self.client.get("%s?q=%s" % (
+            reverse('show-autocomplete'),
+            show.title))
+        self.assertContains(response, show.title)
+        self.assertContains(response, show.pk)
+        self.assertNotContains(response, show2.title)
+
+    def test_list_colors(self):
+        obj = ColorFactory()
+        login_as(self.user, self)
+        response = self.client.get(reverse('color-autocomplete'))
+        self.assertContains(response, obj.name)
+        self.assertContains(response, obj.pk)
+
+    def test_no_access_colors(self):
+        obj = ColorFactory()
+        response = self.client.get(reverse('color-autocomplete'))
+        self.assertNotContains(response, obj.name)
+        self.assertNotContains(response, obj.pk)
+
+    def test_list_colors_w_search_critieria(self):
+        obj = ColorFactory()
+        obj2 = ColorFactory()
+        login_as(self.user, self)
+        response = self.client.get("%s?q=%s" % (
+            reverse('color-autocomplete'),
+            obj.name))
+        self.assertContains(response, obj.name)
+        self.assertContains(response, obj.pk)
+        self.assertNotContains(response, obj2.name)

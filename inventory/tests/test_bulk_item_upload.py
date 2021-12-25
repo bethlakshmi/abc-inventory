@@ -2,8 +2,12 @@ from django.test import TestCase
 from django.test import Client
 from django.urls import reverse
 from inventory.tests.factories import UserFactory
-from inventory.tests.functions import login_as
+from inventory.tests.functions import (
+    assert_option_state,
+    login_as,
+)
 from inventory.models import Item
+from django.test.utils import override_settings
 
 
 class TestBulkItemUpload(TestCase):
@@ -31,6 +35,7 @@ class TestBulkItemUpload(TestCase):
             user_messages['BULK_FILE_UPLOAD_INSTRUCTIONS']['description'])
         self.assertNotContains(response, 'value="Finish"')
 
+    @override_settings(INVENTORY_MODE='museum')
     def test_upload_no_header(self):
         from inventory.views.default_view_text import user_messages
         login_as(self.user, self)
@@ -56,8 +61,26 @@ class TestBulkItemUpload(TestCase):
             '<input type="text" name="0-cell_0" value="12/28/20" ' +
             'id="id_0-cell_0">',
             html=True)
+        assert_option_state(response, "year", "Year")
+        assert_option_state(response, "subject", "Subject")
         self.assertContains(response, 'value="Finish"')
         self.assertNotContains(response, 'value="Save & Continue >>"')
+
+    @override_settings(INVENTORY_MODE='troupe')
+    def test_upload_troupe_mode(self):
+        from inventory.views.default_view_text import user_messages
+        login_as(self.user, self)
+        file1 = open("inventory/tests/no_header.csv", 'rb')
+        response = self.client.post(
+            self.url,
+            data={'new_items': file1,
+                  'has_header': False,
+                  'step': 0,
+                  'next': 'Save & Continue >>'},
+            follow=True)
+        assert_option_state(response, "quantity", "Quantity")
+        assert_option_state(response, "size", "Size")
+        assert_option_state(response, "last_used", "Last Used")
 
     def test_upload_with_header(self):
         from inventory.views.default_view_text import user_messages

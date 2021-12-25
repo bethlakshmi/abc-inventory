@@ -1,4 +1,5 @@
 import aldryn_addons.settings
+import os
 # This is a fairly standard Django settings file, with some special additions
 # that allow addon applications to auto-configure themselves. If it looks
 # unfamiliar, please see our documentation:
@@ -34,6 +35,8 @@ INSTALLED_ADDONS = [
     # </INSTALLED_ADDONS>
 ]
 
+CMS_TOOLBAR_HIDE = True
+
 # Now we will load auto-configured settings for addons. See:
 #
 #   http://docs.divio.com/en/latest/reference/configuration-aldryn-config.html
@@ -60,6 +63,7 @@ INSTALLED_APPS.extend([
     'import_export',
     'dal',
     'dal_select2',
+    'django_addanother',
 ])
 
 MIDDLEWARE.extend([
@@ -70,3 +74,8 @@ MIDDLEWARE.extend([
 # management command.
 # See https://docs.divio.com/en/latest/how-to/configure-settings.html#list
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 2000
+
+try:
+    INVENTORY_MODE = os.environ["INVENTORY_MODE"]
+except:
+    INVENTORY_MODE = "museum"

@@ -73,6 +73,28 @@ user_messages = {
         row to see a list of editable items associated with this tag.
         Items can be associated with 0 or more categories.'''
     },
+    "BASIC_INSTRUCTIONS": {
+        'summary':  "Basic Item Form Instructions (1st form)",
+        'description': '''To add a new category, just start typing.  One
+        category per item.'''
+    },
+    "PHYSICAL_INSTRUCTIONS": {
+        'summary':  "Physical Details Item Form Instructions (2nd form)",
+        'description': '''To add a new disposition, just start typing.'''
+    },
+    "FURTHER_INSTRUCTIONS": {
+        'summary':  "Further Item Details Instructions (3rd form)",
+        'description': '''To add more tags, just start typing.  Multiple tags
+        can be associated with an item'''
+    },
+}
+make_act_messages = {
+    'create_success':  "A new act has been created.  Name: %s",
+    'delete_success':  "The act %s has been deleted.",
+    'edit_success':  "The act %s has been updated.",
+    'create_intro':  "Use this form to create a new act.",
+    'delete_intro':  "Are you sure you want to delete act '%s'?",
+    'edit_intro':  "Use this form to update this act.",
 }
 make_category_messages = {
     'create_success':  "A new category has been created.  Name: %s",
@@ -81,6 +103,22 @@ make_category_messages = {
     'create_intro':  "Use this form to create a new category.",
     'delete_intro':  "Are you sure you want to delete category '%s'?",
     'edit_intro':  "Use this form to update this category.",
+}
+make_performer_messages = {
+    'create_success':  "A new performer has been created.  Name: %s",
+    'delete_success':  "%s has been deleted.",
+    'edit_success':  "%s has been updated.",
+    'create_intro':  "Use this form to create a new performer.",
+    'delete_intro':  "Are you sure you want to delete performer '%s'?",
+    'edit_intro':  "Use this form to update this performer.",
+}
+make_show_messages = {
+    'create_success':  "A new show has been created.  Name: %s",
+    'delete_success':  "The %s show has been deleted.",
+    'edit_success':  "The %s show has been updated.",
+    'create_intro':  "Use this form to create a new show.",
+    'delete_intro':  "Are you sure you want to delete show '%s'?",
+    'edit_intro':  "Use this form to update this show.",
 }
 make_tag_messages = {
     'create_success':  "A new tag has been created.  Name: %s",

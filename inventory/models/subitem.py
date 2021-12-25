@@ -13,6 +13,7 @@ from django.core.validators import MinValueValidator
 from decimal import Decimal
 from inventory.models import (
     Item,
+    Performer,
     Tag,
 )
 
@@ -36,10 +37,13 @@ class Subitem(Model):
                          decimal_places=3,
                          max_digits=12,
                          validators=[MinValueValidator(Decimal('0.00'))])
+    size = CharField(max_length=128, blank=True)
+    quantity = PositiveIntegerField(default=1)
     created_at = DateTimeField(auto_now_add=True)
     updated_at = DateTimeField(auto_now=True)
     tags = ManyToManyField(Tag, related_name="subitems", blank=True)
     item = ForeignKey(Item, on_delete=CASCADE)
+    performers = ManyToManyField(Performer, max_length=128, blank=True)
 
     def __str__(self):
         return self.title

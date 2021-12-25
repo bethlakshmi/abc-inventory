@@ -7,6 +7,7 @@ from inventory.tests.factories import (
     ItemFactory,
     ItemImageFactory,
     ItemTextFactory,
+    PerformerFactory,
     SubitemFactory,
     TagFactory,
     UserFactory
@@ -60,6 +61,7 @@ class TestSubItemList(TestCase):
         self.item = SubitemFactory(
             item=busy_item,
             description="subdescription",
+            size="38B",
             width=4,
             height=4,
             depth=4,
@@ -68,7 +70,8 @@ class TestSubItemList(TestCase):
         self.item.tags.set([TagFactory()])
         busy_item.connections.set([busy_item])
         login_as(self.user, self)
-        response = self.client.get(self.url)
+        with self.settings(INVENTORY_MODE='museum'):
+            response = self.client.get(self.url)
         self.assertContains(response, "'id': '%d'" % self.item.pk)
         self.assertContains(response, "'title': '%s'" % self.item.title)
         self.assertContains(response,
@@ -119,6 +122,38 @@ class TestSubItemList(TestCase):
             reverse('subitem_delete',
                     urlconf="inventory.urls",
                     args=[self.item.pk]))
+        self.assertNotContains(response, self.item.size)
+
+    def test_list_items_troupe_things(self):
+        busy_item = ItemFactory(
+            description="description",
+            category=CategoryFactory(),
+            disposition=DispositionFactory(),
+            subject="Subject",
+            note="Note",
+            date_acquired=date.today() - timedelta(days=1),
+            date_deaccession=date.today(),
+            price=12.50)
+        self.item = SubitemFactory(
+            item=busy_item,
+            description="subdescription",
+            size="38D",
+            quantity=4,
+            width=4,
+            height=4,
+            depth=4,
+            )
+        self.item.performers.set([PerformerFactory()])
+        login_as(self.user, self)
+        with self.settings(INVENTORY_MODE='troupe'):
+            response = self.client.get(self.url)
+        self.assertNotContains(response, "'subject': '%s'" % busy_item.subject)
+        self.assertContains(response, "'quantity': '%s'" % self.item.quantity)
+        self.assertContains(
+            response,
+            "'performers': '%s, '" % self.item.performers.all()[0].name)
+        self.assertContains(response, "<b>Dimensions:</b>")
+        self.assertContains(response, "'size': '%s'" % self.item.size)
 
     def test_list_w_image(self):
         image = ItemImageFactory(item=self.item.item)

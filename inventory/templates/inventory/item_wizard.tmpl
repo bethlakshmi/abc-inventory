@@ -1,5 +1,7 @@
 {% extends 'inventory/generic_wizard.tmpl' %}
 {% block special_handling_form %}
+<p>{{ instructions | safe }}</p>
+
       {% if field.errors %}
       <div class="container"><div class="row">
         <div class="col-md-2">&nbsp;</div>
@@ -36,9 +38,13 @@
       </div></div>
       {% endif %}
   </div><!-- end form group -->
+      {% if forms.0.size %}{% include "form_field.tmpl" with field=forms.0.size %}{% endif %}
+      {% if forms.0.performers %}{% include "form_field.tmpl" with field=forms.0.performers %}{% endif %}
+      {% if forms.0.quantity %}{% include "form_field.tmpl" with field=forms.0.quantity %}{% endif %}
       {% include "form_field.tmpl" with field=forms.0.disposition %}
-      {% include "form_field.tmpl" with field=forms.0.year %}
+      {% if forms.0.year %}{% include "form_field.tmpl" with field=forms.0.year %}{% endif %}
       {% include "form_field.tmpl" with field=forms.0.date_acquired field_size=2 %}
       {% include "form_field.tmpl" with field=forms.0.date_deaccession field_size=2%}
+      {% if forms.0.last_used %}{% include "form_field.tmpl" with field=forms.0.last_used %}{% endif %}
       {% include "form_field.tmpl" with field=forms.0.price %}
 {% endblock %}

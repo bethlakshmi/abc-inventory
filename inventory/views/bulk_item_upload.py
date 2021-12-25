@@ -30,6 +30,7 @@ class BulkItemUpload(GenericWizard):
             'next_title': None},
     }
     header = None
+    form_error = False
 
     def validate_forms(self):
         if self.forms[0].__class__.__name__ == "ItemUploadForm" and super(
@@ -46,6 +47,7 @@ class BulkItemUpload(GenericWizard):
             translator = {}
             i = 0
             if not self.forms[0].is_valid():
+                self.form_error = True
                 return False
 
             while i < self.forms[0].cleaned_data['num_cols']:
@@ -58,6 +60,7 @@ class BulkItemUpload(GenericWizard):
                 if formatted_data:
                     self.new_items += [formatted_data]
                 else:
+                    self.form_error = True
                     all_valid = False
             return all_valid
         return False
@@ -80,10 +83,7 @@ class BulkItemUpload(GenericWizard):
         context = super(BulkItemUpload, self).make_context(request)
         if str(self.forms[0].__class__.__name__) == "ItemUploadMapping":
             context['special_handling'] = True
-            for form in self.forms:
-                if not form.is_valid():
-                    context['form_error'] = True
-                    break
+            context['form_error'] = self.form_error
         elif str(self.forms[0].__class__.__name__) == "ItemUploadForm":
             context['show_finish'] = False
         if self.header:

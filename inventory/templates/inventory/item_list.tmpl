@@ -46,9 +46,19 @@
           <th data-field="title" data-sortable="true" rowspan="2">Title</th>
           <th data-field="category" data-sortable="true" rowspan="2">Category</th>
           <th data-field="disposition" data-sortable="true" rowspan="2">Disposition</th>
+          {% if museum_on %}
           <th data-sortable="true" colspan="3">Dimensions(")</th>
           <th data-field="year" data-sortable="true" rowspan="2">Year</th>
           <th data-field="subject" data-sortable="true" rowspan="2">Subject</th>
+          {% else %}
+          <th data-field="colors" data-sortable="true" rowspan="2">Colors</th>
+          <th data-field="quantity" data-sortable="true" rowspan="2">#</th>
+          <th data-field="shows" data-sortable="true" data-visible="false" rowspan="2">Show</th>
+          <th data-field="acts" data-sortable="true" data-visible="false" rowspan="2">Acts</th>
+          <th data-field="size" data-sortable="true" rowspan="2">Size</th>
+          <th data-field="performers" data-sortable="true" rowspan="2">Performers</th>
+          <th data-field="last_used" data-sortable="true" data-visible="false" rowspan="2">Last Used</th>
+          {% endif %}
           <th data-field="price" data-sortable="true" data-visible="false" rowspan="2">Price</th>
           <th data-field="description" data-sortable="false" data-visible="false" rowspan="2">Description</th>
           <th data-field="note" data-sortable="false" data-visible="false" rowspan="2">Note</th>
@@ -64,9 +74,11 @@
           <th data-field="action" rowspan="2">Action</th>
         </tr>
         <tr>
+          {% if museum_on %}
           <th data-field="w" data-sortable="true">W</th>
           <th data-field="h" data-sortable="true">H</th>
           <th data-field="d" data-sortable="true">D</th>
+          {% endif %}
         </tr>
     {% endblock %}
   </thead>
@@ -129,12 +141,16 @@
     if (row.note.length > 0) {
         html.push('<b>Notes:</b><br>' + row.note + '<br><br>')
     }
+    {% if museum_on %}
     if (row.texts.length > 0) {
         html.push('<b>Texts:</b><br>' + row.texts + '<br>')
     }
     if (row.tags.length > 0) {
         html.push('<b>Tags:</b> ' + row.tags + '<br>')
-    }
+    }{% else %}
+    html.push('<b>Shows:</b>  ' + row.shows + '<br>')
+    html.push('<b>Acts:</b>  ' + row.acts + '<br>')
+    {% endif %}
     html.push('</div><div class="col-6">')
     html.push('<b>Date Acquired:</b>  ' + row.date_acquired + '<br>')
     if (row.date_deaccession.length > 0) {
@@ -142,6 +158,21 @@
     }
     html.push('<b>Created:</b>  ' + row.created + '<br>')
     html.push('<b>Last Update:</b>  ' + row.updated + '<br>')
+    {% if not museum_on %}
+    html.push('<b>Last Used:</b>  ' + row.last_used + '<br><br>')
+    html.push('<b>Size:</b>  ' + row.size + '<br>')
+    if (row.w.length > 0) {
+      html.push('<b>Dimensions:</b> ' + row.w)
+      if (row.h.length > 0) {
+        html.push(' x ' + row.h)
+        if (row.d.length > 0) {
+          html.push(' x ' + row.d)
+        }
+      }
+      html.push('<br>')
+    }
+    html.push('<b>Performers:</b>  ' + row.performers + '<br>')
+    {% endif %}
     if (row.price.length > 0) {
         html.push('<br><b>Price:</b> ' + row.price + '<br>')
     }    if (row.connections.length > 0) {
@@ -152,7 +183,7 @@
       html.push('<div class="col-12"><b>Images:<br></b>' + row.images +'</div>')
     }
     if (row.subitems) {
-      html.push('<div class="col-12"><b>Subitems:&nbsp;<a class="inventory-detail" href="{% url "inventory:subitem_create" %}" title="Add Subitem"><i class="fas fa-plus"></i></a><br></b><table><tr><th>Title</th><th>Description</th><th>Dimensions</th><th>Tags</th><th>Action</th></tr>' + row.subitems +'<table></div>')
+      html.push('<div class="col-12"><b>Subitems:&nbsp;<a class="inventory-detail" href="{% url "inventory:subitem_create" %}" title="Add Subitem"><i class="fas fa-plus"></i></a><br></b><table><tr><th>Title</th><th>Description</th><th>{% if museum_on %}Dimensions{% else %}Performers</th><th>Size{% endif %}</th><th>Tags</th><th>Action</th></tr>' + row.subitems +'<table></div>')
     }
     html.push('</div>')
     return html.join('')
@@ -174,8 +205,15 @@
         'w': '{% if item.width %}{{ item.width.normalize }}{% endif %}',
         'h': '{% if item.height %}{{ item.height.normalize }}{% endif %}',
         'd': '{% if item.depth %}{{ item.depth.normalize }}{% endif %}',
-        'year': '{% if item.year %}{{ item.year|escapejs }}{% endif %}',
-        'subject': '{% if item.subject %}{{ item.subject|escapejs }}{% endif %}',
+        {% if museum_on %}'year': '{% if item.year %}{{ item.year|escapejs }}{% endif %}',
+        'subject': '{% if item.subject %}{{ item.subject|escapejs }}{% endif %}',{% else %}
+        'quantity': '{% if item.quantity %}{{ item.quantity }}{% endif %}',
+        'size': '{% if item.size %}{{ item.size }}{% endif %}',
+        'colors': '{% for color in item.colors.all %}{{ color }}, {% endfor %}',
+        'performers': '{% for performer in item.performers.all %}{{ performer }}, {% endfor %}',
+        'acts': '{% for act in item.acts.all %}{{ act }}, {% endfor %}',
+        'shows': '{% for show in item.shows.all %}{{ show }}, {% endfor %}',
+        'last_used': '{% if item.last_used %}{{ item.last_used }}{% endif %}',{% endif %}
         'modified': '<span data-datetime="{{ item.updated_at|date:"U" }}">{{ item.updated_at|date:"N j, Y, g:h A" }}</span>',
         'action': '<form onsubmit="return confirm(\'Do you want to delete the item - {{item.title|escapejs}}?\');" action="{% url "inventory:item_delete" item.id %}" method="post">{% csrf_token %}<a class="btn btn-sm inventory-detail px-1" href="{% url "inventory:item_edit" item.id %}" title="Edit"><i class="fas fa-edit"></i></a><a class="btn btn-sm inventory-detail px-1" href="{% url "inventory:manage_item_image" item.id %}" title="Manage Images"><i class="far fa-images"></i></a><button class="btn btn-sm inventory-detail px-1" type="submit"><i class="fas fa-trash-alt"></i></button></form>',
         'price': '{% if item.price %}${{ item.price }}{% endif %}',
@@ -191,7 +229,7 @@
         'main_image': '{% if item.main_image %}<img src="{% thumbnail item.main_image.filer_image 100x150 %}">&nbsp;<a class="inventory-detail align-bottom" href="{{item.main_image.filer_image.url}}"><i class="fas fa-expand-arrows-alt"></i></a>&nbsp;{% else %}{% for image in item.images.all %}<a href="{% url "inventory:promote_item_image" image.pk %}" title="Click to set main image"><img src="{% thumbnail image.filer_image 100x150 %}"></a>&nbsp;<a class="inventory-detail align-bottom" href="{{image.filer_image.url}}"><i class="fas fa-expand-arrows-alt"></i></a>&nbsp;{% endfor %}{% endif %}',
         'texts': '{% for text in item.labels.all %}<i>Text {{forloop.counter}}:</i>&nbsp;&nbsp;{{text.text|escapejs}}<br>{% endfor %}',
         {% if item.subitem_set %}
-        'subitems': '{% for sub in item.subitem_set.all %}<tr><td>{{sub}}</td><td>{{sub.description}}</td><td>{{sub.dimensions}}</td><td>{% for tag in sub.tags.all %}{{tag}}, {% endfor %}</td><td><a class="inventory-detail" href="{% url "inventory:subitem_update" sub.id %}" title="Edit"><i class="fas fa-edit"></i></a></td></tr>{% endfor %}',
+        'subitems': '{% for sub in item.subitem_set.all %}<tr><td>{{sub}}</td><td>{{sub.description}}</td><td>{% if museum_on %}{{sub.dimensions}}{% else %}{% for performer in sub.performers.all %}{{ performer }}, {% endfor %}</td><td>{{sub.size}}{% endif %}</td><td>{% for tag in sub.tags.all %}{{tag}}, {% endfor %}</td><td><a class="inventory-detail" href="{% url "inventory:subitem_update" sub.id %}" title="Edit"><i class="fas fa-edit"></i></a></td></tr>{% endfor %}',
         {% endif %}
       },
   {% endfor %}
