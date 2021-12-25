@@ -37,12 +37,31 @@ class ItemsListView(View):
         return super(ItemsListView, self).dispatch(*args, **kwargs)
 
     def get_context_dict(self, museum_on):
+        if museum_on:
+            item_list = self.get_list().select_related(
+                'category',
+                'disposition').prefetch_related(
+                'images',
+                'subitem_set',
+                'tags',
+                'connections')
+        else:
+            item_list = self.get_list().select_related(
+                'category',
+                'disposition').prefetch_related(
+                'images',
+                'subitem_set',
+                'tags', 'acts',
+                'performers',
+                'shows',
+                'colors')
+
         verbose = self.object_type._meta.verbose_name_plural
         context = {
             'museum_on': museum_on,
             'title': self.title,
             'page_title': self.title,
-            'items': self.get_list(),
+            'items': item_list,
             'changed_id': self.changed_id,
             'error_id': self.error_id,
             'data_name_plural': verbose.title().lower(),
