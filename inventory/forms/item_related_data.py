@@ -1,9 +1,8 @@
 from django.forms import (
     CharField,
-    HiddenInput,
     ModelForm,
     Textarea,
-    TextInput,
+    TextInput
 )
 from inventory.models import Item
 from dal import autocomplete
@@ -11,37 +10,25 @@ from django_addanother.widgets import AddAnotherEditSelectedWidgetWrapper
 from django.urls import reverse_lazy
 
 
-class BasicItemForm(ModelForm):
+class ItemRelatedData(ModelForm):
     required_css_class = 'required'
     error_css_class = 'error'
-
-    description = CharField(
-        required=False,
-        widget=Textarea(attrs={'class': 'user-tiny-mce'}))
+    title = CharField(disabled=True,
+                      label="Title",
+                      widget=TextInput(attrs={'size': '100'}))
 
     class Meta:
         model = Item
         fields = [
+            'id',
             'title',
-            'description',
             'category',
-            'subject']
-        widgets = {
-            'title': TextInput(attrs={'size': '82'}),
-            'category': autocomplete.ModelSelect2(
-                url='category-autocomplete')}
-
-
-class TroupeBasicItemForm(BasicItemForm):
-    class Meta:
-        model = Item
-        fields = [
-            'title',
+            'disposition',
+            'tags',
             'shows',
             'acts',
-            'colors',
-            'description',
-            'category']
+            'performers',
+            'colors']
         widgets = {
             'colors': autocomplete.ModelSelect2Multiple(
                 url='color-autocomplete'),
@@ -59,6 +46,17 @@ class TroupeBasicItemForm(BasicItemForm):
                 reverse_lazy('act_update',
                              urlconf='inventory.urls',
                              args=['__fk__'])),
-            'title': TextInput(attrs={'size': '82'}),
+            'tags': autocomplete.ModelSelect2Multiple(
+                url='tag-autocomplete'),
             'category': autocomplete.ModelSelect2(
-                url='category-autocomplete')}
+                url='category-autocomplete'),
+            'disposition': autocomplete.ModelSelect2(
+                url='disposition-autocomplete'),
+            'performers': AddAnotherEditSelectedWidgetWrapper(
+                autocomplete.ModelSelect2Multiple(
+                    url='performer-autocomplete'),
+                reverse_lazy('performer_create', urlconf='inventory.urls'),
+                reverse_lazy('performer_update',
+                             urlconf='inventory.urls',
+                             args=['__fk__'])),
+            }

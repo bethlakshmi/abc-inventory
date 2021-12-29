@@ -1,6 +1,5 @@
 from django.forms import (
     DateField,
-    IntegerField,
     HiddenInput,
     ModelForm,
     NumberInput,
@@ -16,7 +15,6 @@ from django.urls import reverse_lazy
 class PhysicalItemForm(ModelForm):
     required_css_class = 'required'
     error_css_class = 'error'
-    step = IntegerField(widget=HiddenInput(), initial=1)
     date_acquired = DateField(required=False, widget=DatePicker(
         attrs={
             'append': 'fa fa-calendar',

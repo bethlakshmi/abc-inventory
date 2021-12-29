@@ -16,7 +16,6 @@ from django.conf import settings
 class ItemUploadMapping(Form):
     required_css_class = 'required'
     error_css_class = 'error'
-    step = IntegerField(widget=HiddenInput(), initial=1)
     num_rows = IntegerField(widget=HiddenInput(), required=True)
     num_cols = IntegerField(widget=HiddenInput(), required=True)
 
