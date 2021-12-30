@@ -66,22 +66,6 @@ class TestBulkItemUpload(TestCase):
         self.assertContains(response, 'value="Finish"')
         self.assertNotContains(response, 'value="Save & Continue >>"')
 
-    @override_settings(INVENTORY_MODE='troupe')
-    def test_upload_troupe_mode(self):
-        from inventory.views.default_view_text import user_messages
-        login_as(self.user, self)
-        file1 = open("inventory/tests/no_header.csv", 'rb')
-        response = self.client.post(
-            self.url,
-            data={'new_items': file1,
-                  'has_header': False,
-                  'step': 0,
-                  'next': 'Save & Continue >>'},
-            follow=True)
-        assert_option_state(response, "quantity", "Quantity")
-        assert_option_state(response, "size", "Size")
-        assert_option_state(response, "last_used", "Last Used")
-
     def test_upload_with_header(self):
         from inventory.views.default_view_text import user_messages
         login_as(self.user, self)
