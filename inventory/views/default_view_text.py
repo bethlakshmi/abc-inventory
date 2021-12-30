@@ -18,8 +18,8 @@ user_messages = {
         'summary': "Instructions for last form of bulk item upload",
         'description': '''Add additional details, use the + or pencil to add or
         edit, any related data across the system.  For tags, disposition,
-        category and color, additional fields can be created by simply typing and 
-        choosing to "Create..." when offered.'''
+        category and color, additional fields can be created by simply typing
+        and choosing to "Create..." when offered.'''
     },
     "THEME_INSTRUCTIONS": {
         'summary':  "Instructions at top of theme edit page",
