@@ -168,7 +168,7 @@ class TestBulkImageUpload(TestCase):
         self.assertContains(
             response,
             "There is an error on the form.",
-            1)
+            2)
 
     def test_post_attachments_bad_association(self):
         # The user would have to be hacking the form to do this.
@@ -189,7 +189,7 @@ class TestBulkImageUpload(TestCase):
         self.assertContains(
             response,
             "There is an error on the form.",
-            2)
+            3)
 
     def test_post_attachments_invalid_association(self):
         # The user would have to be hacking the form to do this.

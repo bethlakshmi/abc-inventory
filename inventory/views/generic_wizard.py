@@ -99,12 +99,8 @@ class GenericWizard(View):
 
     def validate_forms(self):
         all_valid = True
-        if "is_formset" in self.current_form_set and (
-                self.current_form_set['is_formset']):
-            all_valid = self.forms.is_valid()
-        else:
-            for form in self.forms:
-                all_valid = form.is_valid() and all_valid
+        for form in self.forms:
+            all_valid = form.is_valid() and all_valid
         return all_valid
 
     @never_cache

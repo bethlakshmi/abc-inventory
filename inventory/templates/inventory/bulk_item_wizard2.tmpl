@@ -2,12 +2,9 @@
 {% block special_handling_form %}
 <p>{{ instructions | safe }}</p>
  <font class="inventory-form-error">
-  {% if form_error %}
-    <p class="inventory-form-error"> There is an error on the form.</p>
-  {% endif %}
-  {{ forms.0.non_field_errors }}</font>
+  {{ forms.non_field_errors }}</font>
     {% csrf_token %}
-    {{ forms.management_form}}
+  {{ forms.management_form}}
 <div class="container">
   {% for item_form in forms %}
   <div class="row">
@@ -19,7 +16,10 @@
           <font class="inventory-form-error">{{ field.errors }}</font>{% endif %}
       </div>{% endfor %}
   </div>
-  {% endfor %}{% for field in item_form.hidden_fields %}{{field}}{% endfor %}
+  {% for hidden in item_form.hidden_fields %}
+    {{ hidden }}
+  {% endfor %}
+  {% endfor %}
 </div>
   <br>
 {% endblock %}

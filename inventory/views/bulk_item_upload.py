@@ -8,6 +8,7 @@ from inventory.forms import (
 from inventory.models import Item
 from django.contrib import messages
 from django.forms import modelformset_factory
+from django.conf import settings
 
 
 class BulkItemUpload(GenericWizard):
@@ -30,17 +31,26 @@ class BulkItemUpload(GenericWizard):
             'instruction_key': "SETUP_ITEM_UPLOAD_INSTRUCTIONS"},
         1: {
             'the_form':  ItemUploadMapping,
-            'next_form': ItemRelatedData,
+            'next_form': None,
             'next_title': third_title,
             'instruction_key': "ADDITIONAL_ITEM_DETAIL_INSTRUCTIONS"},
-        2: {'the_form': ItemRelatedData,
-            'is_formset': True,
-            'next_form': None,
-            'next_title': None,
-        }
     }
     header = None
     form_error = False
+
+    def groundwork(self, request, args, kwargs):
+        if settings.INVENTORY_MODE == "troupe":
+            self.form_sets[1]['next_form'] = ItemRelatedData
+            self.form_sets[2] = {'the_form': ItemRelatedData,
+                                 'is_formset': True,
+                                 'next_form': None,
+                                 'next_title': None,
+                                 }
+
+        return super(BulkItemUpload, self).groundwork(
+            request,
+            args,
+            kwargs)
 
     def validate_forms(self):
         if self.forms[0].__class__.__name__ == "ItemUploadForm" and super(
@@ -73,7 +83,10 @@ class BulkItemUpload(GenericWizard):
                     self.form_error = True
                     all_valid = False
             return all_valid
-        return False
+        elif "is_formset" in self.current_form_set and self.current_form_set[
+                'is_formset']:
+            all_valid = self.forms.is_valid()
+            return all_valid
 
     def finish_valid_form(self, request):
         if self.forms[0].__class__.__name__ == "ItemUploadMapping":
@@ -82,7 +95,8 @@ class BulkItemUpload(GenericWizard):
             self.uploaded_items = Item.objects.bulk_create(
                 [Item(**kv) for kv in self.new_items])
             self.num_rows = len(self.new_items)
-        elif self.forms[0].__class__.__name__ == "ItemRelatedData":
+        elif "is_formset" in self.current_form_set and self.current_form_set[
+                'is_formset']:
             self.forms.save()
             self.num_rows = self.forms.total_form_count()
 
