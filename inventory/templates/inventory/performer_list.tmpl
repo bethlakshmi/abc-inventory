@@ -1,0 +1,51 @@
+{% extends 'inventory/item_list.tmpl' %}
+{% block control_buttons %}{% endblock %}
+{% block table_header %}
+        <tr>
+          <th data-field="id" data-sortable="true" data-width="10">ID</th>
+          <th data-field="name" data-sortable="true">Name</th>
+          <th data-field="size" data-sortable="true">Size Info</th>
+          <th data-field="num_acts" data-sortable="true"># Acts</th>
+          <th data-field="num_items" data-sortable="true"># Items</th>
+          <th data-field="action">Action</th>
+        </tr>
+{% endblock %}
+{% block buttons %}
+      btnAdd: {
+        text: 'Add new row',
+        icon: 'fa-plus',
+        event: function () {
+          window.location.href = "{% url 'inventory:performer_create' %}";
+        },
+        attributes: {
+          title: 'Add a new item to the inventory',
+        }
+      }
+{% endblock %}
+{% block details %}
+    var html = []
+    html.push('<div class="row">')
+    html.push('<div class="col-4">')
+    html.push('<b>Description:</b><br>' + row.description + '<br>')
+    html.push('</div><div class="col-4">')
+    html.push('<b>Items:</b><br>' + row.items + '<br>')
+    html.push('</div><div class="col-4">')
+    html.push('<b>Acts:</b><br>' + row.acts + '<br>')
+    html.push('</div><div class="col-4">')
+    return html.join('')
+{% endblock %}
+{% block item_data %}
+  {% for perf in items %}
+      {
+        'id': '{{ perf.pk }}',
+        'name': '{{ perf.name }}',
+        'size': '{{ perf.size_info }}',
+        'description': '{{ perf.description }}',
+        'num_acts': '{{ perf.num_acts }}',
+        'num_items': '{{ perf.num_items }}',
+        'acts': '{% for act in perf.act_set.all %}<a href="{% url 'inventory:act_update' act.id %}" title="Edit">{{ act }}&nbsp;&nbsp;<i class="fas fa-edit"></i></a>,<br>{% endfor %}',
+        'items': '{% for item in perf.item_set.all %}<a href="{% url 'inventory:item_edit' item.id %}" title="Edit">{{ item }}&nbsp;&nbsp;<i class="fas fa-edit"></i></a>,<br>{% endfor %}',
+        'action': '<form onsubmit="return confirm(\'Do you want to delete the performer - {{perf}}?\');" action="{% url "inventory:performer_delete" perf.id %}" method="post">{% csrf_token %}<a class="btn btn-sm inventory-detail px-1" href="{% url "inventory:performer_update" perf.id %}" title="Edit"><i class="fas fa-edit"></i></a><button class="btn btn-sm inventory-detail px-1" type="submit"><i class="fas fa-trash-alt"></i></button></form>',
+      },
+  {% endfor %}
+  {% endblock %}

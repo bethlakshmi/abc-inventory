@@ -13,6 +13,5 @@ class PerformerListView(GenericListView):
     def get_list(self):
         return self.object_type.objects.filter().order_by(
             *self.order_fields).annotate(
-            num_items=Count('items'),
-            num_acts=Count('acts'),
-            num_shows=Count('shows'))
+            num_items=Count('item'),
+            num_acts=Count('act'))
