@@ -54,6 +54,13 @@ class GenericListView(View):
                  reverse('categories_list', urlconf='inventory.urls')),
                 ("Tags", reverse('tags_list', urlconf='inventory.urls')),
                 ]}
+        if not museum_on:
+            context["path_list"] += [
+                ("Shows", reverse('shows_list', urlconf='inventory.urls')),
+                ("Acts", reverse('acts_list', urlconf='inventory.urls')),
+                ("Performers",
+                 reverse('performers_list', urlconf='inventory.urls')),
+                ]
         if self.__class__.__name__ in user_messages:
             context['instructions'] = UserMessage.objects.get_or_create(
                 view=self.__class__.__name__,
