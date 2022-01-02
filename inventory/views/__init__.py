@@ -10,12 +10,15 @@ from .manage_item_image import ManageItemImage
 from .promote_item_image import PromoteItemImage
 from .delete_item import ItemDelete
 
+from .act_list_view import ActListView
 from .act_autocomplete import ActAutocomplete
 from .make_act import (ActCreate, ActDelete, ActUpdate)
 
+from .performer_list_view import PerformerListView
 from .performer_autocomplete import PerformerAutocomplete
 from .make_performer import (PerformerCreate, PerformerDelete, PerformerUpdate)
 
+from .show_list_view import ShowListView
 from .show_autocomplete import ShowAutocomplete
 from .make_show import (ShowCreate, ShowDelete, ShowUpdate)
 
