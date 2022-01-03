@@ -14,10 +14,11 @@ from django.conf import settings
 
 class GenericListView(View):
     ##############
-    #  This is an overloaded class, it gives the logic for rendering a list
+    #  This is an abstract class, it gives the logic for rendering a list
     #  using something that extends the item_list.tmpl:
-    #     - get_list() - instantiate the item list, this will come to the
-    #          template as "items"
+    #     - order_fields or get_list - either tell the system what order to
+    #       use when getting items, or redefine get_list yourself.
+    #     - title - heading for the top of the page
     # Optional stuff:
     #     - form_url = for a form that is a set of checkboxes and a button
     #          called "Merge" - the checkboxes will be named for the plural
@@ -28,8 +29,7 @@ class GenericListView(View):
     ##############
     object_type = Item
     template = 'inventory/item_list.tmpl'
-    order_fields = ('disposition', 'category')
-    title = "List of Items"
+    title = "Generic List"
     form_url = None
 
     @method_decorator(login_required)

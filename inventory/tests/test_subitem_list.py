@@ -172,7 +172,7 @@ class TestSubItemList(TestCase):
         Subitem.objects.all().delete()
         login_as(self.user, self)
         response = self.client.get(self.url)
-        self.assertContains(response, "List of Items")
+        self.assertContains(response, "List of SubItems")
 
     def test_show_changed(self):
         login_as(self.user, self)
