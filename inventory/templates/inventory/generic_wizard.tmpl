@@ -22,8 +22,11 @@
     {% for error in errors %}
     <p class="inventory-form-error">{{error}}</p>
     {% endfor %}
+  {% elif form_error %}
+    <p class="lakshmi-form-error">There is an error on the form.</p>
   {% endif %}
 <form action="" method="post" enctype="multipart/form-data">
+    {{step_form}}
 <div class="row">
   <div class="col-12">
     {% if not special_handling %}{% include "form_table_wrapper.tmpl" %}

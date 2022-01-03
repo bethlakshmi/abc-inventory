@@ -1,3 +1,4 @@
+from .step_form import StepForm
 from .validate_two_choices import validate_two_choices
 from .basic_item_form import (
     BasicItemForm,
@@ -19,6 +20,7 @@ from .label_form import LabelForm
 from .item_upload_form import ItemUploadForm
 from .item_upload_mapping import ItemUploadMapping
 from .item_upload_row import ItemUploadRow
+from .item_related_data import ItemRelatedData
 from .subitem_form import (
     SubitemForm,
     TroupeSubitemForm,

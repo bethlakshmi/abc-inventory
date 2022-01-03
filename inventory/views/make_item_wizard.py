@@ -69,8 +69,8 @@ class MakeItemWizard(GenericWizard):
             self.item = get_object_or_404(Item,
                                           id=int(request.POST.get("item_id")))
 
-    def make_context(self, request):
-        context = super(MakeItemWizard, self).make_context(request)
+    def make_context(self, request, valid=True):
+        context = super(MakeItemWizard, self).make_context(request, valid)
         title = "Creating New Item"
         if self.item:
             title = self.item.title

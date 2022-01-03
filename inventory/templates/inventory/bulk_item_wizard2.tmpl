@@ -1,0 +1,25 @@
+{% extends 'inventory/generic_wizard.tmpl' %}
+{% block special_handling_form %}
+<p>{{ instructions | safe }}</p>
+ <font class="inventory-form-error">
+  {{ forms.non_field_errors }}</font>
+    {% csrf_token %}
+  {{ forms.management_form}}
+<div class="container">
+  {% for item_form in forms %}
+  <div class="row">
+    {% for field in item_form.visible_fields %}
+      <div class="p-0 {% if forloop.first %}col-12{% else %}col-sm-12 col-lg-6 col-xl-4{% endif %}">
+        {% if not forloop.first %}<label class="bulk">{{ field.label }}</label>{% endif %}<br>
+          {{field}}
+        {% if field.errors %}<br>
+          <font class="inventory-form-error">{{ field.errors }}</font>{% endif %}
+      </div>{% endfor %}
+  </div>
+  {% for hidden in item_form.hidden_fields %}
+    {{ hidden }}
+  {% endfor %}
+  {% endfor %}
+</div>
+  <br>
+{% endblock %}

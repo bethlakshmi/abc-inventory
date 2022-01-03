@@ -23,3 +23,8 @@ body.full-page {padding: 5px;}
 }
 .pixel-input {width: 50px;}
 ul#id_tags, ul#id_categories {list-style: none;}
+
+label.bulk {
+  font-size: small;
+  font-variant: small-caps;
+}
