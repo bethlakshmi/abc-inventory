@@ -1,7 +1,6 @@
 from django.forms import (
     CheckboxSelectMultiple,
     HiddenInput,
-    IntegerField,
     Form,
     ModelChoiceField,
     ModelMultipleChoiceField,
@@ -19,7 +18,6 @@ class ChooseTagsForm(Form):
                                     required=True,
                                     widget=CheckboxSelectMultiple,
                                     validators=[validate_two_choices])
-    step = IntegerField(widget=HiddenInput(), initial=0)
 
 
 class PickTagNameForm(Form):
@@ -33,4 +31,3 @@ class PickTagNameForm(Form):
                                     required=True,
                                     widget=MultipleHiddenInput(),
                                     validators=[validate_two_choices])
-    step = IntegerField(widget=HiddenInput(), initial=1)

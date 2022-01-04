@@ -3,7 +3,6 @@ from django.forms import (
     FileField,
     Form,
     HiddenInput,
-    IntegerField,
 )
 from inventory.forms.default_form_text import item_upload_help
 from django.core.validators import FileExtensionValidator
@@ -15,7 +14,6 @@ class ItemUploadForm(Form):
     required_css_class = 'required'
     error_css_class = 'error'
 
-    step = IntegerField(widget=HiddenInput(), initial=0)
     new_items = FileField(required=True,
                           validators=[FileExtensionValidator(['csv'])])
     has_header = BooleanField(label=item_upload_help['has_header'],

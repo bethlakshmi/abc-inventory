@@ -8,6 +8,7 @@ from django.contrib import messages
 from inventory.models import UserMessage
 from inventory.views.default_view_text import user_messages
 from django.shortcuts import render
+from inventory.forms import StepForm
 
 
 class GenericWizard(View):
@@ -42,7 +43,7 @@ class GenericWizard(View):
         self.step = int(request.POST.get("step", -1))
         self.return_url = reverse('items_list', urlconf='inventory.urls')
 
-    def make_context(self, request):
+    def make_context(self, request, valid=True):
         context = {
             'page_title': self.page_title,
             'title': self.page_title,
@@ -51,6 +52,7 @@ class GenericWizard(View):
             'first': self.current_form_set['the_form'] is None,
             'show_finish': True,
             'last': self.form_sets[self.step+1]['next_form'] is None,
+            'step_form': StepForm(initial={"step": self.step + 1})
         }
         if 'instruction_key' in self.current_form_set:
             context['instructions'] = UserMessage.objects.get_or_create(
@@ -64,6 +66,7 @@ class GenericWizard(View):
                 )[0].description
         if 'confirm_msg' in self.current_form_set:
             context['confirm_msg'] = self.current_form_set['confirm_msg']
+        context['form_error'] = not valid
         return context
 
     def make_back_forms(self, request):
@@ -79,7 +82,9 @@ class GenericWizard(View):
         redirect = self.groundwork(request, args, kwargs)
         self.current_form_set = self.form_sets[-1]
         self.forms = self.setup_forms(self.current_form_set['next_form'])
-        return render(request, self.template, self.make_context(request))
+        # so template is set before render - not critical on get
+        context = self.make_context(request)
+        return render(request, self.template, context)
 
     def return_on_error(self, request, message_code, extra_message=""):
         msg = UserMessage.objects.get_or_create(
@@ -116,14 +121,17 @@ class GenericWizard(View):
             self.forms = self.setup_forms(
                 self.current_form_set['the_form'],
                 request)
-            if len(self.forms) == 0:
+            if ("is_formset" not in self.current_form_set or (
+                    not self.current_form_set['is_formset'])) and len(
+                    self.forms) == 0:
                 return self.return_on_error(request, "NO_FORM_ERROR")
 
             if not self.validate_forms():
                 self.step = self.step - 1
                 self.current_form_set = self.form_sets[self.step]
-                return render(request, self.template, self.make_context(
-                    request))
+                # gets template set before render
+                context = self.make_context(request, valid=False)
+                return render(request, self.template, context)
             self.finish_valid_form(request)
             if 'finish' in list(request.POST.keys()):
                 return HttpResponseRedirect(self.finish(request))
@@ -150,6 +158,7 @@ class GenericWizard(View):
 
         if self.current_form_set['next_form'] is not None:
             self.forms = self.setup_forms(self.current_form_set['next_form'])
-            return render(request, self.template, self.make_context(request))
-
+            # gets template set before render
+            context = self.make_context(request)
+            return render(request, self.template, context)
         return HttpResponseRedirect(self.return_url)

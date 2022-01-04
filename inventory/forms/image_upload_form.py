@@ -1,7 +1,6 @@
 from django.forms import (
     ClearableFileInput,
     ImageField,
-    IntegerField,
     Form,
     HiddenInput,
 )
@@ -17,4 +16,3 @@ class ImageUploadForm(Form):
         widget=ClearableFileInput(attrs={'multiple': True}),
         required=True,
         help_text=item_image_help['new_images'])
-    step = IntegerField(widget=HiddenInput(), initial=0)
