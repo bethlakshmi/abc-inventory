@@ -4,38 +4,38 @@ from django.urls import reverse
 from inventory.tests.factories import (
     ActFactory,
     ItemFactory,
-    PerformerFactory,
+    ShowFactory,
     UserFactory
 )
 from inventory.tests.functions import login_as
-from inventory.models import Performer
+from inventory.models import Show
 
 
-class TestPerformerList(TestCase):
-    view_name = "performers_list"
+class TestShowList(TestCase):
+    view_name = "shows_list"
 
     def setUp(self):
         self.client = Client()
         self.user = UserFactory()
-        self.performer = PerformerFactory()
+        self.show = ShowFactory()
         self.url = reverse(self.view_name, urlconf="inventory.urls")
 
     def test_list_all_the_things(self):
         item = ItemFactory()
         other_item = ItemFactory()
-        item.performers.set([self.performer])
-        other_item.performers.set([self.performer])
+        item.shows.set([self.show])
+        other_item.shows.set([self.show])
         act = ActFactory()
-        act.performers.set([self.performer])
+        act.shows.set([self.show])
         login_as(self.user, self)
         response = self.client.get(self.url)
-        self.assertContains(response, "'id': '%d'" % self.performer.pk)
-        self.assertContains(response, "'name': '%s'" % self.performer.name)
+        self.assertContains(response, "'id': '%d'" % self.show.pk)
+        self.assertContains(response, "'title': '%s'" % self.show.title)
         self.assertContains(response, "'num_items': '2'")
         self.assertContains(response, "'num_acts': '1'")
         self.assertContains(
             response,
-            "'description': '%s'" % self.performer.description)
+            "'description': '%s'" % self.show.description)
         self.assertContains(
             response,
             ('<a href="%s" title="Edit">%s&nbsp;&nbsp;<i class="fas ' +
@@ -59,17 +59,17 @@ class TestPerformerList(TestCase):
              act.title))
         self.assertContains(
             response,
-            reverse('performer_create', urlconf="inventory.urls"))
+            reverse('show_create', urlconf="inventory.urls"))
         self.assertContains(
             response,
-            reverse('performer_update',
+            reverse('show_update',
                     urlconf="inventory.urls",
-                    args=[self.performer.pk]))
+                    args=[self.show.pk]))
         self.assertContains(
             response,
-            reverse('performer_delete',
+            reverse('show_delete',
                     urlconf="inventory.urls",
-                    args=[self.performer.pk]))
+                    args=[self.show.pk]))
 
     def test_list_empty(self):
         from inventory.views.default_view_text import user_messages
@@ -77,16 +77,16 @@ class TestPerformerList(TestCase):
         login_as(self.user, self)
         response = self.client.get(self.url)
         self.assertContains(response,
-                            user_messages['PerformerListView']['description'])
-        self.assertContains(response, self.performer.name)
+                            user_messages['ShowListView']['description'])
+        self.assertContains(response, self.show.title)
         self.assertNotContains(response, ex_url)
         self.assertContains(response, "'num_items': '0'")
 
     def test_list_no_objects(self):
         from inventory.views.default_view_text import user_messages
-        Performer.objects.all().delete()
+        Show.objects.all().delete()
         login_as(self.user, self)
         response = self.client.get(self.url)
         self.assertContains(response,
-                            user_messages['PerformerListView']['description'])
+                            user_messages['ShowListView']['description'])
         self.assertNotContains(response, "'num_items': '")

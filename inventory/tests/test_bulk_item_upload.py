@@ -116,6 +116,9 @@ class TestBulkItemUpload(TestCase):
                              reverse('items_list', urlconf='inventory.urls'))
         self.assertContains(response, "Uploaded 2 items.")
         self.assertEqual(count + 2, Item.objects.all().count())
+        self.assertNotContains(
+            response,
+            '<a href="/inventory/show/list" class="nav-link ">Shows</a>')
 
     def test_post_map_price(self):
         count = Item.objects.all().count()

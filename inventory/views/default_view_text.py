@@ -78,7 +78,7 @@ user_messages = {
         'summary':  "Instructions Act List",
         'description': '''List of all acts in the system.  Expand the
         row to see a list of editable items and notes associated with the act.
-        Items can be part of many acts.  Acts can be part of many shows, and 
+        Items can be part of many acts.  Acts can be part of many shows, and
         performed by many different performers (simultaneously or over time.
         This is not a complete list of acts (yet?), but those associated with
         current inventory.'''
@@ -89,7 +89,7 @@ user_messages = {
         row to see a list of editable items associated with this show.  Shows
         are associated with many acts.  Items associated with an act in this
         show are not shown here unless they are associated with the show
-        explicitly.  This is not a complete list of acts (yet?), but those 
+        explicitly.  This is not a complete list of acts (yet?), but those
         associated with current inventory.'''
     },
     "PerformerListView": {
