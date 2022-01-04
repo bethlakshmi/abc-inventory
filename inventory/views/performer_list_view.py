@@ -7,11 +7,9 @@ from django.urls import reverse_lazy
 class PerformerListView(GenericListView):
     object_type = Performer
     template = 'inventory/performer_list.tmpl'
-    order_fields = ('name', )
     title = "Performers"
 
     def get_list(self):
-        return self.object_type.objects.filter().order_by(
-            *self.order_fields).annotate(
-            num_items=Count('item'),
-            num_acts=Count('act'))
+        return self.object_type.objects.filter().order_by('name').annotate(
+            num_items=Count('item', distinct=True).annotate(
+            num_acts=Count('act', distinct=True))
