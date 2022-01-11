@@ -74,6 +74,32 @@ user_messages = {
         row to see a list of editable items associated with this category.
         Items have exactly 1 category.'''
     },
+    "ActListView": {
+        'summary':  "Instructions Act List",
+        'description': '''List of all acts in the system.  Expand the
+        row to see a list of editable items and notes associated with the act.
+        Items can be part of many acts.  Acts can be part of many shows, and
+        performed by many different performers (simultaneously or over time.
+        This is not a complete list of acts (yet?), but those associated with
+        current inventory.'''
+    },
+    "ShowListView": {
+        'summary':  "Instructions Show List",
+        'description': '''List of all shows in the system.  Expand the
+        row to see a list of editable items associated with this show.  Shows
+        are associated with many acts.  Items associated with an act in this
+        show are not shown here unless they are associated with the show
+        explicitly.  This is not a complete list of acts (yet?), but those
+        associated with current inventory.'''
+    },
+    "PerformerListView": {
+        'summary':  "Instructions Performer List",
+        'description': '''List of all performers in the system.  Expand the
+        row to see a list of editable items and acts associated with this
+        performer, as well as a description of the performer.  This is not a
+        complete list of performers (yet?), but those associated with current
+        inventory.'''
+    },
     "TagListView": {
         'summary':  "Instructions Tag List",
         'description': '''List of all tags in the system.  Expand the

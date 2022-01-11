@@ -1,0 +1,56 @@
+{% extends 'inventory/item_list.tmpl' %}
+{% block control_buttons %}{% endblock %}
+{% block table_header %}
+        <tr>
+          <th data-field="id" data-sortable="true" data-width="10">ID</th>
+          <th data-field="title" data-sortable="true">Title (and/or Song)</th>
+          <th data-field="song_artist" data-sortable="true">Song Artist</th>
+          <th data-field="performers" data-sortable="true">Performer(s)</th>
+          <th data-field="num_perf" data-sortable="true"># Performer(s)</th>
+          <th data-field="first_performed" data-sortable="true">First Performed</th>
+          <th data-field="last_performed" data-sortable="true">Last Performed</th>
+          <th data-field="shows" data-sortable="true">Shows</th>
+          <th data-field="num_items" data-sortable="true"># Items</th>
+          <th data-field="action">Action</th>
+        </tr>
+{% endblock %}
+{% block buttons %}
+      btnAdd: {
+        text: 'Add new row',
+        icon: 'fa-plus',
+        event: function () {
+          window.location.href = "{% url 'inventory:act_create' %}";
+        },
+        attributes: {
+          title: 'Add a new item to the inventory',
+        }
+      }
+{% endblock %}
+{% block details %}
+    var html = []
+    html.push('<div class="row">')
+    html.push('<div class="col-6">')
+    html.push('<b>Items:</b><br>' + row.items + '<br>')
+    html.push('</div><div class="col-6">')
+    html.push('<b>Notes:</b><br>' + row.notes + '<br>')
+    html.push('</div></div>')
+    return html.join('')
+{% endblock %}
+{% block item_data %}
+  {% for act in items %}
+      {
+        'id': '{{ act.pk }}',
+        'title': '{{ act.title }}{% if act.song %}<br>{{ act.song }}{% endif %}',
+        'song_artist': '{{ act.song_artist }}',
+        'first_performed': '{{ act.first_performed }}',
+        'last_performed': '{{ act.last_performed }}',
+        'performers': '{% for performer in act.performers.all %}<a href="{% url 'inventory:performer_update' performer.id %}" title="Edit">{{ performer }}&nbsp;&nbsp;<i class="fas fa-edit"></i></a>, {% endfor %}',
+        'shows': '{% for show in act.shows.all %}<a href="{% url 'inventory:show_update' show.id %}" title="Edit">{{ show }}&nbsp;&nbsp;<i class="fas fa-edit"></i></a>, {% endfor %}',
+        'notes': '{{ act.notes }}',
+        'num_perf': '{{ act.num_performers }}',
+        'num_items': '{{ act.num_items }}',
+        'items': '{% for item in act.item_set.all %}<a href="{% url 'inventory:item_edit' item.id %}" title="Edit">{{ item }}&nbsp;&nbsp;<i class="fas fa-edit"></i></a>,<br>{% endfor %}',
+        'action': '<form onsubmit="return confirm(\'Do you want to delete the act - {{act}}?\');" action="{% url "inventory:act_delete" act.id %}" method="post">{% csrf_token %}<a class="btn btn-sm inventory-detail px-1" href="{% url "inventory:act_update" act.id %}" title="Edit"><i class="fas fa-edit"></i></a><button class="btn btn-sm inventory-detail px-1" type="submit"><i class="fas fa-trash-alt"></i></button></form>',
+      },
+  {% endfor %}
+  {% endblock %}

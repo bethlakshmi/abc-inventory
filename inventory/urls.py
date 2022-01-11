@@ -2,6 +2,7 @@ from django.conf.urls import url
 from inventory.views import (
     ActCreate,
     ActDelete,
+    ActListView,
     ActUpdate,
     ActivateTheme,
     BulkImageUpload,
@@ -21,11 +22,13 @@ from inventory.views import (
     MergeTags,
     PerformerCreate,
     PerformerDelete,
+    PerformerListView,
     PerformerUpdate,
     PreviewTheme,
     PromoteItemImage,
     ShowCreate,
     ShowDelete,
+    ShowListView,
     ShowUpdate,
     SubitemCreate,
     SubitemDelete,
@@ -44,6 +47,9 @@ app_name = "inventory"
 
 urlpatterns = [
     # Acts
+    url(r'^inventory/act/list/?',
+        ActListView.as_view(),
+        name='acts_list'),
     url(r'^inventory/act/create/?',
         ActCreate.as_view(),
         name='act_create'),
@@ -98,6 +104,9 @@ urlpatterns = [
         name='manage_item_image'),
 
     # Performers
+    url(r'^inventory/performer/list/?',
+        PerformerListView.as_view(),
+        name='performers_list'),
     url(r'^inventory/performer/create/?',
         PerformerCreate.as_view(),
         name='performer_create'),
@@ -109,6 +118,9 @@ urlpatterns = [
         name='performer_update'),
 
     # Show
+    url(r'^inventory/show/list/?',
+        ShowListView.as_view(),
+        name='shows_list'),
     url(r'^inventory/show/create/?',
         ShowCreate.as_view(),
         name='show_create'),

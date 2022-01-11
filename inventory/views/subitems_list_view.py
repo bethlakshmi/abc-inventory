@@ -6,4 +6,4 @@ class SubItemsListView(GenericListView):
     object_type = Subitem
     template = 'inventory/subitem_list.tmpl'
     order_fields = ('item__disposition', 'item__category')
-    title = "List of Items"
+    title = "List of SubItems"

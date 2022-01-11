@@ -117,6 +117,9 @@ class TestBulkItemUploadTroupe(TestCase):
         self.assertEqual(updated_item.tags.first(), tag)
         self.assertRedirects(response,
                              reverse('items_list', urlconf='inventory.urls'))
+        self.assertContains(
+            response,
+            '<a href="/inventory/show/list" class="nav-link ">Shows</a>')
 
     @override_settings(INVENTORY_MODE='troupe')
     def test_post_troupe_relations_no_title(self):
