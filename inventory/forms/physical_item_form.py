@@ -1,7 +1,9 @@
 from django.forms import (
+    CheckboxSelectMultiple,
     DateField,
     HiddenInput,
     ModelForm,
+    MultipleChoiceField,
     NumberInput,
 )
 from inventory.models import Item
@@ -10,6 +12,7 @@ from tempus_dominus.widgets import DatePicker
 from dal import autocomplete
 from django_addanother.widgets import AddAnotherEditSelectedWidgetWrapper
 from django.urls import reverse_lazy
+from inventory.forms.default_form_text import size_options
 
 
 class PhysicalItemForm(ModelForm):
@@ -68,6 +71,9 @@ class PhysicalItemForm(ModelForm):
 
 
 class TroupePhysicalItemForm(PhysicalItemForm):
+    sz = MultipleChoiceField(choices=size_options,
+                             required=False,
+                             widget=CheckboxSelectMultiple())
     class Meta:
         model = Item
         fields = [
@@ -75,6 +81,7 @@ class TroupePhysicalItemForm(PhysicalItemForm):
             'height',
             'depth',
             'size',
+            'sz',
             'performers',
             'quantity',
             'disposition',

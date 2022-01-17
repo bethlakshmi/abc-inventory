@@ -39,6 +39,7 @@
       {% endif %}
   </div><!-- end form group -->
       {% if forms.0.size %}{% include "form_field.tmpl" with field=forms.0.size %}{% endif %}
+      {% if forms.0.sz %}{% include "form_field.tmpl" with field=forms.0.sz %}{% endif %}
       {% if forms.0.performers %}{% include "form_field.tmpl" with field=forms.0.performers %}{% endif %}
       {% if forms.0.quantity %}{% include "form_field.tmpl" with field=forms.0.quantity %}{% endif %}
       {% include "form_field.tmpl" with field=forms.0.disposition %}

@@ -55,6 +55,7 @@ class Item(Model):
                          max_digits=12,
                          validators=[MinValueValidator(Decimal('0.00'))])
     size = CharField(max_length=128, blank=True)
+    sz = TextField(blank=True)
     last_used = CharField(max_length=200, blank=True)
     quantity = PositiveIntegerField(default=1)
     subject = TextField(blank=True, null=True)
