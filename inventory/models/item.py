@@ -92,6 +92,12 @@ class Item(Model):
     def main_image(self):
         return self.images.get(main_image=True)
 
+    def sz_list(self):
+        if self.sz:
+            return eval(self.sz)
+        else:
+            return "None"
+
     has_label.boolean = True
     has_image.boolean = True
 

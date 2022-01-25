@@ -47,7 +47,7 @@ class ItemAdmin(ImportExportActionModelAdmin):
                     'has_label',
                     'has_image',
                     'size',
-                    'sz',
+                    'sz_list',
                     'category',
                     'disposition',
                     'year',
@@ -77,6 +77,14 @@ class ItemAdmin(ImportExportActionModelAdmin):
     ]
 
     filter_horizontal = ("connections", "tags")
+
+    def sz_list(self, obj):
+        if obj.sz:
+            size = ""
+            for sz in obj.sz_list():
+                size += "%s, " % sz
+            return size
+        return obj.sz
 
 
 class ItemImageAdmin(admin.ModelAdmin):
