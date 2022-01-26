@@ -41,6 +41,8 @@ class AdminTests(TestCase):
             depth=2,
             subject="Subject",
             note="Note",
+            size="One Size",
+            sz=['XS', 'Sm', 'Md', 'Lg', 'XL'],
             date_acquired=date.today() - timedelta(days=1),
             date_deaccession=date.today(),
             price=12.50)
@@ -55,6 +57,8 @@ class AdminTests(TestCase):
             response,
             '<td class="field-has_image"><img src="/static/admin/img/' +
             'icon-no.svg" alt="False"></td>')
+        self.assertContains(response, "One Size")
+        self.assertContains(response, "XS, Sm, Md, Lg, XL")
 
     def test_has_label(self):
         obj = ItemTextFactory()
