@@ -183,7 +183,9 @@ class TestItemList(TestCase):
             "item_edit",
             urlconf="inventory.urls",
             args=[busy_item.pk]))
-        self.assertContains(response, "'size': '%s'" % busy_item.size)
+        self.assertContains(
+            response,
+            "'size': '<b>Flexible:</b> %s'" % busy_item.size)
         self.assertContains(response,
                             "'quantity': '%s'" % busy_item.quantity)
         self.assertContains(
@@ -202,6 +204,21 @@ class TestItemList(TestCase):
             response,
             "'last_used': '%s'" % busy_item.last_used)
         self.assertNotContains(response, "'year': '%s'" % busy_item.year)
+
+    def test_list_items_troupe_sz(self):
+        busy_item = ItemFactory(
+            year="2020",
+            description="description",
+            sz=["Sm", ],
+            quantity=3,
+            date_acquired=date.today() - timedelta(days=1),
+            last_used="yesterday")
+        login_as(self.user, self)
+        with self.settings(INVENTORY_MODE='troupe'):
+            response = self.client.get(self.url)
+        self.assertContains(
+            response,
+            "'size': '<b>Fixed:</b> Sm, '")
 
     def test_no_login(self):
         response = self.client.get(self.url)

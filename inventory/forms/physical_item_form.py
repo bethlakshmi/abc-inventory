@@ -74,6 +74,16 @@ class TroupePhysicalItemForm(PhysicalItemForm):
     sz = MultipleChoiceField(choices=size_options,
                              required=False,
                              widget=CheckboxSelectMultiple())
+
+    def __init__(self, *args, **kwargs):
+        if 'instance' in kwargs:
+            my_instance = kwargs.get('instance')
+            initial = None
+            if my_instance.sz and len(my_instance.sz.strip()) > 0:
+                kwargs['initial'] = {'sz': eval(my_instance.sz)}
+        super(TroupePhysicalItemForm, self).__init__(*args, **kwargs)
+
+            
     class Meta:
         model = Item
         fields = [

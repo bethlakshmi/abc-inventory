@@ -40,6 +40,7 @@ class TestMakeItemTroupe(TestCase):
             'date_acquired': "",
             'date_deaccession': "",
             'price': 2.50,
+            'sz': ['Lg', ]
         }
 
     def get_basics(self):
@@ -50,7 +51,6 @@ class TestMakeItemTroupe(TestCase):
             'step': 0,
             'title':  "New Title",
             'description': "New Description",
-            'subject': "New Subject",
             'category': new_category.pk,
             'color': [new_color.pk],
             'shows': [show.pk],
@@ -67,6 +67,7 @@ class TestMakeItemTroupe(TestCase):
             height=2,
             depth=2,
             size="all sizes",
+            sz=["Sm", ],
             note="Note",
             date_acquired=date.today() - timedelta(days=1),
             date_deaccession=date.today(),
@@ -77,12 +78,11 @@ class TestMakeItemTroupe(TestCase):
                                 urlconf="inventory.urls",
                                 args=[self.item.pk])
 
-    @override_settings(INVENTORY_MODE='museum')
+    @override_settings(INVENTORY_MODE='troupe')
     def test_post_basics_troupe(self):
         act = ActFactory()
         login_as(self.user, self)
         basics = self.get_basics()
-        del basics['subject']
         basics['acts'] = [act.pk]
         basics['next'] = "Save & Continue >>"
         response = self.client.post(self.url, data=basics, follow=True)
@@ -93,6 +93,20 @@ class TestMakeItemTroupe(TestCase):
         self.assertContains(response, "Performers")
         self.assertNotContains(response, "Year")
 
+
+    @override_settings(INVENTORY_MODE='troupe')
+    def test_load_sz(self):
+        login_as(self.user, self)
+        basics = self.get_basics()
+        basics['next'] = "Save & Continue >>"
+        response = self.client.post(self.edit_url, data=basics, follow=True)
+        self.assertContains(
+            response,
+            '<input type="checkbox" name="sz" value="Sm" id="id_sz_1" ' +
+            'checked>',
+            html=True)
+
+    @override_settings(INVENTORY_MODE='troupe')
     def test_get_edit_troupe(self):
         login_as(self.user, self)
         with self.settings(INVENTORY_MODE='troupe'):
@@ -101,7 +115,7 @@ class TestMakeItemTroupe(TestCase):
         self.assertContains(response, "The Basics")
         self.assertContains(response, "Acts")
 
-    @override_settings(INVENTORY_MODE='museum')
+    @override_settings(INVENTORY_MODE='troupe')
     def test_post_physical_create_finish(self):
         performer = PerformerFactory()
         login_as(self.user, self)
@@ -120,3 +134,4 @@ class TestMakeItemTroupe(TestCase):
             '<input type="submit" name="add" value="Add Text" class="btn ' +
             'inventory-btn-primary" >',
             html=True)
+        self.assertEqual(updated_item.sz_list(), physical['sz'])
