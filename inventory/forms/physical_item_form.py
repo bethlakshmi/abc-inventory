@@ -73,7 +73,8 @@ class PhysicalItemForm(ModelForm):
 class TroupePhysicalItemForm(PhysicalItemForm):
     sz = MultipleChoiceField(choices=size_options,
                              required=False,
-                             widget=CheckboxSelectMultiple())
+                             widget=CheckboxSelectMultiple(
+                                attrs={'class': 'no_bullet_list'}))
 
     def __init__(self, *args, **kwargs):
         if 'instance' in kwargs:

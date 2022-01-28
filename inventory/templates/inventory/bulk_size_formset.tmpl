@@ -1,0 +1,43 @@
+{% extends 'inventory/generic_wizard.tmpl' %}
+{% block special_handling_form %}
+<p>{{ instructions | safe }}</p>
+    {% csrf_token %}
+{{ formset.management_form }}
+
+  <table class="inventory-table">
+    <thead class="inventory-table-header">
+      <tr>
+      <th>Item</th>
+      <th>Size (Flexible)</th>
+      <th>Sz (Fixed)</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for size_form in formset %}
+      <tr {% if size_form.errors %}class="inventory-table-error"{% endif %}>
+        <td>{{size_form.size.label}}</td>
+        <td>
+          {{size_form.size}}
+          {% if size_form.size.errors %}<br>
+            <font class="inventory-form-error">{{ size_form.size.errors }}</font>
+          {% endif %}
+        </td>
+        <td>
+          {{size_form.sz}}
+          {% if size_form.sz.errors %}<br>
+            <font class="inventory-form-error">{{ size_form.sz.errors }}</font>
+          {% endif %}
+        </td>
+        </tr>
+    {% for hidden in item_form.hidden_fields %}
+    {{ hidden }}
+    {% endfor %}
+        {% endfor %}
+    </tbody>
+  </table>
+  <br>
+{% endblock %}
+{% block buttons %}
+    <input type="submit" name="submit" value="Submit" class="btn inventory-btn-primary" >
+    <a href="{{ return_url }}" class="btn inventory-btn-light" formnovalidate>Cancel</a>
+{% endblock %}

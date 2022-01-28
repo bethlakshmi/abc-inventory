@@ -90,7 +90,10 @@ class Item(Model):
         return (self.images.count() > 0)
 
     def main_image(self):
-        return self.images.get(main_image=True)
+        if self.images.filter(main_image=True).exists():
+            return self.images.get(main_image=True)
+        else: 
+            return None
 
     def sz_list(self):
         sz = []

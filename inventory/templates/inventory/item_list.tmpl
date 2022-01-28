@@ -210,7 +210,7 @@
         {% if museum_on %}'year': '{% if item.year %}{{ item.year|escapejs }}{% endif %}',
         'subject': '{% if item.subject %}{{ item.subject|escapejs }}{% endif %}',{% else %}
         'quantity': '{% if item.quantity %}{{ item.quantity }}{% endif %}',
-        'size': '{% if item.sz %}<b>Fixed:</b> {% for size in item.sz_list %}{{size}}, {% endfor %}{% elif item.size %}<b>Flexible:</b> {{ item.size }}{% endif %}',
+        'size': '{% if item.sz and item.sz != "[]" %}<b>Fixed:</b> {% for size in item.sz_list %}{{size}}, {% endfor %}{% elif item.size %}<b>Flexible:</b> {{ item.size }}{% endif %}',
         'colors': '{% for color in item.colors.all %}{{ color }}, {% endfor %}',
         'performers': '{% for performer in item.performers.all %}{{ performer }}, {% endfor %}',
         'acts': '{% for act in item.acts.all %}{{ act }}, {% endfor %}',

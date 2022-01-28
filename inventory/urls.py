@@ -7,6 +7,7 @@ from inventory.views import (
     ActivateTheme,
     BulkImageUpload,
     BulkItemUpload,
+    BulkSizeSet,
     CategoryCreate,
     CategoryDelete,
     CategoryListView,
@@ -91,6 +92,9 @@ urlpatterns = [
     url(r'^inventory/item/edit/(?P<item_id>\d+)/?',
         MakeItemWizard.as_view(),
         name='item_edit'),
+    url(r'^inventory/items/size_set/',
+        BulkSizeSet.as_view(),
+        name="bulk_size"),
 
     # Image/items
     url(r'^inventory/image/upload/?',
