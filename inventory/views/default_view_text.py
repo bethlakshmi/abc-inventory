@@ -178,5 +178,8 @@ edit_size_messages = {
     'intro': '''This allows translation from the open ended 'size' field to
     the option limited 'sz' field.  Only items that have a value for 'size' but
     no value for 'sz' are listed here.  For others, edit the item
-    individually'''
+    individually''',
+    'success': '''Items have been updated.  Any sizes that have been updated
+    will no longer appear in this form, and will be shown as "Fixed" in this
+    list.'''
 }

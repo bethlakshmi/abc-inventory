@@ -3,7 +3,12 @@
 <p>{{ instructions | safe }}</p>
     {% csrf_token %}
 {{ formset.management_form }}
-
+  {% if size_form.errors %}
+    <p class="lakshmi-form-error">There is an error on the form.</p>
+    {% for error in size_form.errors %}
+        <p class="lakshmi-form-error">{{error}}</p>
+    {% endfor %}
+  {% endif %}
   <table class="inventory-table">
     <thead class="inventory-table-header">
       <tr>
@@ -29,7 +34,7 @@
           {% endif %}
         </td>
         </tr>
-    {% for hidden in item_form.hidden_fields %}
+    {% for hidden in size_form.hidden_fields %}
     {{ hidden }}
     {% endfor %}
         {% endfor %}

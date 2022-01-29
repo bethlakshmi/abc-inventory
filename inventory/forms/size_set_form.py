@@ -19,13 +19,16 @@ class SizeSetForm(ModelForm):
                                 attrs={'class': 'no_bullet_list'}))
 
     def __init__(self, *args, **kwargs):
-        if 'instance' in kwargs:
+        my_instance = None
+        if 'instance' in kwargs and kwargs.get('instance') != None:
             my_instance = kwargs.get('instance')
             initial = None
+            if type(my_instance) == type(None):
+                raise Exception(kwargs)
             if my_instance.sz and len(my_instance.sz.strip()) > 0:
                 kwargs['initial'] = {'sz': eval(my_instance.sz)}
         super(SizeSetForm, self).__init__(*args, **kwargs)
-        if 'instance' in kwargs:
+        if my_instance != None:
             self.fields['size'].label = my_instance.title
             if my_instance.has_image():
                 if my_instance.main_image():
