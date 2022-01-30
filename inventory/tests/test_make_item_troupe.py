@@ -99,10 +99,12 @@ class TestMakeItemTroupe(TestCase):
         basics = self.get_basics()
         basics['next'] = "Save & Continue >>"
         response = self.client.post(self.edit_url, data=basics, follow=True)
+        self.assertContains(response, "Size")
+        self.assertContains(response, "Sz")
         self.assertContains(
             response,
-            '<input type="checkbox" name="sz" value="Sm" id="id_sz_1" ' +
-            'checked>',
+            '<input type="checkbox" name="sz" value="Sm" ' +
+            'class="no_bullet_list" id="id_sz_1" checked>',
             html=True)
 
     @override_settings(INVENTORY_MODE='troupe')
