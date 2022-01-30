@@ -44,8 +44,8 @@ class BulkSizeSet(LoginRequiredMixin,
     def get_success_message(self, formset):
         msg = UserMessage.objects.get_or_create(
             view=self.__class__.__name__,
-            code="INTRO",
+            code="SUCCESS",
             defaults={
-                'summary': "Successful Size Setting",
+                'summary': "Successful Submission",
                 'description': edit_size_messages['success']})
         return msg[0].description

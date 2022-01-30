@@ -19,6 +19,9 @@
   </div>
   <div class="col-8 text-right">
 {% block control_buttons %}
+{% if not museum_on %}
+ <a href="{% url 'inventory:bulk_size' %}" role="button" class="btn inventory-btn-primary">Set Fixed Sizes</a>&nbsp;
+{% endif %}
  <a href="{% url 'inventory:item_upload' %}" role="button" class="btn inventory-btn-primary">Bulk Item Upload</a>&nbsp;
  <a href="{% url 'inventory:image_upload' %}" role="button" class="btn inventory-btn-primary">Image Upload</a>&nbsp;
 {% endblock %}
