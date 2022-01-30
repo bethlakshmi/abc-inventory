@@ -81,6 +81,9 @@ class TestItemList(TestCase):
         self.assertContains(
             response,
             "<td>%s, </td>" % subitem.performers.all()[0].name)
+        self.assertContains(response, reverse(
+            "bulk_size",
+            urlconf="inventory.urls"))
 
     def test_list_items_basic(self):
         login_as(self.user, self)

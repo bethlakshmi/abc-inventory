@@ -84,7 +84,6 @@ class TroupePhysicalItemForm(PhysicalItemForm):
                 kwargs['initial'] = {'sz': eval(my_instance.sz)}
         super(TroupePhysicalItemForm, self).__init__(*args, **kwargs)
 
-            
     class Meta:
         model = Item
         fields = [

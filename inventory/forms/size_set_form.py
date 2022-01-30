@@ -20,15 +20,13 @@ class SizeSetForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         my_instance = None
-        if 'instance' in kwargs and kwargs.get('instance') != None:
+        if 'instance' in kwargs and kwargs.get('instance') is not None:
             my_instance = kwargs.get('instance')
             initial = None
-            if type(my_instance) == type(None):
-                raise Exception(kwargs)
             if my_instance.sz and len(my_instance.sz.strip()) > 0:
                 kwargs['initial'] = {'sz': eval(my_instance.sz)}
         super(SizeSetForm, self).__init__(*args, **kwargs)
-        if my_instance != None:
+        if my_instance is not None:
             self.fields['size'].label = my_instance.title
             if my_instance.has_image():
                 if my_instance.main_image():

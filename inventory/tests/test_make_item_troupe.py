@@ -93,7 +93,6 @@ class TestMakeItemTroupe(TestCase):
         self.assertContains(response, "Performers")
         self.assertNotContains(response, "Year")
 
-
     @override_settings(INVENTORY_MODE='troupe')
     def test_load_sz(self):
         login_as(self.user, self)

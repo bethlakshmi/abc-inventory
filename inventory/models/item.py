@@ -92,7 +92,7 @@ class Item(Model):
     def main_image(self):
         if self.images.filter(main_image=True).exists():
             return self.images.get(main_image=True)
-        else: 
+        else:
             return None
 
     def sz_list(self):
