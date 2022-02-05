@@ -43,8 +43,8 @@
         'description': '{{ perf.description }}',
         'num_acts': '{{ perf.num_acts }}',
         'num_items': '{{ perf.num_items }}',
-        'acts': '{% for act in perf.act_set.all %}<a href="{% url 'inventory:act_update' act.id %}" title="Edit">{{ act }}&nbsp;&nbsp;<i class="fas fa-edit"></i></a>,<br>{% endfor %}',
-        'items': '{% for item in perf.item_set.all %}<a href="{% url 'inventory:item_edit' item.id %}" title="Edit">{{ item }}&nbsp;&nbsp;<i class="fas fa-edit"></i></a>,<br>{% endfor %}',
+        'acts': 'acts',
+        'items': 'items',
         'action': '<form onsubmit="return confirm(\'Do you want to delete the performer - {{perf}}?\');" action="{% url "inventory:performer_delete" perf.id %}" method="post">{% csrf_token %}<a class="btn btn-sm inventory-detail px-1" href="{% url "inventory:performer_update" perf.id %}" title="Edit"><i class="fas fa-edit"></i></a><button class="btn btn-sm inventory-detail px-1" type="submit"><i class="fas fa-trash-alt"></i></button></form>',
       },
   {% endfor %}
