@@ -64,6 +64,7 @@ INSTALLED_APPS.extend([
     'dal',
     'dal_select2',
     'django_addanother',
+    'extra_views',
 ])
 
 MIDDLEWARE.extend([

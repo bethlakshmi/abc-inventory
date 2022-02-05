@@ -174,3 +174,12 @@ delete_item_messages = {
     'delete_success':  "The %s item has been deleted.",
     'delete_intro':  "Are you sure you want to delete item '%s'?",
 }
+edit_size_messages = {
+    'intro': '''This allows translation from the open ended 'size' field to
+    the option limited 'sz' field.  Only items that have a value for 'size' but
+    no value for 'sz' are listed here.  For others, edit the item
+    individually.''',
+    'success': '''Items have been updated.  Any sizes that have been updated
+    will no longer appear in this form, and will be shown as "Fixed" in this
+    list.'''
+}

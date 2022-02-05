@@ -3,6 +3,7 @@ from .generic_wizard import GenericWizard
 from .bulk_image_upload import BulkImageUpload
 from .bulk_item_upload import BulkItemUpload
 
+from .bulk_size_set import BulkSizeSet
 from .generic_list_view import GenericListView
 from .items_list_view import ItemsListView
 from .make_item_wizard import MakeItemWizard

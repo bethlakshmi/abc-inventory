@@ -55,6 +55,7 @@ class Item(Model):
                          max_digits=12,
                          validators=[MinValueValidator(Decimal('0.00'))])
     size = CharField(max_length=128, blank=True)
+    sz = TextField(blank=True)
     last_used = CharField(max_length=200, blank=True)
     quantity = PositiveIntegerField(default=1)
     subject = TextField(blank=True, null=True)
@@ -89,7 +90,16 @@ class Item(Model):
         return (self.images.count() > 0)
 
     def main_image(self):
-        return self.images.get(main_image=True)
+        if self.images.filter(main_image=True).exists():
+            return self.images.get(main_image=True)
+        else:
+            return None
+
+    def sz_list(self):
+        sz = []
+        if self.sz:
+            sz = eval(self.sz)
+        return sz
 
     has_label.boolean = True
     has_image.boolean = True

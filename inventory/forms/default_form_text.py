@@ -66,3 +66,8 @@ item_format_error = {
     'depth': '''The depth must be a decimal - #.## - with no $ or other
     letters''',
 }
+size_options = [('XS', 'XS'),
+                ('Sm', 'Sm'),
+                ('Md', 'Md'),
+                ('Lg', 'Lg'),
+                ('XL', 'XL')]
