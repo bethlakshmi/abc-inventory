@@ -58,8 +58,9 @@ class ItemAdmin(ImportExportActionModelAdmin):
                     'subject',
                     'date_acquired',
                     'price',
-                    'note')
-    list_filter = ['category', 'disposition', 'tags', 'subject']
+                    'note',
+                    'updated_by')
+    list_filter = ['category', 'disposition', 'tags', 'subject', 'updated_by']
     search_fields = ['title',
                      'category__name',
                      'disposition__state',
