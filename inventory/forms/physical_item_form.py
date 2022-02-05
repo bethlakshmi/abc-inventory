@@ -77,7 +77,7 @@ class TroupePhysicalItemForm(PhysicalItemForm):
                                 attrs={'class': 'no_bullet_list'}))
 
     def __init__(self, *args, **kwargs):
-        if 'instance' in kwargs:
+        if 'instance' in kwargs and kwargs.get('instance') is not None:
             my_instance = kwargs.get('instance')
             initial = None
             if my_instance.sz and len(my_instance.sz.strip()) > 0:
