@@ -10,6 +10,7 @@ class ActListView(GenericListView):
     title = "Acts"
 
     def get_list(self):
+        raise Exception(self.object_type.all().count())
         return self.object_type.objects.all().order_by('title').annotate(
             num_performers=Count('performers', distinct=True)).annotate(
             num_items=Count('item', distinct=True))
