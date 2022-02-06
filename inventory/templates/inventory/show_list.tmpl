@@ -39,15 +39,15 @@
   {% for show in items %}
       {
         'id': '{{ show.pk }}',
-        'title': '{{ show.title }}',
+        'title': '{{ show.title|escapejs }}',
         'first_performed': '{{ show.first_performed }}',
         'last_performed': '{{ show.last_performed }}',
-        'description': '{{ show.description }}',
+        'description': '{{ show.description|escapejs }}',
         'num_acts': '{{ show.num_acts }}',
         'num_items': '{{ show.num_items }}',
-        'acts': '{% for act in show.act_set.all %}<a href="{% url 'inventory:act_update' act.id %}" title="Edit">{{ act }}&nbsp;&nbsp;<i class="fas fa-edit"></i></a>,<br>{% endfor %}',
-        'items': '{% for item in show.item_set.all %}<a href="{% url 'inventory:item_edit' item.id %}" title="Edit">{{ item }}&nbsp;&nbsp;<i class="fas fa-edit"></i></a>,<br>{% endfor %}',
-        'action': '<form onsubmit="return confirm(\'Do you want to delete the show - {{show}}?\');" action="{% url "inventory:show_delete" show.id %}" method="post">{% csrf_token %}<a class="btn btn-sm inventory-detail px-1" href="{% url "inventory:show_update" show.id %}" title="Edit"><i class="fas fa-edit"></i></a><button class="btn btn-sm inventory-detail px-1" type="submit"><i class="fas fa-trash-alt"></i></button></form>',
+        'acts': '{% for act in show.act_set.all %}<a href="{% url 'inventory:act_update' act.id %}" title="Edit">{{ act|escapejs }}&nbsp;&nbsp;<i class="fas fa-edit"></i></a>,<br>{% endfor %}',
+        'items': '{% for item in show.item_set.all %}<a href="{% url 'inventory:item_edit' item.id %}" title="Edit">{{ item|escapejs }}&nbsp;&nbsp;<i class="fas fa-edit"></i></a>,<br>{% endfor %}',
+        'action': '<form onsubmit="return confirm(\'Do you want to delete the show - {{show|escapejs}}?\');" action="{% url "inventory:show_delete" show.id %}" method="post">{% csrf_token %}<a class="btn btn-sm inventory-detail px-1" href="{% url "inventory:show_update" show.id %}" title="Edit"><i class="fas fa-edit"></i></a><button class="btn btn-sm inventory-detail px-1" type="submit"><i class="fas fa-trash-alt"></i></button></form>',
       },
   {% endfor %}
   {% endblock %}
