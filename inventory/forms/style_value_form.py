@@ -16,6 +16,7 @@ from inventory.forms.default_form_text import (
     theme_help,
     style_value_help,
 )
+import re
 
 
 class StyleValueForm(ModelForm):
@@ -72,7 +73,8 @@ class StyleValueForm(ModelForm):
                     help_text=help_text)
             elif template == "px":
                 initial = None
-                initial = int(''.join(filter(str.isdigit, value)))
+
+                initial = int(re.findall('[-+]?\d+', value)[0])
                 self.fields['value_%d' % i] = IntegerField(
                     initial=initial,
                     label="pixels",

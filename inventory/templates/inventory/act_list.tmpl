@@ -40,17 +40,17 @@
   {% for act in items %}
       {
         'id': '{{ act.pk }}',
-        'title': '{{ act.title }}{% if act.song %}<br>{{ act.song }}{% endif %}',
-        'song_artist': '{{ act.song_artist }}',
+        'title': '{{ act.title|escapejs }}{% if act.song %}<br>{{ act.song|escapejs }}{% endif %}',
+        'song_artist': '{{ act.song_artist|escapejs }}',
         'first_performed': '{{ act.first_performed }}',
         'last_performed': '{{ act.last_performed }}',
-        'performers': '{% for performer in act.performers.all %}<a href="{% url 'inventory:performer_update' performer.id %}" title="Edit">{{ performer }}&nbsp;&nbsp;<i class="fas fa-edit"></i></a>, {% endfor %}',
-        'shows': '{% for show in act.shows.all %}<a href="{% url 'inventory:show_update' show.id %}" title="Edit">{{ show }}&nbsp;&nbsp;<i class="fas fa-edit"></i></a>, {% endfor %}',
-        'notes': '{{ act.notes }}',
+        'performers': '{% for performer in act.performers.all %}<a href="{% url 'inventory:performer_update' performer.id %}" title="Edit">{{ performer|escapejs }}&nbsp;&nbsp;<i class="fas fa-edit"></i></a>, {% endfor %}',
+        'shows': '{% for show in act.shows.all %}<a href="{% url 'inventory:show_update' show.id %}" title="Edit">{{ show|escapejs }}&nbsp;&nbsp;<i class="fas fa-edit"></i></a>, {% endfor %}',
+        'notes': '{{ act.notes|escapejs }}',
         'num_perf': '{{ act.num_performers }}',
         'num_items': '{{ act.num_items }}',
-        'items': '{% for item in act.item_set.all %}<a href="{% url 'inventory:item_edit' item.id %}" title="Edit">{{ item }}&nbsp;&nbsp;<i class="fas fa-edit"></i></a>,<br>{% endfor %}',
-        'action': '<form onsubmit="return confirm(\'Do you want to delete the act - {{act}}?\');" action="{% url "inventory:act_delete" act.id %}" method="post">{% csrf_token %}<a class="btn btn-sm inventory-detail px-1" href="{% url "inventory:act_update" act.id %}" title="Edit"><i class="fas fa-edit"></i></a><button class="btn btn-sm inventory-detail px-1" type="submit"><i class="fas fa-trash-alt"></i></button></form>',
+        'items': '{% for item in act.item_set.all %}<a href="{% url 'inventory:item_edit' item.id %}" title="Edit">{{ item|escapejs }}&nbsp;&nbsp;<i class="fas fa-edit"></i></a>,<br>{% endfor %}',
+        'action': '<form onsubmit="return confirm(\'Do you want to delete the act - {{act|escapejs}}?\');" action="{% url "inventory:act_delete" act.id %}" method="post">{% csrf_token %}<a class="btn btn-sm inventory-detail px-1" href="{% url "inventory:act_update" act.id %}" title="Edit"><i class="fas fa-edit"></i></a><button class="btn btn-sm inventory-detail px-1" type="submit"><i class="fas fa-trash-alt"></i></button></form>',
       },
   {% endfor %}
   {% endblock %}
